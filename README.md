@@ -6,11 +6,12 @@ App de producción para generar todas las piezas de marca de C&O — La Casa del
 
 **Fase 0 — Sistema de marca:** completada.
 
-- Vista previa del sistema de marca (colores, tipografía, estilo de componentes): https://claude.ai/artifact/PCTqqc5Psy9szJpGKpezCp
+- Reproducción fiel del deck de referencia (logo real, imagen hero, texturas e iconos reales): https://claude.ai/artifact/YP2CN6uZhQt6jNYRNkUNoV
 - Tokens de marca reutilizables: [`design/tokens/brand.json`](design/tokens/brand.json)
-- Fuente de referencia original (deck aprobado): https://claude.ai/artifact/TiWgmG1ToQtfsDbYdFQCB6
+- Assets reales recuperados del deck original: [`design/deck-co/`](design/deck-co/) (logo, imagen hero, texturas, set de iconos)
+- Deck original de la usuaria (fuente): https://claude.ai/artifact/TiWgmG1ToQtfsDbYdFQCB6
 
-Pendiente: archivo real del isotipo "C&O" (SVG/PNG) — por ahora aproximado con tipografía.
+El isotipo "C&O" ya es el archivo real (no una aproximación tipográfica) — se recuperó directamente del deck original.
 
 ## Próximas fases
 

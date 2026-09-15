@@ -42,10 +42,27 @@
     }
   },
   "logo": {
-    "status": "aproximado con tipografía — pendiente archivo real (svg/png) del isotipo C&O"
+    "status": "archivo real recuperado del deck original",
+    "archivo": "design/deck-co/logo-co.png"
+  },
+  "assets_reales": {
+    "logo": "design/deck-co/logo-co.png",
+    "hero_house": "design/deck-co/hero-house-chrome.png",
+    "textura_clara": "design/deck-co/bg-texture-light.jpg",
+    "textura_oscura": "design/deck-co/bg-texture-dark.jpg",
+    "iconos": [
+      "design/deck-co/icon-quote.svg",
+      "design/deck-co/icon-agenda-01.svg",
+      "design/deck-co/icon-agenda-02.svg",
+      "design/deck-co/icon-agenda-03.svg",
+      "design/deck-co/icon-agenda-04.svg",
+      "design/deck-co/icon-agenda-05.svg",
+      "design/deck-co/icon-today.svg",
+      "design/deck-co/icon-case.svg"
+    ]
   },
   "fuente_referencia": {
-    "canvas_marca": "https://claude.ai/artifact/PCTqqc5Psy9szJpGKpezCp",
-    "deck_original": "https://claude.ai/artifact/TiWgmG1ToQtfsDbYdFQCB6"
+    "deck_reproducido": "https://claude.ai/artifact/YP2CN6uZhQt6jNYRNkUNoV",
+    "deck_original_de_la_usuaria": "https://claude.ai/artifact/TiWgmG1ToQtfsDbYdFQCB6"
   }
 }

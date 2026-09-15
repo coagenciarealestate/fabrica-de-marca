@@ -1,0 +1,51 @@
+{
+  "brand": "C&O — La Casa del Real Estate",
+  "fonts": {
+    "display": { "family": "Inria Serif", "google": "Inria+Serif:ital,wght@0,400;0,700;1,400", "fallback": "Georgia, serif" },
+    "ui": { "family": "Jost", "google": "Jost:wght@400;500;600", "fallback": "system-ui, sans-serif" },
+    "mono": { "family": "DM Mono", "google": "DM+Mono:wght@400;500", "fallback": "monospace" }
+  },
+  "colors": {
+    "neutrales": [
+      { "name": "Carbón", "hex": "#1C1714", "uso": "fondo dominante / tinta" },
+      { "name": "Negro Tinta", "hex": "#121212", "uso": "monograma sobre claro" },
+      { "name": "Pergamino", "hex": "#E3DAC5", "uso": "papel, fondo editorial" },
+      { "name": "Marfil Cálido", "hex": "#F4E7CB", "uso": "fondo luminoso, glass" }
+    ],
+    "metalicos": [
+      { "name": "Latón Envejecido", "hex": "#AA8B64", "uso": "acento principal, filetes" },
+      { "name": "Champán", "hex": "#CDBEA3", "uso": "degradados líquidos" },
+      { "name": "Bronce Sombra", "hex": "#685C4B", "uso": "profundidad del metal" },
+      { "name": "Oro Oliva", "hex": "#9F9D5F", "uso": "volumen cromado 3D" }
+    ],
+    "signatura": [
+      { "name": "Oliva Profundo", "hex": "#4B511E", "uso": "sombra del oro, follaje" },
+      { "name": "Musgo", "hex": "#2C311F", "uso": "fondo secundario" },
+      { "name": "Salvia", "hex": "#A6A893", "uso": "neutro frío, respiro" },
+      { "name": "Sanguina", "hex": "#8B361C", "uso": "acento único, jamás masivo" }
+    ],
+    "soporte_deck": [
+      { "name": "Beige apoyo", "hex": "#D8CDB6" },
+      { "name": "Café profundo", "hex": "#6E5636" },
+      { "name": "Café medio", "hex": "#8A6F4C" }
+    ]
+  },
+  "proporcion": "70% neutrales · 20% metálicos · 10% signatura",
+  "estilo_componentes": {
+    "card_radius": "14px",
+    "pill_radius": "999px",
+    "label": {
+      "font": "Jost",
+      "size": "11-12px",
+      "letter_spacing": "0.22em",
+      "text_transform": "uppercase"
+    }
+  },
+  "logo": {
+    "status": "aproximado con tipografía — pendiente archivo real (svg/png) del isotipo C&O"
+  },
+  "fuente_referencia": {
+    "canvas_marca": "https://claude.ai/artifact/PCTqqc5Psy9szJpGKpezCp",
+    "deck_original": "https://claude.ai/artifact/TiWgmG1ToQtfsDbYdFQCB6"
+  }
+}

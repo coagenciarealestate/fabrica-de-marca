@@ -1,0 +1,197 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inria+Serif:ital,wght@0,400;0,700;1,400&family=Jost:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #1C1714; }
+    a { color: #AA8B64; }
+    a:hover { color: #CDBEA3; }
+    .label {
+      font-family: 'Jost', system-ui, sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: #AA8B64;
+    }
+    .serif { font-family: 'Inria Serif', Georgia, serif; }
+    .mono { font-family: 'DM Mono', monospace; }
+  </style>
+</helmet>
+
+<div style="width: 1200px; background: #1C1714; padding: 64px; display: flex; flex-direction: column; gap: 72px; font-family: 'Jost', system-ui, sans-serif; color: #F4E7CB;">
+
+  <!-- outer hairline frame -->
+  <div style="position: relative; border: 1px solid #685C4B; border-radius: 4px; padding: 56px 64px; display: flex; flex-direction: column; gap: 72px;">
+
+    <!-- header -->
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center;">
+      <div class="label">Fábrica de Assets de Marca</div>
+      <h1 class="serif" style="margin: 0; font-size: 48px; font-weight: 400; color: #F4E7CB; letter-spacing: .02em;">Sistema de Marca</h1>
+      <div class="label" style="color: #685C4B;">C &amp; O &middot; La Casa del Real Estate</div>
+    </div>
+
+    <!-- logo block -->
+    <div style="display: flex; justify-content: center;">
+      <div style="border: 1px solid #685C4B; padding: 6px; border-radius: 2px;">
+        <div style="border: 1px solid #685C4B; padding: 36px 64px; display: flex; flex-direction: column; align-items: center; gap: 10px;">
+          <div class="serif" style="font-size: 52px; font-weight: 700; color: #F4E7CB; line-height: 1;">C&amp;O</div>
+          <div class="mono" style="font-size: 10px; letter-spacing: .1em; color: #685C4B;">isotipo definitivo pendiente de archivo (svg/png)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- typography -->
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+      <div style="display: flex; align-items: baseline; gap: 16px;">
+        <span class="label" style="{{accentStyle}}">II. Tipografía</span>
+        <div style="flex: 1; height: 1px; background: #685C4B;"></div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px;">
+        <div style="display: flex; flex-direction: column; gap: 12px; padding: 24px; border: 1px solid #685C4B; border-radius: 14px;">
+          <div class="label">Títulos</div>
+          <div class="serif" style="font-size: 34px; color: #F4E7CB;">Inria Serif</div>
+          <div class="mono" style="font-size: 11px; color: #CDBEA3;">Regular &middot; Bold &middot; Italic</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px; padding: 24px; border: 1px solid #685C4B; border-radius: 14px;">
+          <div class="label">Etiquetas / UI</div>
+          <div style="font-family: 'Jost', system-ui, sans-serif; font-size: 28px; color: #F4E7CB;">Jost</div>
+          <div class="mono" style="font-size: 11px; color: #CDBEA3;">Regular &middot; Medium &middot; SemiBold</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px; padding: 24px; border: 1px solid #685C4B; border-radius: 14px;">
+          <div class="label">Datos / Cifras</div>
+          <div class="mono" style="font-size: 26px; color: #F4E7CB;">DM Mono</div>
+          <div class="mono" style="font-size: 11px; color: #CDBEA3;">Regular &middot; Medium</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- colors -->
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+      <div style="display: flex; align-items: baseline; gap: 16px;">
+        <span class="label">III. Paleta Cromática</span>
+        <div style="flex: 1; height: 1px; background: #685C4B;"></div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div class="label" style="color: #CDBEA3;">Neutrales &middot; la base &middot; 70%</div>
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;">
+          <sc-for list="{{neutrales}}" as="c" hint-placeholder-count="4">
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div style="height: 88px; border-radius: 14px; border: 1px solid rgba(244,231,203,0.15); background: {{c.hex}};"></div>
+              <div style="display: flex; flex-direction: column; gap: 2px;">
+                <div style="font-size: 13px; color: #F4E7CB;">{{c.name}}</div>
+                <div class="mono" style="font-size: 11px; color: #AA8B64;">{{c.hex}}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div class="label" style="color: #CDBEA3;">Metálicos &middot; la voz &middot; 20%</div>
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;">
+          <sc-for list="{{metalicos}}" as="c" hint-placeholder-count="4">
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div style="height: 88px; border-radius: 14px; border: 1px solid rgba(244,231,203,0.15); background: {{c.hex}};"></div>
+              <div style="display: flex; flex-direction: column; gap: 2px;">
+                <div style="font-size: 13px; color: #F4E7CB;">{{c.name}}</div>
+                <div class="mono" style="font-size: 11px; color: #AA8B64;">{{c.hex}}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div class="label" style="color: #CDBEA3;">Signatura &middot; el acento &middot; 10%</div>
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;">
+          <sc-for list="{{signatura}}" as="c" hint-placeholder-count="4">
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div style="height: 88px; border-radius: 14px; border: 1px solid rgba(244,231,203,0.15); background: {{c.hex}};"></div>
+              <div style="display: flex; flex-direction: column; gap: 2px;">
+                <div style="font-size: 13px; color: #F4E7CB;">{{c.name}}</div>
+                <div class="mono" style="font-size: 11px; color: #AA8B64;">{{c.hex}}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="margin-top: 8px; padding-top: 20px; border-top: 1px solid #685C4B; display: flex; justify-content: space-between; align-items: center;">
+        <div class="mono" style="font-size: 12px; color: #CDBEA3;">Regla de proporción: 70% neutrales &middot; 20% metálicos &middot; 10% signatura</div>
+        <div class="serif" style="font-size: 18px; color: #685C4B; letter-spacing: .08em;">C &amp; O</div>
+      </div>
+    </div>
+
+    <!-- component style: cards + pills -->
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+      <div style="display: flex; align-items: baseline; gap: 16px;">
+        <span class="label">IV. Estilo de Componentes</span>
+        <div style="flex: 1; height: 1px; background: #685C4B;"></div>
+      </div>
+      <div style="display: flex; gap: 24px; align-items: stretch;">
+        <div style="flex: 1; padding: 28px; border-radius: 14px; background: #2C311F; display: flex; flex-direction: column; gap: 14px;">
+          <div style="display: flex; gap: 8px;">
+            <span style="padding: 6px 16px; border-radius: 999px; background: #4B511E; color: #F4E7CB; font-size: 11px; letter-spacing: .12em; text-transform: uppercase;">Redes</span>
+            <span style="padding: 6px 16px; border-radius: 999px; background: {{accent}}; color: #F4E7CB; font-size: 11px; letter-spacing: .12em; text-transform: uppercase;">Comercial</span>
+          </div>
+          <div class="serif" style="font-size: 22px; color: #F4E7CB;">Tarjeta de contenido</div>
+          <div style="font-size: 13px; color: #CDBEA3; line-height: 1.5;">Esquinas a 14px, fondo Musgo, etiquetas tipo pastilla en mayúscula con tracking amplio — así se ven las tarjetas dentro de la fábrica.</div>
+        </div>
+        <div style="width: 280px; padding: 28px; border-radius: 14px; border: 1px solid #685C4B; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px; text-align: center;">
+          <div class="label">Etiqueta pastilla</div>
+          <span style="padding: 8px 22px; border-radius: 999px; background: #AA8B64; color: #1C1714; font-size: 12px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase;">Ejemplo</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- footer -->
+    <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 24px; border-top: 1px solid #685C4B;">
+      <div class="mono" style="font-size: 11px; color: #685C4B;">fabrica-de-marca &middot; sistema de marca v1</div>
+      <div class="mono" style="font-size: 11px; color: #685C4B;">01</div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{
+  "accent": {"editor": "color", "default": "#8B361C", "options": ["#8B361C", "#4B511E", "#2C311F", "#A6A893"], "section": "Marca"}
+}'>
+class Component extends DCLogic {
+  renderVals() {
+    const accent = this.props.accent ?? '#8B361C';
+    return {
+      accent,
+      accentStyle: '',
+      neutrales: [
+        { name: 'Carbón', hex: '#1C1714' },
+        { name: 'Negro Tinta', hex: '#121212' },
+        { name: 'Pergamino', hex: '#E3DAC5' },
+        { name: 'Marfil Cálido', hex: '#F4E7CB' }
+      ],
+      metalicos: [
+        { name: 'Latón Envejecido', hex: '#AA8B64' },
+        { name: 'Champán', hex: '#CDBEA3' },
+        { name: 'Bronce Sombra', hex: '#685C4B' },
+        { name: 'Oro Oliva', hex: '#9F9D5F' }
+      ],
+      signatura: [
+        { name: 'Oliva Profundo', hex: '#4B511E' },
+        { name: 'Musgo', hex: '#2C311F' },
+        { name: 'Salvia', hex: '#A6A893' },
+        { name: 'Sanguina', hex: '#8B361C' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

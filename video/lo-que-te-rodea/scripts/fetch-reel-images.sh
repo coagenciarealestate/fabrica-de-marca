@@ -1,39 +1,38 @@
 #!/bin/bash
-# Descarga las 22 imágenes del reel "Lo que te rodea cambia" generadas en Higgsfield
-# (proyecto "C&O Reel — Lo que te rodea cambia", gpt_image_2_5, 9:16, calidad medium) y las deja
-# como assets/reel/NN.jpg, que es lo que referencia compositions/reel.html.
+# Descarga las 22 imágenes v3 del reel "Lo que te rodea cambia" (Higgsfield, 9:16; prompts en
+# PROMPTS-v3.md) como assets/reel-v3/NNN.jpg a 1080×1920, que es lo que usa compositions/reel.html.
 set -euo pipefail
 cd "$(dirname "$0")/.."
-mkdir -p assets/reel
+mkdir -p assets/reel-v3
 B=https://d8j0ntlcm91z4.cloudfront.net/user_37xL8uQkAiExL4l53S1OQTuJqcT
 while read -r n f; do
-  [ -f "assets/reel/$n.jpg" ] && continue
-  curl -sSfL </dev/null -o "assets/reel/$n.png" "$B/$f"
-  ffmpeg -nostdin -loglevel error -y -i "assets/reel/$n.png" -q:v 3 "assets/reel/$n.jpg"
-  rm "assets/reel/$n.png"
+  [ -f "assets/reel-v3/$n.jpg" ] && continue
+  curl -sSfL </dev/null -o "assets/reel-v3/$n.png" "$B/$f"
+  ffmpeg -nostdin -loglevel error -y -i "assets/reel-v3/$n.png" -vf "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920" -q:v 3 "assets/reel-v3/$n.jpg"
+  rm "assets/reel-v3/$n.png"
   echo "ok $n"
 done <<'LIST'
-100 hf_20260928_003851_948208f4-d973-4ea2-8ac5-6a8060b64812.png
-101 hf_20260928_003851_fc9e702f-9a25-4d41-bf2f-eee8e4f66d4e.png
-102 hf_20260928_003851_c0e9b7ea-055a-4fe2-bcbd-409e5214723d.png
-103 hf_20260928_003851_739a53c4-cb31-4db8-a9f2-fc76d2fae9c7.png
-104 hf_20260928_003851_9e3f71f2-89a5-4d2d-8188-93d5de8c2064.png
-105 hf_20260928_003851_80bf91aa-e148-4157-b1e9-abea5bc5736a.png
-106 hf_20260928_003851_c2a751dc-6b06-4b01-a62e-e688feae7ca0.png
-107 hf_20260928_003851_5b4c353a-7cfe-4a0b-8db4-e56b393f1e91.png
-108 hf_20260928_003851_a0b4bda9-740c-42f6-8b07-dd53e81ea12a.png
-109 hf_20260928_003851_192304ac-b11e-41e2-aef3-b1416c2d06fd.png
-110 hf_20260928_003851_0d1b5d3c-830b-4cdb-aa8b-b5b6496fa53b.png
-111 hf_20260928_003937_ef4fe88e-cd65-4f14-9626-ea3ffaba655e.png
-112 hf_20260928_003936_19bc4f4e-e79a-4b8f-ae99-29f357bc250b.png
-113 hf_20260928_003936_3fd1e2ce-3b58-4872-94d4-05d42a03f708.png
-114 hf_20260928_003937_1f7ad34d-499a-4450-9b27-66a42c3e07ba.png
-115 hf_20260928_003937_25736c72-8cde-4719-adc5-17f9502a7ffe.png
-116 hf_20260928_003937_466a0260-d613-4be5-a21a-1c9160efb682.png
-117 hf_20260928_003937_4f52f05f-efd8-4994-81a4-c1599c642002.png
-118 hf_20260928_003936_e7a7264a-86da-4c9c-b915-aa67830962cd.png
-119 hf_20260928_003937_f355c73f-a5b1-4aa7-9ef4-77d28f642aca.png
-120 hf_20260928_003937_8d860576-4bd4-4f9c-a1d7-1b234c1db1e9.png
-121 hf_20260928_003937_5b5ab599-36c1-4ac9-9d5a-554a8bb69d02.png
+203 hf_20260928_043539_6090e6f5-2239-42ef-98d4-0b6990261751.png
+204 hf_20260928_043539_d3a4d8d4-99e4-4754-a8d5-8a6893759ac2.png
+205 hf_20260928_043539_e4d0ead8-61ef-4996-a687-a4317507bc7e.png
+207 hf_20260928_043539_3a057fa9-2f86-447b-85aa-9611b2ff7c87.png
+211 hf_20260928_043541_55aea414-1e50-4b08-ba51-d72073f8296b.png
+200 hf_20260928_051721_a7ba9d98-db9a-41aa-a6aa-0d1a89681ede.png
+201 hf_20260928_051749_b7bbeabb-d33c-4248-977f-dd204f4adc4f.png
+202 hf_20260928_051825_d32919bc-f65f-43f8-b667-f0a445468c43.png
+206 hf_20260928_051850_678596bf-1fc1-4415-b25b-12d11239fec8.png
+208 hf_20260928_051909_6ead41c6-96a6-47b6-a463-7f14053cedbf.png
+209 hf_20260928_052040_ae3a76af-ae32-4da4-aef0-2041d7beffde.png
+210 hf_20260928_052049_985af95e-5816-41b9-b9ff-5f45edbb1767.png
+212 hf_20260928_052101_269f5dd7-d94f-44e9-8bcc-c49109d6f6a3.png
+213 hf_20260928_052114_812e0629-7286-4a1c-82e2-d56193f89ba5.png
+214 hf_20260928_052322_8d3243bf-70bf-4265-b228-61be1056fe9d.png
+215 hf_20260928_052335_1421207a-ae94-45d7-b2f7-d92c77751aa2.png
+216 hf_20260928_052354_0c712ba5-a1b5-4173-84ac-251e95158962.png
+217 hf_20260928_052403_4a54ce5f-aa36-4e95-8050-d536e24887cf.png
+218 hf_20260928_052536_47dfd8dd-35ef-4e14-90c5-710783003c02.png
+219 hf_20260928_052547_c4790dc0-f0fb-4a6f-94d6-08bb6d1ae134.png
+220 hf_20260928_052557_2a0810e9-758c-44ee-98fd-ac192b21b1e6.png
+221 hf_20260928_052615_b70df8cf-2e9e-444f-b0ab-6534027c10d5.png
 LIST
 node scripts/build-reel.mjs  # re-mide el tono del texto con las imágenes reales

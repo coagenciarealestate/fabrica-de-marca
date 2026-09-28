@@ -1,4 +1,11 @@
-# Lo que te rodea cambia — planeación (v2)
+# Lo que te rodea cambia — planeación
+
+> **v3 (actual):** imágenes nuevas según el estudio del referente — ver `REFERENTE-v3.md`
+> (diagnóstico y lista de tomas) y `PROMPTS-v3.md` (prompts de Higgsfield). Bordes curvos,
+> fondo liso arriba, técnicas y colores que cambian en cada corte, un movimiento por toma
+> (empuje, deriva, giro, materia viva) y barridos de movimiento en el umbral y en "Nosotros
+> entendemos". La música y el pulso de la v2 final se mantienen. Lo de abajo es la v2.
+
 
 ## 1. Dónde nos alejamos del referente (v1)
 

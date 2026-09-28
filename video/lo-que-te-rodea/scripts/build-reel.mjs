@@ -25,39 +25,40 @@ export const TOTAL = 21.0;
 const H = 1920;
 const HORIZON = 0.46 * H; // donde se encuentran todos los bordes (y donde se posa el texto)
 
-// ─── Imágenes (Higgsfield, 9:16) — ver scripts/fetch-reel-images.sh ─────────
-// edge: altura (% del cuadro) del borde natural de cada foto, medida en las imágenes
-//       (detector de salto de luminancia + revisión a ojo). Se usa para alinear todas
-//       las tomas a un mismo horizonte, como alinea un editor un match cut.
-// ink:  tono del texto sobre el borde si aún no hay imagen local para medirlo.
+// ─── Imágenes v3 (Higgsfield, 9:16) — ver REFERENTE-v3.md y scripts/fetch-reel-images.sh ─
+// Cada imagen sigue las reglas del referente: borde curvo (un domo, como un horizonte de
+// planeta), fondo liso de un color arriba, escala sorpresa y técnica distinta a la anterior.
+// edge: altura (% del cuadro) de la cima del borde, medida con scripts/measure-edges.py.
+// move: cómo respira la toma — E empuje · D deriva lateral · G giro leve · V viva (líquidos).
+const IMGDIR = "assets/reel-v3";
 const IMG = {
-  100: { edge: 50.8, alt: "Amanecer sobre la línea de techos de la ciudad", ink: "light" },
-  101: { edge: 46.5, alt: "Filo de un muro de cal contra el cielo de la mañana", ink: "dark" },
-  102: { edge: 46.5, alt: "Cumbrera de tejas de barro con musgo", ink: "dark" },
-  103: { edge: 42.6, alt: "Muro de ladrillo al atardecer", ink: "light" },
-  104: { edge: 43.0, alt: "Baranda de balcón en madera, pintura descascarada", ink: "dark" },
-  105: { edge: 40.2, alt: "Muro de adobe con paja contra el cielo andino", ink: "light" },
-  106: { edge: 48.4, alt: "Filo de concreto de una casa moderna en la hora azul", ink: "light" },
-  107: { edge: 52.7, alt: "Línea de luz bajo una puerta", ink: "light" },
-  108: { edge: 49.0, alt: "Borde de una taza de café con vapor", ink: "light" },
-  109: { edge: 36.7, alt: "Corteza de pan recién horneado", ink: "dark" },
-  110: { edge: 42.6, alt: "Masa de arepa con huellas de dedos pequeños", ink: "light" },
-  111: { edge: 46.9, alt: "Pliegue de una sábana de lino con luz de ventana", ink: "dark" },
-  112: { edge: 47.0, alt: "Línea de agua de una tina con espuma", ink: "dark" },
-  113: { edge: 41.8, alt: "Dibujo en crayola de una casa y una familia", ink: "dark" },
-  114: { edge: 35.5, alt: "Borde de una mesa de comedor con migas", ink: "light" },
-  115: { edge: 48.0, alt: "Borde de una hoja de monstera a contraluz", ink: "dark" },
-  116: { edge: 45.7, alt: "Manta tejida mostaza", ink: "dark" },
-  117: { edge: 43.0, alt: "Borde de un plato pintado a mano de Carmen de Viboral", ink: "light" },
-  118: { edge: 40.2, alt: "Páginas de un libro a la luz de una lámpara", ink: "light" },
-  119: { edge: 41.0, alt: "Bordado en un bastidor de madera", ink: "light" },
-  120: { edge: 40.0, alt: "Plano de una casa a lápiz sobre papel mantequilla", ink: "dark" },
-  121: { edge: 42.0, alt: "Maracuyá partido sobre una tabla", ink: "dark" },
+  200: { edge: 48.9, move: "E", ink: "light", alt: "Horizonte curvo de los Andes al amanecer visto desde muy alto" },
+  201: { edge: 38.5, move: "E", ink: "light", alt: "Corte de una teja de barro contra un fondo cobalto" },
+  202: { edge: 49.6, move: "D", ink: "dark", alt: "Grabado en tinta de una fachada colonial con arco" },
+  203: { edge: 40.6, move: "G", ink: "light", alt: "Plano en tiza del arco de una puerta sobre papel azul" },
+  204: { edge: 41.5, move: "E", ink: "dark", alt: "Corte de guadua al microscopio" },
+  205: { edge: 46.0, move: "D", ink: "light", alt: "Techo de teja en cámara térmica con el calor de la casa" },
+  206: { edge: 47.9, move: "E", ink: "light", alt: "Una línea de luz cálida sobre el piso en la oscuridad" },
+  207: { edge: 37.8, move: "V", ink: "light", alt: "La crema de un café, como un planeta" },
+  208: { edge: 44.7, move: "E", ink: "dark", alt: "Masa de arepa con huellas de dedos pequeños" },
+  209: { edge: 42.3, move: "D", ink: "light", alt: "Tejido de una mochila wayuu" },
+  210: { edge: 44.6, move: "G", ink: "dark", alt: "Dibujo en crayola de una casa y una familia" },
+  211: { edge: 35.3, move: "E", ink: "dark", alt: "Sala en collage de papel recortado" },
+  212: { edge: 37.5, move: "D", ink: "light", alt: "Cortina de encaje" },
+  213: { edge: 39.0, move: "V", ink: "light", alt: "Película iridiscente de una burbuja de jabón" },
+  214: { edge: 45.7, move: "E", ink: "dark", alt: "Filo de un plato pintado de Carmen de Viboral" },
+  215: { edge: 47.1, move: "G", ink: "light", alt: "Cristales de panela en luz polarizada" },
+  216: { edge: 47.7, move: "D", ink: "dark", alt: "Borde de una hoja de helecho a contraluz" },
+  217: { edge: 43.5, move: "G", ink: "dark", alt: "Construcción de un arco en lápiz" },
+  218: { edge: 38.2, move: "E", ink: "dark", alt: "Ilustración antigua de una casa de bahareque" },
+  219: { edge: 34.2, move: "D", ink: "dark", alt: "Plano de una casa en tinta sobre papel kraft" },
+  220: { edge: 45.5, move: "V", ink: "light", alt: "Panela derretida con burbujas" },
+  221: { edge: 40.9, move: "E", ink: "light", alt: "Mota de algodón a contraluz" },
 };
 
 // Mide la luminancia justo encima del borde para decidir el tono del texto
 function inkFor(id) {
-  const f = join(ROOT, "assets/reel", `${id}.jpg`);
+  const f = join(ROOT, IMGDIR, `${id}.jpg`);
   if (!existsSync(f)) return IMG[id].ink;
   try {
     const top = Math.max(0, IMG[id].edge / 100 - 0.07).toFixed(3);
@@ -72,22 +73,26 @@ function inkFor(id) {
 const cuts = [];
 const push = (t, id) => cuts.push({ t: snap(t), id });
 
-// Todo cae en el pulso: 2 tiempos de amanecer, 1 tiempo por fachada, 2 tiempos de umbral,
-// 1 tiempo por espacio, luego medio tiempo, y en el clímax un cuarto de tiempo.
-push(0, 100); // el amanecer abre (como la referencia)
-[101, 102, 103, 104, 105, 106].forEach((id, i) => push(2 * BEAT + i * BEAT, id)); // piel de la ciudad
-push(8 * BEAT, 107); // umbral: la luz bajo la puerta (2 tiempos)
-const interiors = [108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120];
+// Todo cae en el pulso. El orden busca que cada corte salte de color y de técnica
+// (oscuro → claro, foto → dibujo → ciencia), como el referente.
+push(0, 200); // el planeta abre (3 tiempos)
+[201, 202, 203, 204, 205].forEach((id, i) => push(3 * BEAT + i * BEAT, id)); // afuera: la piel de la casa
+push(8 * BEAT, 206); // umbral: una línea de luz (2 tiempos)
+const interiors = [207, 208, 209, 212, 210, 211, 213, 214, 215, 217, 220, 218, 219];
 let t = 10 * BEAT;
 interiors.forEach((id, i) => { push(t, id); t += i < 6 ? BEAT : BEAT / 2; }); // 6 a un tiempo, 7 a medio tiempo
-// Clímax: afuera y adentro se alternan — medio tiempo y luego cuarto de tiempo
-const climax = [101, 111, 102, 109, 103, 117, 104, 112, 105, 115, 106, 121, 113, 116, 108, 118, 110, 119, 114, 120];
+// Clímax: todo el mundo vuelve, cada vez más rápido — medio tiempo y luego cuarto de tiempo.
+// La mota de algodón cierra y se queda mientras todo respira.
+const climax = [216, 201, 213, 203, 208, 215, 202, 209, 205, 214, 212, 210, 207, 219, 204, 211, 217, 220, 218];
 for (let k = 0; t < REEL_END - 1e-6; k++) {
   push(t, climax[k % climax.length]);
   t += t < 23 * BEAT - 1e-6 ? BEAT / 2 : BEAT / 4;
 }
+cuts[cuts.length - 1].id = 221;
 // la última toma se queda hasta que entra la marca: se funde a negro (no se corta)
 const shots = cuts.map((c, i) => ({ ...c, i, end: i + 1 < cuts.length ? cuts[i + 1].t : LOGO_AT, ink: inkFor(c.id) }));
+// Barrido de movimiento en los cortes grandes (como la transición borrosa del referente)
+const SMEAR = [snap(8 * BEAT), snap(21 * BEAT)];
 
 // Frases sobre el borde. Cambian en un corte, como en la referencia.
 const at = (target) => shots.reduce((best, s) => (Math.abs(s.t - target) < Math.abs(best - target) ? s.t : best), 0);
@@ -104,7 +109,7 @@ phrases.forEach((p, i) => (p.end = i + 1 < phrases.length ? phrases[i + 1].start
 function buildHtml() {
   const r = rng(11);
   const shotTags = shots
-    .map((s) => `        <img id="reel-shot-${s.i}" class="clip shot" src="assets/reel/${s.id}.jpg" alt="${IMG[s.id].alt}" data-start="${s.t}" data-duration="${+(s.end - s.t).toFixed(4)}" data-track-index="${1 + (s.i % 2)}" />`)
+    .map((s) => `        <img id="reel-shot-${s.i}" class="clip shot" src="${IMGDIR}/${s.id}.jpg" alt="${IMG[s.id].alt}" data-start="${s.t}" data-duration="${+(s.end - s.t).toFixed(4)}" data-track-index="${1 + (s.i % 2)}" />`)
     .join("\n");
   const phraseTags = phrases
     .map((p) => `        <div id="reel-${p.id}" class="clip phrase" data-start="${p.start}" data-duration="${+(p.end - p.start).toFixed(4)}" data-track-index="4"><span id="reel-${p.id}-text" class="phrase-text${p.italic ? " italic" : ""}" style="font-size:${p.size}px">${p.text}</span></div>`)
@@ -115,13 +120,33 @@ function buildHtml() {
   // Cada toma respira distinto: un empuje lento con deriva leve (nada idéntico, nada rígido)
   const shotTweens = shots
     .map((s) => {
-      const y0 = (IMG[s.id].edge / 100) * H;
+      const im = IMG[s.id];
+      const y0 = (im.edge / 100) * H;
       const cover = Math.max(1, HORIZON / y0, (H - HORIZON) / (H - y0)) * 1.025;
       const dy = (HORIZON - y0).toFixed(1);
       const d = Math.max(0.3, s.end - s.t + 0.2).toFixed(2);
-      const x = ((r() - 0.5) * 12).toFixed(1);
-      const from = (cover * (s.i === 0 ? 1.08 : 1.03 + r() * 0.03)).toFixed(3);
-      return `        tl.set("#reel-shot-${s.i}", { transformOrigin: "50% ${IMG[s.id].edge}%", y: ${dy} }, 0);\n        tl.fromTo("#reel-shot-${s.i}", { scale: ${from}, x: ${x} }, { scale: ${cover.toFixed(3)}, x: 0, duration: ${s.i === 0 ? 1.2 : d}, ease: "sine.out" }, ${s.t});`;
+      const sel = `"#reel-shot-${s.i}"`;
+      const side = r() < 0.5 ? -1 : 1;
+      const lines = [`        tl.set(${sel}, { transformOrigin: "50% ${im.edge}%", y: ${dy} }, 0);`];
+      let from, to;
+      if (s.i === 0) {
+        from = { scale: (cover * 1.1).toFixed(3) }; to = { scale: cover.toFixed(3) };
+      } else if (im.move === "D") { // deriva lateral
+        from = { scale: (cover * 1.06).toFixed(3), x: 34 * side }; to = { scale: (cover * 1.05).toFixed(3), x: -10 * side };
+      } else if (im.move === "G") { // giro leve alrededor del borde
+        from = { scale: (cover * 1.09).toFixed(3), rotation: 1.1 * side }; to = { scale: (cover * 1.07).toFixed(3), rotation: 0 };
+      } else if (im.move === "V") { // materia viva: empuje, giro lento y, en la burbuja, color que fluye
+        from = { scale: (cover * 1.1).toFixed(3), rotation: -0.9 * side }; to = { scale: (cover * 1.06).toFixed(3), rotation: 0.4 * side };
+        if (s.id === 213) { from.filter = "hue-rotate(0deg)"; to.filter = "hue-rotate(50deg)"; }
+      } else { // empuje
+        from = { scale: (cover * (1.04 + r() * 0.03)).toFixed(3), x: ((r() - 0.5) * 12).toFixed(1) }; to = { scale: cover.toFixed(3), x: 0 };
+      }
+      const obj = (o) => "{ " + Object.entries(o).map(([k, v]) => `${k}: ${typeof v === "string" && isNaN(+v) ? `"${v}"` : v}`).join(", ") + " }";
+      lines.push(`        tl.fromTo(${sel}, ${obj(from)}, { ...${obj(to)}, duration: ${s.i === 0 ? 1.8 : d}, ease: "sine.out" }, ${s.t});`);
+      if (SMEAR.some((x) => Math.abs(x - s.t) < 0.01) && s.id !== 213) {
+        lines.push(`        tl.fromTo(${sel}, { filter: "blur(18px) brightness(1.25)" }, { filter: "blur(0px) brightness(1)", duration: 0.28, ease: "power2.out" }, ${s.t});`);
+      }
+      return lines.join("\n");
     })
     .join("\n");
 
@@ -303,12 +328,12 @@ function buildAudio() {
 
   // La materia deja su huella (muy bajito)
   const f = (id, fn) => { const tt = shotAt(id); if (tt != null) fn(tt); };
-  f(108, (tt) => m.noise(tt, tt + 0.6, { type: "bp", f: 4200, q: 0.9, gain: 0.02, env: (u) => Math.sin(Math.PI * u), send: 0.5, pan: 0.2 })); // vapor
-  f(109, (tt) => { for (let k = 0; k < 6; k++) m.tone(tt + r() * 0.3, 0.012, 2600, 1800, 0.016, { decay: 300, pan: (r() - 0.5) * 0.6, send: 0.3 }); }); // corteza
-  f(111, (tt) => m.noise(tt - 0.1, tt + 0.4, { f: 1400, fEnd: 380, gain: 0.03, env: (u) => Math.sin(Math.PI * u), send: 0.4 })); // sábana
-  f(112, (tt) => { m.tone(tt + 0.05, 0.1, 1500, 650, 0.035, { decay: 30, pan: -0.2, send: 0.8 }); m.tone(tt + 0.28, 0.09, 1250, 600, 0.025, { decay: 34, pan: 0.2, send: 0.8 }); }); // gota
-  f(113, (tt) => { for (let k = 0; k < 3; k++) m.noise(tt + k * 0.1, tt + k * 0.1 + 0.07, { type: "bp", f: 2600, q: 1.2, gain: 0.02, env: (u) => Math.sin(Math.PI * u), send: 0.2 }); }); // crayola
-  f(118, (tt) => m.noise(tt, tt + 0.22, { type: "bp", f: 2000, q: 0.8, gain: 0.02, env: (u) => Math.sin(Math.PI * u), send: 0.3 })); // página
+  f(207, (tt) => m.noise(tt, tt + 0.6, { type: "bp", f: 4200, q: 0.9, gain: 0.02, env: (u) => Math.sin(Math.PI * u), send: 0.5, pan: 0.2 })); // vapor
+  f(204, (tt) => { for (let k = 0; k < 6; k++) m.tone(tt + r() * 0.3, 0.012, 2600, 1800, 0.016, { decay: 300, pan: (r() - 0.5) * 0.6, send: 0.3 }); }); // fibra que cruje
+  f(212, (tt) => m.noise(tt - 0.1, tt + 0.4, { f: 1400, fEnd: 380, gain: 0.03, env: (u) => Math.sin(Math.PI * u), send: 0.4 })); // tela
+  f(213, (tt) => { m.tone(tt + 0.05, 0.1, 1500, 650, 0.035, { decay: 30, pan: -0.2, send: 0.8 }); m.tone(tt + 0.28, 0.09, 1250, 600, 0.025, { decay: 34, pan: 0.2, send: 0.8 }); }); // burbuja
+  f(210, (tt) => { for (let k = 0; k < 3; k++) m.noise(tt + k * 0.1, tt + k * 0.1 + 0.07, { type: "bp", f: 2600, q: 1.2, gain: 0.02, env: (u) => Math.sin(Math.PI * u), send: 0.2 }); }); // crayola
+  f(218, (tt) => m.noise(tt, tt + 0.22, { type: "bp", f: 2000, q: 0.8, gain: 0.02, env: (u) => Math.sin(Math.PI * u), send: 0.3 })); // página
 
   // Crepitar y aire que crecen hacia "por qué."
   m.grains(16 * B, REEL_END, { density: [4, 60], gain: [0.006, 0.04] });

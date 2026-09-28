@@ -64,7 +64,7 @@
       id="root"
       data-composition-id="main"
       data-start="0"
-      data-duration="20.5"
+      data-duration="21"
       data-width="1080"
       data-height="1920"
     >
@@ -74,7 +74,7 @@
         data-composition-id="reel"
         data-composition-src="compositions/reel.html"
         data-start="0"
-        data-duration="15.4"
+        data-duration="16.2"
         data-track-index="1"
         data-width="1080"
         data-height="1920"
@@ -86,7 +86,7 @@
         class="clip"
         data-composition-id="organic-light-leak-overlay"
         data-composition-src="compositions/organic-light-leak-overlay.html"
-        data-start="4.35"
+        data-start="4.55"
         data-duration="1.9"
         data-track-index="3"
         data-width="1080"
@@ -100,21 +100,21 @@
         class="clip"
         data-composition-id="endcard"
         data-composition-src="compositions/endcard.html"
-        data-start="16"
-        data-duration="4.5"
+        data-start="16.2"
+        data-duration="4.8"
         data-track-index="2"
         data-width="1080"
         data-height="1920"
       ></div>
 
-      <div id="vignette" class="clip" data-start="0" data-duration="20.5" data-track-index="5"></div>
+      <div id="vignette" class="clip" data-start="0" data-duration="21" data-track-index="5"></div>
       <div id="grain"><div id="grain-tex" data-layout-allow-overflow></div></div>
 
       <audio
         id="reel-audio"
         src="assets/reel/reel-audio.m4a"
         data-start="0"
-        data-duration="20.5"
+        data-duration="21"
         data-track-index="9"
       ></audio>
     </div>
@@ -123,7 +123,7 @@
       // Grano: posición pseudoaleatoria determinista cada 2 cuadros (15 fps, como película)
       let seed = 9;
       const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
-      for (let f = 0; f < 20.5 * 15; f++) {
+      for (let f = 0; f < 21 * 15; f++) {
         tl.set("#grain-tex", { x: Math.round((rnd() - 0.5) * 400), y: Math.round((rnd() - 0.5) * 700) }, f / 15);
       }
       window.__timelines["main"] = tl;

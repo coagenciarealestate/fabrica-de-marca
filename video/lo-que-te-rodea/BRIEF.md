@@ -6,7 +6,7 @@ message: "Lo que te rodea cambia, cuando tú cambias. Nosotros entendemos por qu
 destination: reel (Instagram / TikTok)
 aspect: "9:16"
 language: es
-length: 20.5s
+length: 21s
 angle: match cut + match sound inspirado en el video de referencia de la usuaria
 ---
 

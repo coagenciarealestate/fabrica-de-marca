@@ -14,10 +14,15 @@ export const midiHz = (m) => 440 * Math.pow(2, (m - 69) / 12);
 const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
 
 // Filtro biquad (RBJ) para modelar aire, puertas, vapor…
-function biquad(type, f, q = 0.707) {
+function biquad(type, f, q = 0.707, gainDb = 0) {
   const w = (2 * Math.PI * clamp(f, 10, SR * 0.45)) / SR;
   const c = Math.cos(w), s = Math.sin(w), a = s / (2 * q);
   let b0, b1, b2, a0, a1, a2;
+  if (type === "peak") {
+    const A = Math.pow(10, gainDb / 40);
+    b0 = 1 + a * A; b1 = -2 * c; b2 = 1 - a * A; a0 = 1 + a / A; a1 = -2 * c; a2 = 1 - a / A;
+    return { b0: b0 / a0, b1: b1 / a0, b2: b2 / a0, a1: a1 / a0, a2: a2 / a0, x1: 0, x2: 0, y1: 0, y2: 0 };
+  }
   if (type === "lp") { b0 = (1 - c) / 2; b1 = 1 - c; b2 = (1 - c) / 2; }
   else if (type === "hp") { b0 = (1 + c) / 2; b1 = -(1 + c); b2 = (1 + c) / 2; }
   else { b0 = a; b1 = 0; b2 = -a; } // bp
@@ -112,6 +117,7 @@ export function createMix(totalSecs, seed = 1) {
   const N = Math.ceil(totalSecs * SR);
   const bus = (n) => ({ L: new Float32Array(n), R: new Float32Array(n) });
   const dry = bus(N), wet = bus(N); // wet = envío a reverb
+  const dly = bus(N); // envío al delay estéreo (ida y vuelta)
   const r = rng(seed);
   const add = (b, i, l, rr) => {
     if (i >= 0 && i < N) { b.L[i] += l; b.R[i] += rr; }
@@ -231,17 +237,234 @@ export function createMix(totalSecs, seed = 1) {
     api.noise(t0, t0 + 0.08, { f: 300, gain: gain * body, env: (u) => Math.exp(-u * 6), send: 0.2 });
   };
 
+  // Campana / celesta: parciales inarmónicos, brillo que se apaga rápido (la magia)
+  api.bell = (t0, midi, vel = 0.1, { pan = 0, send = 0.8, len = 3.5 } = {}) => {
+    const f = midiHz(midi);
+    const s0 = Math.floor(t0 * SR);
+    const n = Math.floor(len * SR);
+    const [gl, gr] = panG(pan);
+    const parts = [[1, 1, 1.4], [2.0, 0.35, 2.4], [2.76, 0.4, 3.2], [5.4, 0.18, 6], [8.93, 0.08, 9]];
+    for (let i = 0; i < n; i++) {
+      const t = i / SR;
+      const att = Math.min(1, t / 0.002);
+      let v = 0;
+      for (const [m, a, d] of parts) v += a * Math.exp(-t * d) * Math.sin(2 * Math.PI * f * m * t);
+      v *= vel * att * 0.5;
+      add(dry, s0 + i, v * gl, v * gr);
+      add(wet, s0 + i, v * gl * send, v * gr * send);
+    }
+  };
+
+  // Campanita (el timbre de las notas del video de referencia): fundamental + octava casi igual,
+  // un toque de 3er parcial, ataque de 6 ms con una caída de afinación de ~35 cents en 60 ms
+  // (los "ganchos" del espectrograma), decaimiento ~0.6 s; va a reverb y a delay.
+  api.chime = (t0, midi, vel = 0.1, { pan = 0, send = 0.55, delay = 0.35, len = 2.2, bend = 0.35, octave = 0.75, dec = 3.2 } = {}) => {
+    const f = midiHz(midi);
+    const s0 = Math.floor(t0 * SR);
+    const n = Math.floor(len * SR);
+    const [gl, gr] = panG(pan);
+    let p1 = 0, p2 = 0, p3 = 0;
+    for (let i = 0; i < n; i++) {
+      const t = i / SR;
+      const bendNow = Math.pow(2, (bend * Math.exp(-t / 0.03)) / 12);
+      p1 += (2 * Math.PI * f * bendNow) / SR;
+      p2 += (2 * Math.PI * f * 2.002 * bendNow) / SR;
+      p3 += (2 * Math.PI * f * 3.01 * bendNow) / SR;
+      const att = Math.min(1, t / 0.006);
+      const v = (Math.sin(p1) * Math.exp(-t * dec) + octave * Math.sin(p2) * Math.exp(-t * dec * 1.4) + 0.06 * Math.sin(p3) * Math.exp(-t * dec * 3)) * att * vel * 0.5;
+      add(dry, s0 + i, v * gl, v * gr);
+      add(wet, s0 + i, v * gl * send, v * gr * send);
+      add(dly, s0 + i, v * gl * delay, v * gr * delay);
+    }
+  };
+
+  // Colchón sostenido (órgano/cuerdas suaves): pocos armónicos, chorus lento, crece con swell
+  api.drone = (t0, t1, midis, vel = 0.05, { att = 1.5, rel = 0.3, swell = 0, send = 0.5, bright = 0.4 } = {}) => {
+    const s0 = Math.floor(t0 * SR);
+    const hold = t1 - t0;
+    const n = Math.floor((hold + rel) * SR);
+    const voices = [];
+    midis.forEach((m, k) => voices.push({ f: midiHz(m), ph: r() * 6.28, lr: 0.2 + r() * 0.3, pan: midis.length > 1 ? (k / (midis.length - 1) - 0.5) * 0.7 : 0 })); // una voz limpia por nota
+    const lpL = biquad("lp", 900 + bright * 2400, 0.6), lpR = biquad("lp", 900 + bright * 2400, 0.6);
+    for (let i = 0; i < n; i++) {
+      const t = i / SR;
+      let e = Math.min(1, t / att) * (1 + swell * Math.min(1, t / hold));
+      if (t > hold) e *= Math.max(0, 1 - (t - hold) / rel);
+      let l = 0, rr = 0;
+      for (const v of voices) {
+        const ch = 1;
+        const w = 2 * Math.PI * v.f * ch * t + v.ph;
+        const smp = Math.sin(w) + 0.14 * Math.sin(2 * w) + 0.03 * Math.sin(3 * w); // limpio, casi puro
+        const [gl, gr] = panG(v.pan);
+        l += smp * gl; rr += smp * gr;
+      }
+      const sc = (vel * e) / Math.sqrt(voices.length);
+      const ol = bq(lpL, l) * sc, or = bq(lpR, rr) * sc;
+      add(dry, s0 + i, ol, or);
+      add(wet, s0 + i, ol * send, or * send);
+    }
+  };
+
+  // Granos (el crepitar que crece en la referencia): chispitas de ruido en 400–1500 Hz
+  api.grains = (t0, t1, { density = [5, 60], gain = [0.01, 0.04], f = [400, 1600] } = {}) => {
+    let t = t0;
+    while (t < t1) {
+      const u = (t - t0) / (t1 - t0);
+      const d = density[0] + (density[1] - density[0]) * u * u;
+      const g = gain[0] + (gain[1] - gain[0]) * u * u;
+      const ff = f[0] + r() * (f[1] - f[0]);
+      api.noise(t, t + 0.012 + r() * 0.02, { type: "bp", f: ff, q: 4, gain: g * (0.5 + r()), env: (x) => Math.sin(Math.PI * x), send: 0.3, pan: (r() - 0.5) * 1.4 });
+      t += (0.5 + r()) / d;
+    }
+  };
+
+  // Cuerda frotada (violín / viola / chelo): sierra con PolyBLEP (el arco) → resonancias de la
+  // caja (picos de cuerpo y "bridge hill") → paso-bajos. Vibrato que entra tarde, presión de arco
+  // que respira, ruido de crin, portamento cuando viene ligada de otra nota.
+  // players > 1 = sección (desafinación, vibratos y entradas distintas, abierta en estéreo).
+  api.bowed = (t0, dur, midi, vel = 0.1, o = {}) => {
+    const { pan = 0, players = 1, att = 0.14, rel = 0.3, vib = 1, bright = 1, from = null, send = 0.6, body = "violin", swell = 0, short = false } = o;
+    const formants = body === "cello" ? [[110, 1.2, 5], [220, 1.4, 4], [1500, 1, 3], [3000, 1.2, -4]]
+      : body === "viola" ? [[220, 1.3, 5], [380, 1.4, 4], [2200, 1.1, 4], [4500, 1.2, -3]]
+      : [[285, 1.4, 6], [460, 1.5, 4], [1100, 1.2, 2], [2900, 1.0, 6], [5200, 1.4, -5]];
+    const lpF = (body === "cello" ? 2600 : body === "viola" ? 4500 : 6500) * (0.7 + 0.3 * bright);
+    for (let p = 0; p < players; p++) {
+      const det = players > 1 ? (r() - 0.5) * 0.12 : 0; // ± 6 cents
+      const f1 = midiHz(midi + det), f0 = from != null ? midiHz(from + det) : f1;
+      const lag = players > 1 ? r() * 0.035 : 0;
+      const s0 = Math.floor((t0 + lag) * SR);
+      const n = Math.floor((dur + rel) * SR);
+      const vr = 5.1 + r() * 0.9, vph = r() * 6.28, dph = r() * 6.28;
+      const ppan = players > 1 ? clamp(pan + (p / (players - 1) - 0.5) * 0.9, -1, 1) : pan;
+      const [gl, gr] = panG(ppan);
+      const fs = formants.map(([f, q, g]) => biquad("peak", f, q, g));
+      const lp1 = biquad("lp", lpF, 0.6), lp2 = biquad("lp", lpF * 1.3, 0.6);
+      const nz = biquad("bp", 3500, 0.7);
+      let ph = r(), bowL = 0;
+      for (let i = 0; i < n; i++) {
+        const t = i / SR;
+        const glide = from != null ? Math.min(1, t / 0.07) : 1;
+        let f = f0 + (f1 - f0) * (glide * glide * (3 - 2 * glide));
+        const vibAmt = vib * 0.0042 * Math.min(1, Math.max(0, (t - 0.22) / 0.35));
+        f *= 1 + vibAmt * Math.sin(2 * Math.PI * vr * t + vph) + 0.0007 * Math.sin(2 * Math.PI * 0.7 * t + dph);
+        const dt = f / SR;
+        ph += dt; if (ph >= 1) ph -= 1;
+        // sierra PolyBLEP
+        let saw = 2 * ph - 1;
+        if (ph < dt) { const x = ph / dt; saw -= x + x - x * x - 1; }
+        else if (ph > 1 - dt) { const x = (ph - 1) / dt; saw -= x * x + x + x + 1; }
+        // envolvente del arco
+        let e = short ? Math.min(1, t / 0.018) * Math.exp(-t * 9) : Math.min(1, t / att) ** 1.5;
+        if (!short) e *= 1 + swell * Math.min(1, t / Math.max(0.01, dur));
+        if (t > dur) e *= Math.max(0, 1 - (t - dur) / rel);
+        bowL = 0.999 * bowL + 0.001 * (r() - 0.5); // presión que respira
+        e *= 1 + bowL * 1.2 + 0.04 * Math.sin(2 * Math.PI * 1.3 * t + dph);
+        let v = saw * 0.9 + bq(nz, r() * 2 - 1) * 0.07 * (short ? 1.5 : 1);
+        for (const b of fs) v = bq(b, v);
+        v = bq(lp2, bq(lp1, v));
+        const out = v * e * vel / Math.sqrt(players);
+        add(dry, s0 + i, out * gl, out * gr);
+        add(wet, s0 + i, out * gl * send, out * gr * send);
+      }
+    }
+  };
+
+  // Cuerda pulsada brillante (el arpegio): muchos armónicos que se apagan de arriba hacia abajo,
+  // ataque con un soplo de púa, leve desafinación entre canales. Envía a reverb y a delay.
+  api.pluck = (t0, midi, vel = 0.1, { pan = 0, send = 0.45, delay = 0.35, bright = 1, len = 2.8 } = {}) => {
+    const f = midiHz(midi);
+    const s0 = Math.floor(t0 * SR);
+    const n = Math.floor(len * SR);
+    const [gl, gr] = panG(pan);
+    const parts = [];
+    for (let k = 1; k <= 18; k++) {
+      if (k * f > 12000) break;
+      parts.push([k, Math.pow(k, -1.05) * Math.exp(-(k - 1) * (0.22 / bright)), 1.6 + 0.55 * k * k * 0.12 + f / 1400, r() * 6.28]);
+    }
+    const pick = biquad("bp", Math.min(8000, f * 6), 0.9);
+    for (let i = 0; i < n; i++) {
+      const t = i / SR;
+      const att = Math.min(1, t / 0.0025);
+      let l = 0, rr = 0;
+      for (const [k, a, d, ph] of parts) {
+        const e = Math.exp(-t * d);
+        if (e < 2e-4) continue;
+        l += a * e * Math.sin(2 * Math.PI * f * k * t + ph);
+        rr += a * e * Math.sin(2 * Math.PI * f * 1.0012 * k * t + ph);
+      }
+      const nz = t < 0.012 ? bq(pick, r() * 2 - 1) * Math.exp(-t * 300) * 0.4 : 0;
+      const vl = (l * 0.22 * att + nz) * vel, vr = (rr * 0.22 * att + nz) * vel;
+      add(dry, s0 + i, vl * gl, vr * gr);
+      add(wet, s0 + i, vl * gl * send, vr * gr * send);
+      add(dly, s0 + i, vl * gl * delay, vr * gr * delay);
+    }
+  };
+
+  // Sub-grave que respira: seno + 2º armónico (para que se oiga en el teléfono), sin ataque
+  api.sub = (t0, t1, midi, gain, { att = 1.5, rel = 1.2, swell = 0 } = {}) => {
+    const f = midiHz(midi);
+    const s0 = Math.floor(t0 * SR);
+    const hold = t1 - t0;
+    const n = Math.floor((hold + rel) * SR);
+    let ph = 0;
+    for (let i = 0; i < n; i++) {
+      const t = i / SR;
+      ph += (2 * Math.PI * f) / SR;
+      let e = Math.min(1, t / att) * (1 + swell * Math.min(1, t / hold));
+      if (t > hold) e *= Math.max(0, 1 - (t - hold) / rel);
+      const v = (Math.sin(ph) + 0.28 * Math.sin(2 * ph) + 0.08 * Math.sin(3 * ph)) * gain * e;
+      add(dry, s0 + i, v, v);
+    }
+  };
+
+  // Pulso tipo shaker: ruido agudo muy corto
+  api.tick = (t0, gain = 0.02, { pan = 0, f = 7500 } = {}) => {
+    api.noise(t0, t0 + 0.05, { type: "hp", f, gain, env: (u) => Math.exp(-u * 7), send: 0.15, pan });
+  };
+
+  // Paso de pata: golpe corto y blando en la tierra (medios-graves, sin sub)
+  api.hop = (t0, gain = 0.05, { pan = 0 } = {}) => {
+    api.tone(t0, 0.12, 140, 90, gain, { decay: 28, pan, send: 0.2, att: 0.003 });
+    api.noise(t0, t0 + 0.06, { f: 900, gain: gain * 0.8, env: (u) => Math.exp(-u * 5), send: 0.15, pan });
+  };
+
+  // Respiración: baja el volumen general a `depth` (0–1) con curvas suaves (sin cortes)
+  const ducks = [];
+  api.duck = (t0, t1, depth = 0.2, fade = 0.3) => ducks.push([t0, t1, depth, fade]);
+
   // Silencio absoluto en un rango (también corta colas de reverb al masterizar)
   const gates = [];
   api.gate = (t0, t1) => gates.push([t0, t1]);
 
-  api.render = (irSeed = 3) => {
+  api.render = (irSeed = 3, { hp = 45, delayTime = 0.375, feedback = 0.38 } = {}) => {
+    // Delay estéreo de ida y vuelta (L→R→L) con filtro en la realimentación; su salida también va a la reverb
+    const D = Math.floor(delayTime * SR);
+    const bl = new Float32Array(D), br = new Float32Array(D);
+    const fl = biquad("lp", 3200), fr = biquad("lp", 3200);
+    for (let i = 0, j = 0; i < N; i++, j = (j + 1) % D) {
+      const ol = bl[j], or = br[j];
+      bl[j] = dly.L[i] + bq(fr, or) * feedback; // cruza canales
+      br[j] = dly.R[i] + bq(fl, ol) * feedback;
+      dry.L[i] += ol * 0.55; dry.R[i] += or * 0.55;
+      wet.L[i] += ol * 0.3; wet.R[i] += or * 0.3;
+    }
     const irL = makeIR(irSeed), irR = makeIR(irSeed + 101);
     const rvL = convolve(wet.L, irL), rvR = convolve(wet.R, irR);
     const L = new Float32Array(N), R = new Float32Array(N);
     for (let i = 0; i < N; i++) {
       L[i] = dry.L[i] + rvL[i] * 0.9;
       R[i] = dry.R[i] + rvR[i] * 0.9;
+    }
+    for (const [a, b, depth, fade] of ducks) {
+      const i0 = Math.floor((a - fade) * SR), i1 = Math.floor((b + fade) * SR);
+      for (let i = Math.max(0, i0); i < i1 && i < N; i++) {
+        const t = i / SR;
+        let u = 1; // 1 = dentro del duck
+        if (t < a) u = (t - (a - fade)) / fade; else if (t > b) u = 1 - (t - b) / fade;
+        u = 0.5 - 0.5 * Math.cos(Math.PI * Math.max(0, Math.min(1, u)));
+        const g = 1 - (1 - depth) * u;
+        L[i] *= g; R[i] *= g;
+      }
     }
     for (const [a, b] of gates) {
       const i0 = Math.floor(a * SR), i1 = Math.floor(b * SR);
@@ -250,6 +473,9 @@ export function createMix(totalSecs, seed = 1) {
         L[i] *= g; R[i] *= g;
       }
     }
+    // Paso-altos (por defecto 45 Hz): nada de retumbe por debajo de lo musical
+    const hL = biquad("hp", hp, 0.7), hR = biquad("hp", hp, 0.7);
+    for (let i = 0; i < N; i++) { L[i] = bq(hL, L[i]); R[i] = bq(hR, R[i]); }
     // Master: compresión lenta + saturación suave (tanh)
     let env = 0;
     let peak = 0;
@@ -258,7 +484,7 @@ export function createMix(totalSecs, seed = 1) {
     for (let i = 0; i < N; i++) {
       const x = Math.max(Math.abs(L[i]), Math.abs(R[i])) * pre;
       env = x > env ? env + (x - env) * 0.002 : env + (x - env) * 0.00005;
-      const gr = env > 0.35 ? Math.pow(0.35 / env, 0.4) : 1;
+      const gr = env > 0.6 ? Math.pow(0.6 / env, 0.35) : 1; // compresión suave: deja respirar la dinámica
       L[i] = Math.tanh(L[i] * pre * gr * 1.2) / Math.tanh(1.2);
       R[i] = Math.tanh(R[i] * pre * gr * 1.2) / Math.tanh(1.2);
     }

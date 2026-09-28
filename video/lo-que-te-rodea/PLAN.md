@@ -41,32 +41,35 @@ horizonte común (46 %). Así el horizonte no se mueve aunque cada toma respire.
   (registry `organic-light-leak-overlay`) en el umbral de la puerta.
 - Cierre: volvemos al amanecer del inicio, más oscuro, con el logo encima. El ciclo se cierra.
 
-## 3. Diseño sonoro: un camino
+## 3. Diseño sonoro: un camino (v2 final, pulido)
+
+Todo va a **100 BPM (1 tiempo = 0.6 s)**: cortes, frases, acordes y notas caen en la misma rejilla.
+Nada se corta de golpe: el colchón cambia de acorde con fundidos y el final respira (baja de volumen) en vez de quedar en silencio.
 
 | Tramo | Qué escuchas | Qué genera |
 |---|---|---|
-| 0–4.6 · Afuera | Aire de amanecer muy bajo, pájaros lejanos, un Re grave de piano, tres notas sueltas de piano de fieltro (no una por corte) | Calma, espacio, alguien pensando |
-| 4.6 · Umbral | El viento se apaga como si una puerta se cerrara, un golpe grave suave, dos notas; aparece el tono de cuarto | Entramos. El mundo se vuelve íntimo |
-| 4.9–12.2 · Adentro | Cuerdas que entran despacio (Re → Si m → Sol), una melodía de piano que sube; foley mínimo por material: vapor del café, pan que cruje, la sábana, una gota en la tina, la crayola, una página | La casa suena; lo humano está en los detalles |
-| 9.4–15.4 · Clímax | Un pulso grave tipo latido que sigue los cortes y crece; arpegio suave; riser de aire que se abre; cuerdas en crescendo | La transformación se acelera en el pecho |
-| 15.4–16.0 | Silencio absoluto | Respiro |
-| 16.0–20.5 · Logo | Boom grave contenido, acorde de piano que se queda, cuerdas muy bajas | Llegada, calma, memoria |
+| 0–4.8 · Afuera | Aire de amanecer, pájaros lejanos, colchón en Re (add9); la primera campanita entra en el primer tiempo | Calma, espacio |
+| 4.8 · Umbral | Soplo hacia la puerta, acorde suspendido (La sus4), aparece el tono de cuarto | Entramos |
+| 6.0–9.6 · Adentro | Una campanita por corte (*match sound*) sobre una línea que sube; foley mínimo (vapor, pan, sábana, gota, crayola, página) | La casa suena |
+| 9.6–15.6 · Clímax | El arpegio dobla la densidad con los cortes, grano de aire, crescendo hasta "por qué." | La transformación se acelera |
+| 15.6–16.2 | Respiro: todo baja sin cortarse y la imagen funde a negro | Pausa |
+| 16.2–21 · Logo | Campanas abiertas en Re (add9) que se quedan, sin golpe grave | Llegada, calma |
 
-Master a −16 LUFS, pico −1.5 dBTP, compresión lenta. Todo sintetizado y determinista
-(`scripts/sound.mjs`), con reverb de convolución de sala cálida.
+Armonía (un acorde cada dos tiempos): Re add9 · Si m · Sol · Re/Fa# · La sus4 · Re · Sol maj7 · Si m · Mi m9 · La · Si m · Sol · La · Re · Re add9.
+Master a −16 LUFS con compresión suave. Todo es sintetizado y determinista (`scripts/sound.mjs`, el mismo motor de *Dar el salto*).
 
-## 4. Guion por tiempos (1080×1920, 20.5 s)
+## 4. Guion por tiempos (1080×1920, 21 s)
 
 | Tiempo | Tomas | Texto |
 |---|---|---|
-| 0–1.0 | Amanecer sobre la línea de techos | — |
-| 1.0–4.6 | Cal · teja · ladrillo · baranda · adobe · concreto (0.6 s c/u) | — |
-| 4.6–5.6 | Línea de luz bajo la puerta | "Lo que te rodea" |
-| 5.6–9.4 | Taza · pan · masa de arepa · sábana · tina · crayola · mesa · hoja | "cambia," (7.2) |
-| 9.4–12.2 | Manta · plato · libro · bordado · plano + primer ciclo rápido | "cuando tú cambias." |
-| 12.2–15.4 | Afuera y adentro alternados, cortes de 0.3 → 0.22 s | "Nosotros entendemos" → ***"por qué."*** |
-| 15.4–16.0 | Negro, silencio | — |
-| 16.0–20.5 | Amanecer oscuro + logo C&O | — |
+| 0–1.2 | Amanecer sobre la línea de techos | — |
+| 1.2–4.8 | Cal · teja · ladrillo · baranda · adobe · concreto (1 tiempo c/u) | — |
+| 4.8–6.0 | Línea de luz bajo la puerta | "Lo que te rodea" (5.4) |
+| 6.0–9.6 | Taza · pan · masa de arepa · sábana · tina · crayola | "cambia," (7.8) |
+| 9.6–11.7 | Mesa · hoja · manta · plato · libro · bordado · plano (medio tiempo) | "cuando tú cambias." (9.6) |
+| 11.7–15.6 | Afuera y adentro alternados, de medio a un cuarto de tiempo | "Nosotros entendemos" (12.6) → ***"por qué."*** (14.4) |
+| 15.6–16.2 | Fundido a negro, respiro | — |
+| 16.2–21 | Amanecer que aparece + logo C&O + **"La Casa del Marketing"** | — |
 
 ## 5. Comandos
 

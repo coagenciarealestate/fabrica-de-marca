@@ -18,9 +18,10 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const FPS = 30;
 const snap = (t) => Math.round(t * FPS) / FPS;
 
-export const REEL_END = 15.4; // corte a silencio
-export const LOGO_AT = 16.0;
-export const TOTAL = 20.5;
+export const BEAT = 0.6; // 100 BPM: cortes, frases y acordes caen en el pulso
+export const REEL_END = 15.6; // termina el clímax (26 tiempos)
+export const LOGO_AT = 16.2; // entra la marca (27 tiempos)
+export const TOTAL = 21.0;
 const H = 1920;
 const HORIZON = 0.46 * H; // donde se encuentran todos los bordes (y donde se posa el texto)
 
@@ -71,31 +72,33 @@ function inkFor(id) {
 const cuts = [];
 const push = (t, id) => cuts.push({ t: snap(t), id });
 
+// Todo cae en el pulso: 2 tiempos de amanecer, 1 tiempo por fachada, 2 tiempos de umbral,
+// 1 tiempo por espacio, luego medio tiempo, y en el clímax un cuarto de tiempo.
 push(0, 100); // el amanecer abre (como la referencia)
-[101, 102, 103, 104, 105, 106].forEach((id, i) => push(1.0 + i * 0.6, id)); // piel de la ciudad
-push(4.6, 107); // umbral: la luz bajo la puerta
+[101, 102, 103, 104, 105, 106].forEach((id, i) => push(2 * BEAT + i * BEAT, id)); // piel de la ciudad
+push(8 * BEAT, 107); // umbral: la luz bajo la puerta (2 tiempos)
 const interiors = [108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120];
-const gaps = [0.55, 0.55, 0.5, 0.5, 0.45, 0.45, 0.4, 0.4, 0.35, 0.35, 0.35, 0.3, 0.3];
-let t = 5.6;
-interiors.forEach((id, i) => { push(t, id); t += gaps[i]; });
-// Clímax: afuera y adentro se alternan — el entorno cambia cada vez más rápido
+let t = 10 * BEAT;
+interiors.forEach((id, i) => { push(t, id); t += i < 6 ? BEAT : BEAT / 2; }); // 6 a un tiempo, 7 a medio tiempo
+// Clímax: afuera y adentro se alternan — medio tiempo y luego cuarto de tiempo
 const climax = [101, 111, 102, 109, 103, 117, 104, 112, 105, 115, 106, 121, 113, 116, 108, 118, 110, 119, 114, 120];
-for (let k = 0; t < REEL_END - 0.2; k++) {
+for (let k = 0; t < REEL_END - 1e-6; k++) {
   push(t, climax[k % climax.length]);
-  t += 0.3 - 0.08 * Math.min(1, (t - 11) / 4);
+  t += t < 23 * BEAT - 1e-6 ? BEAT / 2 : BEAT / 4;
 }
-const shots = cuts.map((c, i) => ({ ...c, i, end: i + 1 < cuts.length ? cuts[i + 1].t : REEL_END, ink: inkFor(c.id) }));
+// la última toma se queda hasta que entra la marca: se funde a negro (no se corta)
+const shots = cuts.map((c, i) => ({ ...c, i, end: i + 1 < cuts.length ? cuts[i + 1].t : LOGO_AT, ink: inkFor(c.id) }));
 
 // Frases sobre el borde. Cambian en un corte, como en la referencia.
 const at = (target) => shots.reduce((best, s) => (Math.abs(s.t - target) < Math.abs(best - target) ? s.t : best), 0);
 const phrases = [
-  { id: "p1", text: "Lo que te rodea", start: 4.9, size: 58 },
-  { id: "p2", text: "cambia,", start: at(7.2), size: 64, italic: true },
-  { id: "p3", text: "cuando tú cambias.", start: at(9.4), size: 58 },
-  { id: "p4", text: "Nosotros entendemos", start: at(12.2), size: 60 },
-  { id: "p5", text: "por qué.", start: at(13.9), size: 96, italic: true },
-];
-phrases.forEach((p, i) => (p.end = i + 1 < phrases.length ? phrases[i + 1].start : REEL_END));
+  { id: "p1", text: "Lo que te rodea", start: 9 * BEAT, size: 58 },
+  { id: "p2", text: "cambia,", start: 13 * BEAT, size: 64, italic: true },
+  { id: "p3", text: "cuando tú cambias.", start: 16 * BEAT, size: 58 },
+  { id: "p4", text: "Nosotros entendemos", start: 21 * BEAT, size: 60 },
+  { id: "p5", text: "por qué.", start: 24 * BEAT, size: 96, italic: true },
+].map((p) => ({ ...p, start: snap(p.start) }));
+phrases.forEach((p, i) => (p.end = i + 1 < phrases.length ? phrases[i + 1].start : snap(LOGO_AT - 0.2)));
 
 // ─── HTML ───────────────────────────────────────────────────────────────────
 function buildHtml() {
@@ -134,13 +137,19 @@ function buildHtml() {
       if (s.ink === last) return null;
       last = s.ink;
       const k = INK[s.ink];
-      return `        tl.set("#reel-words", { color: "${k.color}", textShadow: "${k.textShadow}" }, ${Math.max(0, s.t)});`;
+      return `        tl.to("#reel-words", { color: "${k.color}", textShadow: "${k.textShadow}", duration: 0.12, ease: "sine.inOut" }, ${Math.max(0, s.t - 0.04).toFixed(3)});`;
     })
     .filter(Boolean)
     .join("\n");
+  // Entran en el pulso con un leve ascenso y salen con fundido (nunca desaparecen de golpe)
   const phraseTweens = phrases
-    .map((p) => `        tl.fromTo("#reel-${p.id}-text", { opacity: 0 }, { opacity: 1, duration: ${p.id === "p1" ? 0.6 : 0.18}, ease: "sine.out" }, ${p.start});`)
+    .map((p) => {
+      const inD = p.id === "p1" ? 0.6 : 0.24, outD = p.id === "p5" ? 0.5 : 0.16;
+      return `        tl.fromTo("#reel-${p.id}-text", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: ${inD}, ease: "sine.out" }, ${p.start});\n        tl.to("#reel-${p.id}-text", { opacity: 0, duration: ${outD}, ease: "sine.in" }, ${(p.end - outD).toFixed(3)});`;
+    })
     .join("\n");
+  // Fundido a negro al final del clímax (la última toma no se corta)
+  const fadeTween = `        tl.fromTo("#reel-fade", { opacity: 0 }, { opacity: 1, duration: ${(LOGO_AT - REEL_END).toFixed(2)}, ease: "sine.in" }, ${REEL_END});`;
 
   return `<!doctype html>
 <!-- GENERADO por scripts/build-reel.mjs — edita el guion allá y vuelve a correrlo. -->
@@ -167,6 +176,12 @@ function buildHtml() {
           object-fit: cover;
         }
         /* Frases: serif pequeña posada sobre el borde de cada imagen */
+        #reel-fade {
+          position: absolute;
+          inset: 0;
+          background: #0d0b0a;
+          opacity: 0;
+        }
         #reel-words {
           position: absolute;
           inset: 0;
@@ -198,6 +213,7 @@ ${shotTags}
       <div id="reel-words">
 ${phraseTags}
       </div>
+      <div id="reel-fade"></div>
       </div>
 
       <script>
@@ -205,6 +221,7 @@ ${phraseTags}
 ${shotTweens}
 ${inkSets}
 ${phraseTweens}
+${fadeTween}
         window.__timelines["reel"] = tl;
       </script>
     </template>
@@ -213,74 +230,100 @@ ${phraseTweens}
 `;
 }
 
-// ─── Sonido: un camino, no un golpe por corte ───────────────────────────────
+// ─── Sonido: campanitas, colchón y materia — todo en el pulso ────────────────
+// Un acorde por tramo (colchón ligado, sin huecos), una nota por corte (match sound) que sigue
+// una línea melódica ascendente, arpegio que dobla la densidad con los cortes, el foley de cada
+// material muy discreto, soplos hacia los cambios grandes y, al final, una respiración (no un
+// corte) antes de la marca. Sin golpes de bajo.
 function buildAudio() {
-  const m = createMix(TOTAL, 20260927);
+  const m = createMix(TOTAL, 20261004);
   const r = m.r;
-  const shotAt = (id, n = 0) => shots.filter((s) => s.id === id)[n]?.t;
-
-  // 0–4.6 · AFUERA — aire de amanecer, pájaros lejanos, piano que piensa
-  m.noise(0, 4.75, { f: 650, q: 0.5, gain: 0.045, send: 0.25, env: (u, tt) => Math.min(1, tt / 2.2) * (0.75 + 0.25 * Math.sin(tt * 1.7) * Math.sin(tt * 0.6)) * (u > 0.965 ? Math.max(0, (1 - u) / 0.035) : 1) });
-  m.noise(0, 4.7, { type: "hp", f: 5200, gain: 0.0025, send: 0.4, env: (u, tt) => Math.min(1, tt / 2.5) }); // brillo del aire
-  [[0.55, 0.6], [0.68, 0.6], [2.35, -0.5], [2.47, -0.5], [2.56, -0.5], [3.9, 0.7]].forEach(([tt, pan]) => m.tone(tt, 0.08, 2900 + r() * 500, 3600 + r() * 400, 0.018, { decay: 30, pan, send: 0.9 }));
-  m.piano(0.1, 38, 0.14, { len: 7, send: 0.7 }); // Re grave: el suelo
-  m.piano(1.0, 69, 0.13, { pan: -0.2 });
-  m.piano(2.2, 66, 0.14, { pan: 0.2 });
-  m.piano(3.4, 64, 0.15, { pan: -0.1 });
-  const tiles = shotAt(102);
-  [0.12, 0.31, 0.44].forEach((d) => m.tone(tiles + d, 0.05, 1900 + r() * 300, 900, 0.022, { decay: 60, pan: 0.4, send: 0.6 })); // gotas en las tejas
-
-  // 4.6 · EL UMBRAL — la puerta: el mundo se apaga, entra la luz
-  const door = shotAt(107);
-  m.noise(door, door + 1.2, { f: 220, gain: 0.035, env: (u) => 1 - u, send: 0.2 }); // el viento, ya del otro lado
-  m.thump(door, 0.16, { f0: 70, f1: 38, len: 0.9, body: 0.2 });
-  m.piano(door + 0.03, 50, 0.17, { send: 0.8 });
-  m.piano(door + 0.06, 57, 0.14, { send: 0.8 });
-  m.noise(door, REEL_END, { f: 240, gain: 0.03, send: 0.1, env: (u, tt) => Math.min(1, tt / 0.8) }); // tono de cuarto: estamos adentro
-
-  // 4.9–15.4 · ADENTRO — las cuerdas sostienen, el piano canta, la casa suena
-  m.strings(4.9, 7.2, [50, 54, 57, 62], 0.11, { att: 1.6, bright: 0.35 });
-  m.strings(7.2, 9.4, [47, 54, 59, 62], 0.12, { att: 0.9, bright: 0.4 });
-  m.strings(9.4, 12.2, [43, 50, 59, 62, 66], 0.13, { att: 0.8, bright: 0.5 });
-  m.strings(12.2, 13.9, [45, 52, 57, 61, 64], 0.15, { att: 0.5, bright: 0.6 });
-  m.strings(13.9, REEL_END, [38, 50, 57, 62, 66, 69], 0.17, { att: 0.35, bright: 0.7, swell: 0.9 });
-  [[5.6, 69, 0.2], [6.7, 71, 0.18], [7.2, 74, 0.22], [8.13, 73, 0.17], [8.6, 71, 0.17], [9.4, 69, 0.2], [10.1, 71, 0.17], [10.73, 74, 0.18], [11.33, 76, 0.16], [12.2, 78, 0.2], [12.77, 76, 0.14], [13.27, 74, 0.14], [13.9, 81, 0.2]].forEach(([tt, n, v], i) => m.piano(snap(tt), n, v, { pan: i % 2 ? 0.25 : -0.25 }));
-  [[9.4, 50], [12.2, 45], [13.9, 50]].forEach(([tt, n]) => m.piano(tt, n, 0.16, { send: 0.8 }));
-
-  // Foley: cada material deja su huella, muy bajito (match sound por materia)
-  const f = (id, fn) => { const tt = shotAt(id); if (tt != null) fn(tt); };
-  f(108, (tt) => m.noise(tt, tt + 0.9, { type: "bp", f: 4200, q: 0.9, gain: 0.03, env: (u) => Math.sin(Math.PI * u), send: 0.5, pan: 0.2 })); // vapor
-  f(109, (tt) => { for (let k = 0; k < 7; k++) m.tone(tt + r() * 0.35, 0.012, 2600, 1800, 0.025, { decay: 300, pan: (r() - 0.5) * 0.6, send: 0.3 }); }); // corteza que cruje
-  f(110, (tt) => m.noise(tt, tt + 0.22, { f: 500, gain: 0.06, env: (u) => Math.sin(Math.PI * u), send: 0.2 })); // masa
-  f(111, (tt) => m.noise(tt - 0.1, tt + 0.45, { f: 1400, fEnd: 380, gain: 0.045, env: (u) => Math.sin(Math.PI * u), send: 0.4 })); // la sábana
-  f(112, (tt) => { m.tone(tt + 0.05, 0.1, 1500, 650, 0.06, { decay: 30, pan: -0.2, send: 0.8 }); m.tone(tt + 0.3, 0.09, 1250, 600, 0.04, { decay: 34, pan: 0.2, send: 0.8 }); }); // gota
-  f(113, (tt) => { for (let k = 0; k < 3; k++) m.noise(tt + k * 0.11, tt + k * 0.11 + 0.08, { type: "bp", f: 2600, q: 1.2, gain: 0.035, env: (u) => Math.sin(Math.PI * u), send: 0.2 }); }); // crayola
-  f(115, (tt) => m.noise(tt, tt + 0.35, { type: "bp", f: 3200, q: 0.7, gain: 0.03, env: (u) => Math.sin(Math.PI * u), send: 0.4, pan: 0.3 })); // hoja
-  f(118, (tt) => m.noise(tt, tt + 0.25, { type: "bp", f: 2000, q: 0.8, gain: 0.03, env: (u) => Math.sin(Math.PI * u), send: 0.3 })); // página
-
-  // Latido: desde "cuando tú cambias" el pulso sigue los cortes y crece
-  shots.filter((s) => s.t >= at(9.4) && s.t < REEL_END).forEach((s) => {
-    const g = 0.07 + 0.16 * Math.min(1, (s.t - 9.4) / 6);
-    m.thump(s.t, g, { f0: 62, f1: 44, len: 0.32, body: 0.1 });
+  const B = BEAT, X = 0.3;
+  // [inicio, fin, bajo, colchón, intensidad]
+  const HARM = [
+    [0, 2 * B, 38, [62, 66, 69, 76], 0.3],       // Re add9 — amanecer
+    [2 * B, 4 * B, 47, [62, 66, 73], 0.38],      // Si m — la ciudad
+    [4 * B, 6 * B, 43, [62, 67, 71], 0.42],      // Sol
+    [6 * B, 8 * B, 42, [62, 69, 76], 0.46],      // Re/Fa#
+    [8 * B, 10 * B, 45, [62, 69, 74], 0.5],      // La sus4 — el umbral
+    [10 * B, 12 * B, 38, [62, 66, 69], 0.55],    // Re — adentro
+    [12 * B, 14 * B, 43, [62, 66, 71], 0.6],     // Sol maj7
+    [14 * B, 16 * B, 47, [66, 71, 74], 0.66],    // Si m
+    [16 * B, 18 * B, 40, [67, 71, 78], 0.72],    // Mi m9 — cuando tú cambias
+    [18 * B, 20 * B, 45, [64, 69, 73], 0.8],     // La
+    [20 * B, 22 * B, 47, [66, 71, 74], 0.88],    // Si m — nosotros entendemos
+    [22 * B, 24 * B, 43, [67, 71, 74], 0.95],    // Sol
+    [24 * B, REEL_END, 45, [64, 69, 73, 76], 1.05], // La — por qué (crece)
+    [REEL_END, LOGO_AT, 38, [62, 66, 69], 0.6],  // Re — respira
+    [LOGO_AT, TOTAL - 1.2, 38, [62, 66, 69, 76], 0.85], // Re add9 — La Casa del Marketing
+  ];
+  HARM.forEach(([t0, t1, bass, mids, k], i) => {
+    const s0 = Math.max(0, t0 - X), s1 = t1 + X;
+    const sw = i === 12 ? 1.2 : 0.2;
+    m.drone(s0, s1, [bass], 0.05 * k, { att: i ? 0.6 : 2.2, rel: 0.6, send: 0.25, bright: 0.2, swell: sw });
+    m.drone(s0, s1, mids, 0.032 * k, { att: i ? 0.6 : 2.4, rel: 0.7, send: 0.6, bright: 0.45, swell: sw });
+    if (i) m.piano(t0, bass + 12, 0.06 * k, { send: 0.8, len: 3 }); // ancla cada cambio
   });
-  // Clímax: arpegio muy suave en cada corte + riser de aire que se abre
-  shots.filter((s) => s.t >= 12.2).forEach((s, k) => m.piano(s.t, [62, 66, 69, 74, 78, 81][k % 6] + (s.t > 14.3 ? 12 : 0), 0.07, { pan: k % 2 ? 0.4 : -0.4, len: 2, send: 0.7 }));
-  m.noise(11.8, REEL_END, { type: "bp", f: 260, fEnd: 5200, q: 1.1, gain: 0.2, env: (u) => Math.pow(u, 2.6), send: 0.5 });
-  m.noise(14.2, REEL_END, { type: "hp", f: 4500, gain: 0.07, env: (u) => Math.pow(u, 4), send: 0.3 });
+  const harmAt = (t) => HARM.find(([t0, t1]) => t >= t0 && t < t1) || HARM[HARM.length - 1];
 
-  // 15.4–16.0 · SILENCIO
-  m.gate(REEL_END, LOGO_AT - 0.002);
+  // Match sound: una nota por corte, la del acorde más cercana a una línea que asciende
+  const target = (t) => 76 + 14 * Math.pow(Math.min(1, t / REEL_END), 1.1);
+  let prev = 76;
+  shots.forEach((sh, i) => {
+    const dense = sh.end - sh.t < 0.2;
+    if (dense && i % 2) return; // en el cuarto de tiempo, una sí y una no
+    const [, , , mids, k] = harmAt(sh.t + 1e-3);
+    const tones = [...mids, ...mids.map((n) => n + 12), ...mids.map((n) => n + 24)];
+    const goal = target(sh.t) + (i % 2 ? 1.5 : -1.5);
+    let best = tones[0];
+    tones.forEach((n) => { if (Math.abs(n - goal) + 0.3 * Math.abs(n - prev) < Math.abs(best - goal) + 0.3 * Math.abs(best - prev)) best = n; });
+    prev = best;
+    const isPhrase = phrases.some((p) => Math.abs(p.start - sh.t) < 0.02);
+    m.chime(Math.max(sh.t, BEAT), best, (isPhrase ? 0.2 : 0.12 + 0.06 * k) * (0.9 + r() * 0.2), { pan: i % 2 ? 0.25 : -0.25, send: 0.65, delay: 0.45, octave: 0.8, dec: 2.8, len: 2.8 });
+  });
 
-  // 16.0 · LOGO — boom grave y un acorde que se queda
-  m.thump(LOGO_AT, 0.3, { f0: 58, f1: 30, len: 3, body: 0.25 });
-  [38, 45, 54, 64, 69].forEach((n, k) => m.piano(LOGO_AT + k * 0.035, n, 0.24 - k * 0.02, { pan: (k - 2) * 0.2, len: 4.5, send: 0.8 }));
-  m.strings(LOGO_AT + 0.1, TOTAL - 1.4, [38, 50, 57, 62, 66], 0.07, { att: 1.8, rel: 1.2, bright: 0.25 });
-  m.noise(LOGO_AT, TOTAL, { type: "hp", f: 6000, gain: 0.004, env: (u) => Math.sin(Math.PI * u), send: 0.6 });
+  // Arpegio suave que dobla la densidad con los cortes
+  const grid = [];
+  for (let t = 2 * B; t < 16 * B - 1e-6; t += B / 2) grid.push(t);
+  for (let t = 16 * B; t < REEL_END - 1e-6; t += B / 4) grid.push(t);
+  const shape = [0, 1, 2, 3, 2, 1];
+  grid.forEach((t, i) => {
+    const [, , , mids, k] = harmAt(t + 1e-3);
+    const tones = [...mids.map((n) => n + 12), ...mids.map((n) => n + 24)].sort((x, y) => x - y);
+    m.chime(t + B / 4 * (t < 16 * B ? 1 : 0.5), tones[shape[i % shape.length] % tones.length], (0.035 + 0.035 * k) * (0.85 + r() * 0.3), { pan: i % 2 ? 0.45 : -0.45, send: 0.5, delay: 0.3, octave: 0.5, dec: 3.8, len: 1.6 });
+  });
 
-  const { L, R } = m.render();
-  // Fade final
-  const SRr = 44100, f0 = Math.floor((TOTAL - 1.3) * SRr);
-  for (let i = f0; i < L.length; i++) { const g = 1 - (i - f0) / (L.length - f0); L[i] *= g; R[i] *= g; }
+  // Afuera: aire y pájaros · Umbral: el viento se apaga, entra el cuarto
+  const shotAt = (id) => shots.find((x) => x.id === id)?.t;
+  m.noise(0, 8 * B + 0.4, { f: 600, q: 0.5, gain: 0.03, send: 0.3, env: (u, tt) => Math.min(1, tt / 1.5) * (u > 0.9 ? (1 - u) * 10 : 1) });
+  [[0.6, 0.5], [0.72, 0.5], [2.9, -0.5], [3.0, -0.5]].forEach(([tt, pan]) => m.tone(tt, 0.07, 3000 + r() * 400, 3700, 0.012, { decay: 32, pan, send: 0.9 }));
+  m.noise(8 * B, REEL_END, { f: 240, gain: 0.02, send: 0.15, env: (u, tt) => Math.min(1, tt / 0.8) });
+  m.noise(8 * B - 0.5, 8 * B + 0.05, { f: 500, fEnd: 2400, gain: 0.03, env: (u) => Math.pow(u, 2) * (u > 0.9 ? (1 - u) * 10 : 1), send: 0.5 }); // soplo al umbral
+  m.noise(16 * B - 0.5, 16 * B + 0.05, { f: 500, fEnd: 2800, gain: 0.035, env: (u) => Math.pow(u, 2) * (u > 0.9 ? (1 - u) * 10 : 1), send: 0.5 }); // soplo a "cuando tú cambias"
+
+  // La materia deja su huella (muy bajito)
+  const f = (id, fn) => { const tt = shotAt(id); if (tt != null) fn(tt); };
+  f(108, (tt) => m.noise(tt, tt + 0.6, { type: "bp", f: 4200, q: 0.9, gain: 0.02, env: (u) => Math.sin(Math.PI * u), send: 0.5, pan: 0.2 })); // vapor
+  f(109, (tt) => { for (let k = 0; k < 6; k++) m.tone(tt + r() * 0.3, 0.012, 2600, 1800, 0.016, { decay: 300, pan: (r() - 0.5) * 0.6, send: 0.3 }); }); // corteza
+  f(111, (tt) => m.noise(tt - 0.1, tt + 0.4, { f: 1400, fEnd: 380, gain: 0.03, env: (u) => Math.sin(Math.PI * u), send: 0.4 })); // sábana
+  f(112, (tt) => { m.tone(tt + 0.05, 0.1, 1500, 650, 0.035, { decay: 30, pan: -0.2, send: 0.8 }); m.tone(tt + 0.28, 0.09, 1250, 600, 0.025, { decay: 34, pan: 0.2, send: 0.8 }); }); // gota
+  f(113, (tt) => { for (let k = 0; k < 3; k++) m.noise(tt + k * 0.1, tt + k * 0.1 + 0.07, { type: "bp", f: 2600, q: 1.2, gain: 0.02, env: (u) => Math.sin(Math.PI * u), send: 0.2 }); }); // crayola
+  f(118, (tt) => m.noise(tt, tt + 0.22, { type: "bp", f: 2000, q: 0.8, gain: 0.02, env: (u) => Math.sin(Math.PI * u), send: 0.3 })); // página
+
+  // Crepitar y aire que crecen hacia "por qué."
+  m.grains(16 * B, REEL_END, { density: [4, 60], gain: [0.006, 0.04] });
+  m.noise(20 * B, REEL_END + 0.1, { type: "hp", f: 4200, gain: 0.022, env: (u) => Math.pow(u, 2.2), send: 0.5 });
+
+  // Respira (no se corta) y entra la marca: notas que se abren y se quedan, sin golpe grave
+  m.duck(REEL_END + 0.1, LOGO_AT - 0.05, 0.45, 0.35);
+  [[LOGO_AT, 74, 86], [LOGO_AT + 0.6, 78, 0], [LOGO_AT + 1.2, 81, 0], [LOGO_AT + 2.4, 76, 0], [LOGO_AT + 3.6, 69, 0]].forEach(([tt, n, n2], i) => {
+    m.chime(tt, n, 0.17 - i * 0.02, { pan: (i % 3 - 1) * 0.35, send: 0.7, delay: 0.5, len: 3 });
+    if (n2) m.chime(tt + 0.004, n2, 0.08, { pan: 0.3, send: 0.7, delay: 0.5, len: 3 });
+  });
+
+  const { L, R } = m.render(3, { hp: 32, delayTime: 0.45, feedback: 0.32 }); // delay = 3/4 de tiempo
+  const f0 = Math.floor((TOTAL - 1.6) * 44100);
+  for (let i = f0; i < L.length; i++) { const u = (i - f0) / (L.length - f0); const g = 0.5 + 0.5 * Math.cos(Math.PI * u); L[i] *= g; R[i] *= g; }
   return wav16(L, R);
 }
 

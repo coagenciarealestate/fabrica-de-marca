@@ -23,6 +23,12 @@
           object-fit: cover;
         }
         /* Frases: serif pequeña posada sobre el borde de cada imagen */
+        #reel-fade {
+          position: absolute;
+          inset: 0;
+          background: #0d0b0a;
+          opacity: 0;
+        }
         #reel-words {
           position: absolute;
           inset: 0;
@@ -49,52 +55,55 @@
 
       <div id="root" data-composition-id="reel" data-width="1080" data-height="1920">
       <div id="reel-plates">
-        <img id="reel-shot-0" class="clip shot" src="assets/reel/100.jpg" alt="Amanecer sobre la línea de techos de la ciudad" data-start="0" data-duration="1" data-track-index="1" />
-        <img id="reel-shot-1" class="clip shot" src="assets/reel/101.jpg" alt="Filo de un muro de cal contra el cielo de la mañana" data-start="1" data-duration="0.6" data-track-index="2" />
-        <img id="reel-shot-2" class="clip shot" src="assets/reel/102.jpg" alt="Cumbrera de tejas de barro con musgo" data-start="1.6" data-duration="0.6" data-track-index="1" />
-        <img id="reel-shot-3" class="clip shot" src="assets/reel/103.jpg" alt="Muro de ladrillo al atardecer" data-start="2.2" data-duration="0.6" data-track-index="2" />
-        <img id="reel-shot-4" class="clip shot" src="assets/reel/104.jpg" alt="Baranda de balcón en madera, pintura descascarada" data-start="2.8" data-duration="0.6" data-track-index="1" />
-        <img id="reel-shot-5" class="clip shot" src="assets/reel/105.jpg" alt="Muro de adobe con paja contra el cielo andino" data-start="3.4" data-duration="0.6" data-track-index="2" />
-        <img id="reel-shot-6" class="clip shot" src="assets/reel/106.jpg" alt="Filo de concreto de una casa moderna en la hora azul" data-start="4" data-duration="0.6" data-track-index="1" />
-        <img id="reel-shot-7" class="clip shot" src="assets/reel/107.jpg" alt="Línea de luz bajo una puerta" data-start="4.6" data-duration="1" data-track-index="2" />
-        <img id="reel-shot-8" class="clip shot" src="assets/reel/108.jpg" alt="Borde de una taza de café con vapor" data-start="5.6" data-duration="0.5333" data-track-index="1" />
-        <img id="reel-shot-9" class="clip shot" src="assets/reel/109.jpg" alt="Corteza de pan recién horneado" data-start="6.133333333333334" data-duration="0.5667" data-track-index="2" />
-        <img id="reel-shot-10" class="clip shot" src="assets/reel/110.jpg" alt="Masa de arepa con huellas de dedos pequeños" data-start="6.7" data-duration="0.5" data-track-index="1" />
-        <img id="reel-shot-11" class="clip shot" src="assets/reel/111.jpg" alt="Pliegue de una sábana de lino con luz de ventana" data-start="7.2" data-duration="0.5" data-track-index="2" />
-        <img id="reel-shot-12" class="clip shot" src="assets/reel/112.jpg" alt="Línea de agua de una tina con espuma" data-start="7.7" data-duration="0.4333" data-track-index="1" />
-        <img id="reel-shot-13" class="clip shot" src="assets/reel/113.jpg" alt="Dibujo en crayola de una casa y una familia" data-start="8.133333333333333" data-duration="0.4667" data-track-index="2" />
-        <img id="reel-shot-14" class="clip shot" src="assets/reel/114.jpg" alt="Borde de una mesa de comedor con migas" data-start="8.6" data-duration="0.4" data-track-index="1" />
-        <img id="reel-shot-15" class="clip shot" src="assets/reel/115.jpg" alt="Borde de una hoja de monstera a contraluz" data-start="9" data-duration="0.4" data-track-index="2" />
-        <img id="reel-shot-16" class="clip shot" src="assets/reel/116.jpg" alt="Manta tejida mostaza" data-start="9.4" data-duration="0.3333" data-track-index="1" />
-        <img id="reel-shot-17" class="clip shot" src="assets/reel/117.jpg" alt="Borde de un plato pintado a mano de Carmen de Viboral" data-start="9.733333333333333" data-duration="0.3667" data-track-index="2" />
-        <img id="reel-shot-18" class="clip shot" src="assets/reel/118.jpg" alt="Páginas de un libro a la luz de una lámpara" data-start="10.1" data-duration="0.3333" data-track-index="1" />
-        <img id="reel-shot-19" class="clip shot" src="assets/reel/119.jpg" alt="Bordado en un bastidor de madera" data-start="10.433333333333334" data-duration="0.3" data-track-index="2" />
-        <img id="reel-shot-20" class="clip shot" src="assets/reel/120.jpg" alt="Plano de una casa a lápiz sobre papel mantequilla" data-start="10.733333333333333" data-duration="0.3" data-track-index="1" />
-        <img id="reel-shot-21" class="clip shot" src="assets/reel/101.jpg" alt="Filo de un muro de cal contra el cielo de la mañana" data-start="11.033333333333333" data-duration="0.3" data-track-index="2" />
-        <img id="reel-shot-22" class="clip shot" src="assets/reel/111.jpg" alt="Pliegue de una sábana de lino con luz de ventana" data-start="11.333333333333334" data-duration="0.3" data-track-index="1" />
-        <img id="reel-shot-23" class="clip shot" src="assets/reel/102.jpg" alt="Cumbrera de tejas de barro con musgo" data-start="11.633333333333333" data-duration="0.3" data-track-index="2" />
-        <img id="reel-shot-24" class="clip shot" src="assets/reel/109.jpg" alt="Corteza de pan recién horneado" data-start="11.933333333333334" data-duration="0.2667" data-track-index="1" />
-        <img id="reel-shot-25" class="clip shot" src="assets/reel/103.jpg" alt="Muro de ladrillo al atardecer" data-start="12.2" data-duration="0.3" data-track-index="2" />
-        <img id="reel-shot-26" class="clip shot" src="assets/reel/117.jpg" alt="Borde de un plato pintado a mano de Carmen de Viboral" data-start="12.5" data-duration="0.2667" data-track-index="1" />
-        <img id="reel-shot-27" class="clip shot" src="assets/reel/104.jpg" alt="Baranda de balcón en madera, pintura descascarada" data-start="12.766666666666667" data-duration="0.2667" data-track-index="2" />
-        <img id="reel-shot-28" class="clip shot" src="assets/reel/112.jpg" alt="Línea de agua de una tina con espuma" data-start="13.033333333333333" data-duration="0.2333" data-track-index="1" />
-        <img id="reel-shot-29" class="clip shot" src="assets/reel/105.jpg" alt="Muro de adobe con paja contra el cielo andino" data-start="13.266666666666667" data-duration="0.2667" data-track-index="2" />
-        <img id="reel-shot-30" class="clip shot" src="assets/reel/115.jpg" alt="Borde de una hoja de monstera a contraluz" data-start="13.533333333333333" data-duration="0.2667" data-track-index="1" />
-        <img id="reel-shot-31" class="clip shot" src="assets/reel/106.jpg" alt="Filo de concreto de una casa moderna en la hora azul" data-start="13.8" data-duration="0.2333" data-track-index="2" />
-        <img id="reel-shot-32" class="clip shot" src="assets/reel/121.jpg" alt="Maracuyá partido sobre una tabla" data-start="14.033333333333333" data-duration="0.2333" data-track-index="1" />
-        <img id="reel-shot-33" class="clip shot" src="assets/reel/113.jpg" alt="Dibujo en crayola de una casa y una familia" data-start="14.266666666666667" data-duration="0.2333" data-track-index="2" />
-        <img id="reel-shot-34" class="clip shot" src="assets/reel/116.jpg" alt="Manta tejida mostaza" data-start="14.5" data-duration="0.2333" data-track-index="1" />
-        <img id="reel-shot-35" class="clip shot" src="assets/reel/108.jpg" alt="Borde de una taza de café con vapor" data-start="14.733333333333333" data-duration="0.2333" data-track-index="2" />
-        <img id="reel-shot-36" class="clip shot" src="assets/reel/118.jpg" alt="Páginas de un libro a la luz de una lámpara" data-start="14.966666666666667" data-duration="0.2" data-track-index="1" />
-        <img id="reel-shot-37" class="clip shot" src="assets/reel/110.jpg" alt="Masa de arepa con huellas de dedos pequeños" data-start="15.166666666666666" data-duration="0.2333" data-track-index="2" />
+        <img id="reel-shot-0" class="clip shot" src="assets/reel/100.jpg" alt="Amanecer sobre la línea de techos de la ciudad" data-start="0" data-duration="1.2" data-track-index="1" />
+        <img id="reel-shot-1" class="clip shot" src="assets/reel/101.jpg" alt="Filo de un muro de cal contra el cielo de la mañana" data-start="1.2" data-duration="0.6" data-track-index="2" />
+        <img id="reel-shot-2" class="clip shot" src="assets/reel/102.jpg" alt="Cumbrera de tejas de barro con musgo" data-start="1.8" data-duration="0.6" data-track-index="1" />
+        <img id="reel-shot-3" class="clip shot" src="assets/reel/103.jpg" alt="Muro de ladrillo al atardecer" data-start="2.4" data-duration="0.6" data-track-index="2" />
+        <img id="reel-shot-4" class="clip shot" src="assets/reel/104.jpg" alt="Baranda de balcón en madera, pintura descascarada" data-start="3" data-duration="0.6" data-track-index="1" />
+        <img id="reel-shot-5" class="clip shot" src="assets/reel/105.jpg" alt="Muro de adobe con paja contra el cielo andino" data-start="3.6" data-duration="0.6" data-track-index="2" />
+        <img id="reel-shot-6" class="clip shot" src="assets/reel/106.jpg" alt="Filo de concreto de una casa moderna en la hora azul" data-start="4.2" data-duration="0.6" data-track-index="1" />
+        <img id="reel-shot-7" class="clip shot" src="assets/reel/107.jpg" alt="Línea de luz bajo una puerta" data-start="4.8" data-duration="1.2" data-track-index="2" />
+        <img id="reel-shot-8" class="clip shot" src="assets/reel/108.jpg" alt="Borde de una taza de café con vapor" data-start="6" data-duration="0.6" data-track-index="1" />
+        <img id="reel-shot-9" class="clip shot" src="assets/reel/109.jpg" alt="Corteza de pan recién horneado" data-start="6.6" data-duration="0.6" data-track-index="2" />
+        <img id="reel-shot-10" class="clip shot" src="assets/reel/110.jpg" alt="Masa de arepa con huellas de dedos pequeños" data-start="7.2" data-duration="0.6" data-track-index="1" />
+        <img id="reel-shot-11" class="clip shot" src="assets/reel/111.jpg" alt="Pliegue de una sábana de lino con luz de ventana" data-start="7.8" data-duration="0.6" data-track-index="2" />
+        <img id="reel-shot-12" class="clip shot" src="assets/reel/112.jpg" alt="Línea de agua de una tina con espuma" data-start="8.4" data-duration="0.6" data-track-index="1" />
+        <img id="reel-shot-13" class="clip shot" src="assets/reel/113.jpg" alt="Dibujo en crayola de una casa y una familia" data-start="9" data-duration="0.6" data-track-index="2" />
+        <img id="reel-shot-14" class="clip shot" src="assets/reel/114.jpg" alt="Borde de una mesa de comedor con migas" data-start="9.6" data-duration="0.3" data-track-index="1" />
+        <img id="reel-shot-15" class="clip shot" src="assets/reel/115.jpg" alt="Borde de una hoja de monstera a contraluz" data-start="9.9" data-duration="0.3" data-track-index="2" />
+        <img id="reel-shot-16" class="clip shot" src="assets/reel/116.jpg" alt="Manta tejida mostaza" data-start="10.2" data-duration="0.3" data-track-index="1" />
+        <img id="reel-shot-17" class="clip shot" src="assets/reel/117.jpg" alt="Borde de un plato pintado a mano de Carmen de Viboral" data-start="10.5" data-duration="0.3" data-track-index="2" />
+        <img id="reel-shot-18" class="clip shot" src="assets/reel/118.jpg" alt="Páginas de un libro a la luz de una lámpara" data-start="10.8" data-duration="0.3" data-track-index="1" />
+        <img id="reel-shot-19" class="clip shot" src="assets/reel/119.jpg" alt="Bordado en un bastidor de madera" data-start="11.1" data-duration="0.3" data-track-index="2" />
+        <img id="reel-shot-20" class="clip shot" src="assets/reel/120.jpg" alt="Plano de una casa a lápiz sobre papel mantequilla" data-start="11.4" data-duration="0.3" data-track-index="1" />
+        <img id="reel-shot-21" class="clip shot" src="assets/reel/101.jpg" alt="Filo de un muro de cal contra el cielo de la mañana" data-start="11.7" data-duration="0.3" data-track-index="2" />
+        <img id="reel-shot-22" class="clip shot" src="assets/reel/111.jpg" alt="Pliegue de una sábana de lino con luz de ventana" data-start="12" data-duration="0.3" data-track-index="1" />
+        <img id="reel-shot-23" class="clip shot" src="assets/reel/102.jpg" alt="Cumbrera de tejas de barro con musgo" data-start="12.3" data-duration="0.3" data-track-index="2" />
+        <img id="reel-shot-24" class="clip shot" src="assets/reel/109.jpg" alt="Corteza de pan recién horneado" data-start="12.6" data-duration="0.3" data-track-index="1" />
+        <img id="reel-shot-25" class="clip shot" src="assets/reel/103.jpg" alt="Muro de ladrillo al atardecer" data-start="12.9" data-duration="0.3" data-track-index="2" />
+        <img id="reel-shot-26" class="clip shot" src="assets/reel/117.jpg" alt="Borde de un plato pintado a mano de Carmen de Viboral" data-start="13.2" data-duration="0.3" data-track-index="1" />
+        <img id="reel-shot-27" class="clip shot" src="assets/reel/104.jpg" alt="Baranda de balcón en madera, pintura descascarada" data-start="13.5" data-duration="0.3" data-track-index="2" />
+        <img id="reel-shot-28" class="clip shot" src="assets/reel/112.jpg" alt="Línea de agua de una tina con espuma" data-start="13.8" data-duration="0.1667" data-track-index="1" />
+        <img id="reel-shot-29" class="clip shot" src="assets/reel/105.jpg" alt="Muro de adobe con paja contra el cielo andino" data-start="13.966666666666667" data-duration="0.1333" data-track-index="2" />
+        <img id="reel-shot-30" class="clip shot" src="assets/reel/115.jpg" alt="Borde de una hoja de monstera a contraluz" data-start="14.1" data-duration="0.1667" data-track-index="1" />
+        <img id="reel-shot-31" class="clip shot" src="assets/reel/106.jpg" alt="Filo de concreto de una casa moderna en la hora azul" data-start="14.266666666666667" data-duration="0.1333" data-track-index="2" />
+        <img id="reel-shot-32" class="clip shot" src="assets/reel/121.jpg" alt="Maracuyá partido sobre una tabla" data-start="14.4" data-duration="0.1667" data-track-index="1" />
+        <img id="reel-shot-33" class="clip shot" src="assets/reel/113.jpg" alt="Dibujo en crayola de una casa y una familia" data-start="14.566666666666666" data-duration="0.1333" data-track-index="2" />
+        <img id="reel-shot-34" class="clip shot" src="assets/reel/116.jpg" alt="Manta tejida mostaza" data-start="14.7" data-duration="0.1667" data-track-index="1" />
+        <img id="reel-shot-35" class="clip shot" src="assets/reel/108.jpg" alt="Borde de una taza de café con vapor" data-start="14.866666666666667" data-duration="0.1333" data-track-index="2" />
+        <img id="reel-shot-36" class="clip shot" src="assets/reel/118.jpg" alt="Páginas de un libro a la luz de una lámpara" data-start="15" data-duration="0.1667" data-track-index="1" />
+        <img id="reel-shot-37" class="clip shot" src="assets/reel/110.jpg" alt="Masa de arepa con huellas de dedos pequeños" data-start="15.166666666666666" data-duration="0.1333" data-track-index="2" />
+        <img id="reel-shot-38" class="clip shot" src="assets/reel/119.jpg" alt="Bordado en un bastidor de madera" data-start="15.3" data-duration="0.1667" data-track-index="1" />
+        <img id="reel-shot-39" class="clip shot" src="assets/reel/114.jpg" alt="Borde de una mesa de comedor con migas" data-start="15.466666666666667" data-duration="0.7333" data-track-index="2" />
       </div>
       <div id="reel-words">
-        <div id="reel-p1" class="clip phrase" data-start="4.9" data-duration="2.3" data-track-index="4"><span id="reel-p1-text" class="phrase-text" style="font-size:58px">Lo que te rodea</span></div>
-        <div id="reel-p2" class="clip phrase" data-start="7.2" data-duration="2.2" data-track-index="4"><span id="reel-p2-text" class="phrase-text italic" style="font-size:64px">cambia,</span></div>
-        <div id="reel-p3" class="clip phrase" data-start="9.4" data-duration="2.8" data-track-index="4"><span id="reel-p3-text" class="phrase-text" style="font-size:58px">cuando tú cambias.</span></div>
-        <div id="reel-p4" class="clip phrase" data-start="12.2" data-duration="1.6" data-track-index="4"><span id="reel-p4-text" class="phrase-text" style="font-size:60px">Nosotros entendemos</span></div>
-        <div id="reel-p5" class="clip phrase" data-start="13.8" data-duration="1.6" data-track-index="4"><span id="reel-p5-text" class="phrase-text italic" style="font-size:96px">por qué.</span></div>
+        <div id="reel-p1" class="clip phrase" data-start="5.4" data-duration="2.4" data-track-index="4"><span id="reel-p1-text" class="phrase-text" style="font-size:58px">Lo que te rodea</span></div>
+        <div id="reel-p2" class="clip phrase" data-start="7.8" data-duration="1.8" data-track-index="4"><span id="reel-p2-text" class="phrase-text italic" style="font-size:64px">cambia,</span></div>
+        <div id="reel-p3" class="clip phrase" data-start="9.6" data-duration="3" data-track-index="4"><span id="reel-p3-text" class="phrase-text" style="font-size:58px">cuando tú cambias.</span></div>
+        <div id="reel-p4" class="clip phrase" data-start="12.6" data-duration="1.8" data-track-index="4"><span id="reel-p4-text" class="phrase-text" style="font-size:60px">Nosotros entendemos</span></div>
+        <div id="reel-p5" class="clip phrase" data-start="14.4" data-duration="1.6" data-track-index="4"><span id="reel-p5-text" class="phrase-text italic" style="font-size:96px">por qué.</span></div>
       </div>
+      <div id="reel-fade"></div>
       </div>
 
       <script>
@@ -102,99 +111,109 @@
         tl.set("#reel-shot-0", { transformOrigin: "50% 50.8%", y: -92.2 }, 0);
         tl.fromTo("#reel-shot-0", { scale: 1.215, x: -6.0 }, { scale: 1.125, x: 0, duration: 1.2, ease: "sine.out" }, 0);
         tl.set("#reel-shot-1", { transformOrigin: "50% 46.5%", y: -9.6 }, 0);
-        tl.fromTo("#reel-shot-1", { scale: 1.085, x: 5.2 }, { scale: 1.035, x: 0, duration: 0.80, ease: "sine.out" }, 1);
+        tl.fromTo("#reel-shot-1", { scale: 1.085, x: 5.2 }, { scale: 1.035, x: 0, duration: 0.80, ease: "sine.out" }, 1.2);
         tl.set("#reel-shot-2", { transformOrigin: "50% 46.5%", y: -9.6 }, 0);
-        tl.fromTo("#reel-shot-2", { scale: 1.086, x: 3.7 }, { scale: 1.035, x: 0, duration: 0.80, ease: "sine.out" }, 1.6);
+        tl.fromTo("#reel-shot-2", { scale: 1.086, x: 3.7 }, { scale: 1.035, x: 0, duration: 0.80, ease: "sine.out" }, 1.8);
         tl.set("#reel-shot-3", { transformOrigin: "50% 42.6%", y: 65.3 }, 0);
-        tl.fromTo("#reel-shot-3", { scale: 1.162, x: -5.0 }, { scale: 1.107, x: 0, duration: 0.80, ease: "sine.out" }, 2.2);
+        tl.fromTo("#reel-shot-3", { scale: 1.162, x: -5.0 }, { scale: 1.107, x: 0, duration: 0.80, ease: "sine.out" }, 2.4);
         tl.set("#reel-shot-4", { transformOrigin: "50% 43%", y: 57.6 }, 0);
-        tl.fromTo("#reel-shot-4", { scale: 1.159, x: -1.5 }, { scale: 1.097, x: 0, duration: 0.80, ease: "sine.out" }, 2.8);
+        tl.fromTo("#reel-shot-4", { scale: 1.159, x: -1.5 }, { scale: 1.097, x: 0, duration: 0.80, ease: "sine.out" }, 3);
         tl.set("#reel-shot-5", { transformOrigin: "50% 40.2%", y: 111.4 }, 0);
-        tl.fromTo("#reel-shot-5", { scale: 1.243, x: -3.9 }, { scale: 1.173, x: 0, duration: 0.80, ease: "sine.out" }, 3.4);
+        tl.fromTo("#reel-shot-5", { scale: 1.243, x: -3.9 }, { scale: 1.173, x: 0, duration: 0.80, ease: "sine.out" }, 3.6);
         tl.set("#reel-shot-6", { transformOrigin: "50% 48.4%", y: -46.1 }, 0);
-        tl.fromTo("#reel-shot-6", { scale: 1.118, x: -4.0 }, { scale: 1.073, x: 0, duration: 0.80, ease: "sine.out" }, 4);
+        tl.fromTo("#reel-shot-6", { scale: 1.118, x: -4.0 }, { scale: 1.073, x: 0, duration: 0.80, ease: "sine.out" }, 4.2);
         tl.set("#reel-shot-7", { transformOrigin: "50% 52.7%", y: -128.6 }, 0);
-        tl.fromTo("#reel-shot-7", { scale: 1.223, x: 4.9 }, { scale: 1.170, x: 0, duration: 1.20, ease: "sine.out" }, 4.6);
+        tl.fromTo("#reel-shot-7", { scale: 1.223, x: 4.9 }, { scale: 1.170, x: 0, duration: 1.40, ease: "sine.out" }, 4.8);
         tl.set("#reel-shot-8", { transformOrigin: "50% 49%", y: -57.6 }, 0);
-        tl.fromTo("#reel-shot-8", { scale: 1.139, x: 1.5 }, { scale: 1.085, x: 0, duration: 0.73, ease: "sine.out" }, 5.6);
+        tl.fromTo("#reel-shot-8", { scale: 1.139, x: 1.5 }, { scale: 1.085, x: 0, duration: 0.80, ease: "sine.out" }, 6);
         tl.set("#reel-shot-9", { transformOrigin: "50% 36.7%", y: 178.6 }, 0);
-        tl.fromTo("#reel-shot-9", { scale: 1.361, x: 5.4 }, { scale: 1.285, x: 0, duration: 0.77, ease: "sine.out" }, 6.133333333333334);
+        tl.fromTo("#reel-shot-9", { scale: 1.361, x: 5.4 }, { scale: 1.285, x: 0, duration: 0.80, ease: "sine.out" }, 6.6);
         tl.set("#reel-shot-10", { transformOrigin: "50% 42.6%", y: 65.3 }, 0);
-        tl.fromTo("#reel-shot-10", { scale: 1.149, x: 1.6 }, { scale: 1.107, x: 0, duration: 0.70, ease: "sine.out" }, 6.7);
+        tl.fromTo("#reel-shot-10", { scale: 1.149, x: 1.6 }, { scale: 1.107, x: 0, duration: 0.80, ease: "sine.out" }, 7.2);
         tl.set("#reel-shot-11", { transformOrigin: "50% 46.9%", y: -17.3 }, 0);
-        tl.fromTo("#reel-shot-11", { scale: 1.102, x: 2.2 }, { scale: 1.042, x: 0, duration: 0.70, ease: "sine.out" }, 7.2);
+        tl.fromTo("#reel-shot-11", { scale: 1.102, x: 2.2 }, { scale: 1.042, x: 0, duration: 0.80, ease: "sine.out" }, 7.8);
         tl.set("#reel-shot-12", { transformOrigin: "50% 47%", y: -19.2 }, 0);
-        tl.fromTo("#reel-shot-12", { scale: 1.104, x: -3.8 }, { scale: 1.044, x: 0, duration: 0.63, ease: "sine.out" }, 7.7);
+        tl.fromTo("#reel-shot-12", { scale: 1.104, x: -3.8 }, { scale: 1.044, x: 0, duration: 0.80, ease: "sine.out" }, 8.4);
         tl.set("#reel-shot-13", { transformOrigin: "50% 41.8%", y: 80.6 }, 0);
-        tl.fromTo("#reel-shot-13", { scale: 1.189, x: 0.9 }, { scale: 1.128, x: 0, duration: 0.67, ease: "sine.out" }, 8.133333333333333);
+        tl.fromTo("#reel-shot-13", { scale: 1.189, x: 0.9 }, { scale: 1.128, x: 0, duration: 0.80, ease: "sine.out" }, 9);
         tl.set("#reel-shot-14", { transformOrigin: "50% 35.5%", y: 201.6 }, 0);
-        tl.fromTo("#reel-shot-14", { scale: 1.407, x: -0.7 }, { scale: 1.328, x: 0, duration: 0.60, ease: "sine.out" }, 8.6);
+        tl.fromTo("#reel-shot-14", { scale: 1.407, x: -0.7 }, { scale: 1.328, x: 0, duration: 0.50, ease: "sine.out" }, 9.6);
         tl.set("#reel-shot-15", { transformOrigin: "50% 48%", y: -38.4 }, 0);
-        tl.fromTo("#reel-shot-15", { scale: 1.106, x: -3.2 }, { scale: 1.064, x: 0, duration: 0.60, ease: "sine.out" }, 9);
+        tl.fromTo("#reel-shot-15", { scale: 1.106, x: -3.2 }, { scale: 1.064, x: 0, duration: 0.50, ease: "sine.out" }, 9.9);
         tl.set("#reel-shot-16", { transformOrigin: "50% 45.7%", y: 5.8 }, 0);
-        tl.fromTo("#reel-shot-16", { scale: 1.075, x: 0.7 }, { scale: 1.032, x: 0, duration: 0.53, ease: "sine.out" }, 9.4);
+        tl.fromTo("#reel-shot-16", { scale: 1.075, x: 0.7 }, { scale: 1.032, x: 0, duration: 0.50, ease: "sine.out" }, 10.2);
         tl.set("#reel-shot-17", { transformOrigin: "50% 43%", y: 57.6 }, 0);
-        tl.fromTo("#reel-shot-17", { scale: 1.141, x: 2.0 }, { scale: 1.097, x: 0, duration: 0.57, ease: "sine.out" }, 9.733333333333333);
+        tl.fromTo("#reel-shot-17", { scale: 1.141, x: 2.0 }, { scale: 1.097, x: 0, duration: 0.50, ease: "sine.out" }, 10.5);
         tl.set("#reel-shot-18", { transformOrigin: "50% 40.2%", y: 111.4 }, 0);
-        tl.fromTo("#reel-shot-18", { scale: 1.228, x: 2.3 }, { scale: 1.173, x: 0, duration: 0.53, ease: "sine.out" }, 10.1);
+        tl.fromTo("#reel-shot-18", { scale: 1.228, x: 2.3 }, { scale: 1.173, x: 0, duration: 0.50, ease: "sine.out" }, 10.8);
         tl.set("#reel-shot-19", { transformOrigin: "50% 41%", y: 96.0 }, 0);
-        tl.fromTo("#reel-shot-19", { scale: 1.202, x: 5.8 }, { scale: 1.150, x: 0, duration: 0.50, ease: "sine.out" }, 10.433333333333334);
+        tl.fromTo("#reel-shot-19", { scale: 1.202, x: 5.8 }, { scale: 1.150, x: 0, duration: 0.50, ease: "sine.out" }, 11.1);
         tl.set("#reel-shot-20", { transformOrigin: "50% 40%", y: 115.2 }, 0);
-        tl.fromTo("#reel-shot-20", { scale: 1.239, x: -5.6 }, { scale: 1.179, x: 0, duration: 0.50, ease: "sine.out" }, 10.733333333333333);
+        tl.fromTo("#reel-shot-20", { scale: 1.239, x: -5.6 }, { scale: 1.179, x: 0, duration: 0.50, ease: "sine.out" }, 11.4);
         tl.set("#reel-shot-21", { transformOrigin: "50% 46.5%", y: -9.6 }, 0);
-        tl.fromTo("#reel-shot-21", { scale: 1.084, x: 3.1 }, { scale: 1.035, x: 0, duration: 0.50, ease: "sine.out" }, 11.033333333333333);
+        tl.fromTo("#reel-shot-21", { scale: 1.084, x: 3.1 }, { scale: 1.035, x: 0, duration: 0.50, ease: "sine.out" }, 11.7);
         tl.set("#reel-shot-22", { transformOrigin: "50% 46.9%", y: -17.3 }, 0);
-        tl.fromTo("#reel-shot-22", { scale: 1.087, x: -2.5 }, { scale: 1.042, x: 0, duration: 0.50, ease: "sine.out" }, 11.333333333333334);
+        tl.fromTo("#reel-shot-22", { scale: 1.087, x: -2.5 }, { scale: 1.042, x: 0, duration: 0.50, ease: "sine.out" }, 12);
         tl.set("#reel-shot-23", { transformOrigin: "50% 46.5%", y: -9.6 }, 0);
-        tl.fromTo("#reel-shot-23", { scale: 1.090, x: 0.0 }, { scale: 1.035, x: 0, duration: 0.50, ease: "sine.out" }, 11.633333333333333);
+        tl.fromTo("#reel-shot-23", { scale: 1.090, x: 0.0 }, { scale: 1.035, x: 0, duration: 0.50, ease: "sine.out" }, 12.3);
         tl.set("#reel-shot-24", { transformOrigin: "50% 36.7%", y: 178.6 }, 0);
-        tl.fromTo("#reel-shot-24", { scale: 1.341, x: -4.7 }, { scale: 1.285, x: 0, duration: 0.47, ease: "sine.out" }, 11.933333333333334);
+        tl.fromTo("#reel-shot-24", { scale: 1.341, x: -4.7 }, { scale: 1.285, x: 0, duration: 0.50, ease: "sine.out" }, 12.6);
         tl.set("#reel-shot-25", { transformOrigin: "50% 42.6%", y: 65.3 }, 0);
-        tl.fromTo("#reel-shot-25", { scale: 1.171, x: 1.0 }, { scale: 1.107, x: 0, duration: 0.50, ease: "sine.out" }, 12.2);
+        tl.fromTo("#reel-shot-25", { scale: 1.171, x: 1.0 }, { scale: 1.107, x: 0, duration: 0.50, ease: "sine.out" }, 12.9);
         tl.set("#reel-shot-26", { transformOrigin: "50% 43%", y: 57.6 }, 0);
-        tl.fromTo("#reel-shot-26", { scale: 1.155, x: 5.9 }, { scale: 1.097, x: 0, duration: 0.47, ease: "sine.out" }, 12.5);
+        tl.fromTo("#reel-shot-26", { scale: 1.155, x: 5.9 }, { scale: 1.097, x: 0, duration: 0.50, ease: "sine.out" }, 13.2);
         tl.set("#reel-shot-27", { transformOrigin: "50% 43%", y: 57.6 }, 0);
-        tl.fromTo("#reel-shot-27", { scale: 1.134, x: -1.6 }, { scale: 1.097, x: 0, duration: 0.47, ease: "sine.out" }, 12.766666666666667);
+        tl.fromTo("#reel-shot-27", { scale: 1.134, x: -1.6 }, { scale: 1.097, x: 0, duration: 0.50, ease: "sine.out" }, 13.5);
         tl.set("#reel-shot-28", { transformOrigin: "50% 47%", y: -19.2 }, 0);
-        tl.fromTo("#reel-shot-28", { scale: 1.102, x: -0.5 }, { scale: 1.044, x: 0, duration: 0.43, ease: "sine.out" }, 13.033333333333333);
+        tl.fromTo("#reel-shot-28", { scale: 1.102, x: -0.5 }, { scale: 1.044, x: 0, duration: 0.37, ease: "sine.out" }, 13.8);
         tl.set("#reel-shot-29", { transformOrigin: "50% 40.2%", y: 111.4 }, 0);
-        tl.fromTo("#reel-shot-29", { scale: 1.243, x: 0.4 }, { scale: 1.173, x: 0, duration: 0.47, ease: "sine.out" }, 13.266666666666667);
+        tl.fromTo("#reel-shot-29", { scale: 1.243, x: 0.4 }, { scale: 1.173, x: 0, duration: 0.33, ease: "sine.out" }, 13.966666666666667);
         tl.set("#reel-shot-30", { transformOrigin: "50% 48%", y: -38.4 }, 0);
-        tl.fromTo("#reel-shot-30", { scale: 1.107, x: 5.0 }, { scale: 1.064, x: 0, duration: 0.47, ease: "sine.out" }, 13.533333333333333);
+        tl.fromTo("#reel-shot-30", { scale: 1.107, x: 5.0 }, { scale: 1.064, x: 0, duration: 0.37, ease: "sine.out" }, 14.1);
         tl.set("#reel-shot-31", { transformOrigin: "50% 48.4%", y: -46.1 }, 0);
-        tl.fromTo("#reel-shot-31", { scale: 1.127, x: 3.6 }, { scale: 1.073, x: 0, duration: 0.43, ease: "sine.out" }, 13.8);
+        tl.fromTo("#reel-shot-31", { scale: 1.127, x: 3.6 }, { scale: 1.073, x: 0, duration: 0.33, ease: "sine.out" }, 14.266666666666667);
         tl.set("#reel-shot-32", { transformOrigin: "50% 42%", y: 76.8 }, 0);
-        tl.fromTo("#reel-shot-32", { scale: 1.157, x: 2.2 }, { scale: 1.123, x: 0, duration: 0.43, ease: "sine.out" }, 14.033333333333333);
+        tl.fromTo("#reel-shot-32", { scale: 1.157, x: 2.2 }, { scale: 1.123, x: 0, duration: 0.37, ease: "sine.out" }, 14.4);
         tl.set("#reel-shot-33", { transformOrigin: "50% 41.8%", y: 80.6 }, 0);
-        tl.fromTo("#reel-shot-33", { scale: 1.176, x: 4.1 }, { scale: 1.128, x: 0, duration: 0.43, ease: "sine.out" }, 14.266666666666667);
+        tl.fromTo("#reel-shot-33", { scale: 1.176, x: 4.1 }, { scale: 1.128, x: 0, duration: 0.33, ease: "sine.out" }, 14.566666666666666);
         tl.set("#reel-shot-34", { transformOrigin: "50% 45.7%", y: 5.8 }, 0);
-        tl.fromTo("#reel-shot-34", { scale: 1.089, x: 5.0 }, { scale: 1.032, x: 0, duration: 0.43, ease: "sine.out" }, 14.5);
+        tl.fromTo("#reel-shot-34", { scale: 1.089, x: 5.0 }, { scale: 1.032, x: 0, duration: 0.37, ease: "sine.out" }, 14.7);
         tl.set("#reel-shot-35", { transformOrigin: "50% 49%", y: -57.6 }, 0);
-        tl.fromTo("#reel-shot-35", { scale: 1.136, x: -1.1 }, { scale: 1.085, x: 0, duration: 0.43, ease: "sine.out" }, 14.733333333333333);
+        tl.fromTo("#reel-shot-35", { scale: 1.136, x: -1.1 }, { scale: 1.085, x: 0, duration: 0.33, ease: "sine.out" }, 14.866666666666667);
         tl.set("#reel-shot-36", { transformOrigin: "50% 40.2%", y: 111.4 }, 0);
-        tl.fromTo("#reel-shot-36", { scale: 1.221, x: -4.3 }, { scale: 1.173, x: 0, duration: 0.40, ease: "sine.out" }, 14.966666666666667);
+        tl.fromTo("#reel-shot-36", { scale: 1.221, x: -4.3 }, { scale: 1.173, x: 0, duration: 0.37, ease: "sine.out" }, 15);
         tl.set("#reel-shot-37", { transformOrigin: "50% 42.6%", y: 65.3 }, 0);
-        tl.fromTo("#reel-shot-37", { scale: 1.141, x: -1.0 }, { scale: 1.107, x: 0, duration: 0.43, ease: "sine.out" }, 15.166666666666666);
-        tl.set("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)" }, 4.6);
-        tl.set("#reel-words", { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)" }, 6.133333333333334);
-        tl.set("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)" }, 6.7);
-        tl.set("#reel-words", { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)" }, 8.133333333333333);
-        tl.set("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)" }, 8.6);
-        tl.set("#reel-words", { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)" }, 9);
-        tl.set("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)" }, 9.4);
-        tl.set("#reel-words", { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)" }, 10.733333333333333);
-        tl.set("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)" }, 11.333333333333334);
-        tl.set("#reel-words", { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)" }, 11.633333333333333);
-        tl.set("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)" }, 12.2);
-        tl.set("#reel-words", { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)" }, 13.533333333333333);
-        tl.set("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)" }, 13.8);
-        tl.set("#reel-words", { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)" }, 14.266666666666667);
-        tl.set("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)" }, 14.5);
-        tl.fromTo("#reel-p1-text", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "sine.out" }, 4.9);
-        tl.fromTo("#reel-p2-text", { opacity: 0 }, { opacity: 1, duration: 0.18, ease: "sine.out" }, 7.2);
-        tl.fromTo("#reel-p3-text", { opacity: 0 }, { opacity: 1, duration: 0.18, ease: "sine.out" }, 9.4);
-        tl.fromTo("#reel-p4-text", { opacity: 0 }, { opacity: 1, duration: 0.18, ease: "sine.out" }, 12.2);
-        tl.fromTo("#reel-p5-text", { opacity: 0 }, { opacity: 1, duration: 0.18, ease: "sine.out" }, 13.8);
+        tl.fromTo("#reel-shot-37", { scale: 1.141, x: -1.0 }, { scale: 1.107, x: 0, duration: 0.33, ease: "sine.out" }, 15.166666666666666);
+        tl.set("#reel-shot-38", { transformOrigin: "50% 41%", y: 96.0 }, 0);
+        tl.fromTo("#reel-shot-38", { scale: 1.190, x: 2.8 }, { scale: 1.150, x: 0, duration: 0.37, ease: "sine.out" }, 15.3);
+        tl.set("#reel-shot-39", { transformOrigin: "50% 35.5%", y: 201.6 }, 0);
+        tl.fromTo("#reel-shot-39", { scale: 1.372, x: -2.5 }, { scale: 1.328, x: 0, duration: 0.93, ease: "sine.out" }, 15.466666666666667);
+        tl.to("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)", duration: 0.12, ease: "sine.inOut" }, 4.760);
+        tl.to("#reel-words", { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)", duration: 0.12, ease: "sine.inOut" }, 6.560);
+        tl.to("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)", duration: 0.12, ease: "sine.inOut" }, 7.160);
+        tl.to("#reel-words", { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)", duration: 0.12, ease: "sine.inOut" }, 8.960);
+        tl.to("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)", duration: 0.12, ease: "sine.inOut" }, 9.560);
+        tl.to("#reel-words", { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)", duration: 0.12, ease: "sine.inOut" }, 9.860);
+        tl.to("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)", duration: 0.12, ease: "sine.inOut" }, 10.160);
+        tl.to("#reel-words", { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)", duration: 0.12, ease: "sine.inOut" }, 11.360);
+        tl.to("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)", duration: 0.12, ease: "sine.inOut" }, 11.960);
+        tl.to("#reel-words", { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)", duration: 0.12, ease: "sine.inOut" }, 12.260);
+        tl.to("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)", duration: 0.12, ease: "sine.inOut" }, 12.860);
+        tl.to("#reel-words", { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)", duration: 0.12, ease: "sine.inOut" }, 14.060);
+        tl.to("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)", duration: 0.12, ease: "sine.inOut" }, 14.227);
+        tl.to("#reel-words", { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)", duration: 0.12, ease: "sine.inOut" }, 14.527);
+        tl.to("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)", duration: 0.12, ease: "sine.inOut" }, 14.660);
+        tl.fromTo("#reel-p1-text", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.6, ease: "sine.out" }, 5.4);
+        tl.to("#reel-p1-text", { opacity: 0, duration: 0.16, ease: "sine.in" }, 7.640);
+        tl.fromTo("#reel-p2-text", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.24, ease: "sine.out" }, 7.8);
+        tl.to("#reel-p2-text", { opacity: 0, duration: 0.16, ease: "sine.in" }, 9.440);
+        tl.fromTo("#reel-p3-text", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.24, ease: "sine.out" }, 9.6);
+        tl.to("#reel-p3-text", { opacity: 0, duration: 0.16, ease: "sine.in" }, 12.440);
+        tl.fromTo("#reel-p4-text", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.24, ease: "sine.out" }, 12.6);
+        tl.to("#reel-p4-text", { opacity: 0, duration: 0.16, ease: "sine.in" }, 14.240);
+        tl.fromTo("#reel-p5-text", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.24, ease: "sine.out" }, 14.4);
+        tl.to("#reel-p5-text", { opacity: 0, duration: 0.5, ease: "sine.in" }, 15.500);
+        tl.fromTo("#reel-fade", { opacity: 0 }, { opacity: 1, duration: 0.60, ease: "sine.in" }, 15.6);
         window.__timelines["reel"] = tl;
       </script>
     </template>

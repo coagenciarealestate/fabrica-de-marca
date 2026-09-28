@@ -1,0 +1,5 @@
+# Salidas generadas por la CLI de HyperFrames
+renders/
+snapshots/
+.hyperframes/
+node_modules/

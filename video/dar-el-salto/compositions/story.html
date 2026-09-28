@@ -1,0 +1,152 @@
+<!doctype html>
+<!-- GENERADO por scripts/build-salto.mjs — edita el guion allá y vuelve a correrlo. -->
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          background: #120c07;
+        }
+        #stage {
+          position: absolute;
+          inset: -24px;
+        }
+        #stage .plate {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        #words {
+          position: absolute;
+          inset: 0;
+          color: #2b1a0d;
+          mix-blend-mode: multiply;
+        }
+        #words .line {
+          position: absolute;
+          display: block;
+          width: 1000px;
+          margin-left: -500px;
+          text-align: center;
+          font-family: var(--co-font-display);
+          font-weight: 400;
+          line-height: 1;
+          letter-spacing: -0.01em;
+          white-space: nowrap;
+          transform-origin: 50% 50%;
+        }
+        #words .line.italic {
+          font-style: italic;
+        }
+        #words .word {
+          display: inline-block;
+        }
+        #fade-out {
+          position: absolute;
+          inset: 0;
+          background: #120c07;
+          opacity: 0;
+        }
+      </style>
+
+      <div id="root" data-composition-id="story" data-width="1080" data-height="1920">
+      <div id="stage" data-layout-allow-overflow>
+        <video id="st-a1" class="clip plate" data-start="0" data-duration="3" data-track-index="1" src="assets/salto/301.mp4" data-hf-media-start-basis="local" data-media-start="0" data-playback-rate="0.6" muted playsinline></video>
+        <img id="st-eye" class="clip plate" data-start="2.7" data-duration="2.6" data-track-index="2" src="assets/salto/202.jpg" alt="El ojo del conejo: sabe" />
+        <video id="st-a2" class="clip plate" data-start="5" data-duration="1.843" data-track-index="1" src="assets/salto/301.mp4" data-hf-media-start-basis="local" data-media-start="1.75" data-playback-rate="0.7" muted playsinline></video>
+        <img id="st-wheat" class="clip plate" data-start="6.766666666666667" data-duration="1.45" data-track-index="2" src="assets/salto/203.jpg" alt="Salto sobre el trigo" />
+        <img id="st-wind" class="clip plate" data-start="8" data-duration="1.3" data-track-index="1" src="assets/salto/204.jpg" alt="Contra el viento y el polvo" />
+        <img id="st-rain" class="clip plate" data-start="9.1" data-duration="1.2" data-track-index="2" src="assets/salto/205.jpg" alt="Bajo la lluvia en el bosque" />
+        <img id="st-city" class="clip plate" data-start="10.1" data-duration="1.1" data-track-index="1" src="assets/salto/206.jpg" alt="Cruzando la ciudad de noche" />
+        <img id="st-snow" class="clip plate" data-start="11" data-duration="1.1" data-track-index="2" src="assets/salto/207.jpg" alt="En la tormenta de nieve" />
+        <img id="st-ridge" class="clip plate" data-start="11.9" data-duration="2" data-track-index="1" src="assets/salto/208.jpg" alt="En la cima, frente al mar de nubes" />
+        <img id="st-hat" class="clip plate" data-start="13.6" data-duration="2.9" data-track-index="2" src="assets/salto/209.jpg" alt="Un sombrero de mago en la mitad del mundo" />
+        <video id="st-b" class="clip plate" data-start="16.2" data-duration="3.8" data-track-index="1" src="assets/salto/302.mp4" data-hf-media-start-basis="local" data-media-start="0" data-playback-rate="0.8" muted playsinline></video>
+        <img id="st-inside" class="clip plate" data-start="19.5" data-duration="2.2" data-track-index="2" src="assets/salto/211.jpg" alt="Adentro del sombrero: una luz" />
+      </div>
+      <div id="words">
+        <div id="t1" class="clip phrase" data-start="0.6" data-duration="2.7" data-track-index="5"><div id="t1-line" class="line" style="left:540px;top:300px;font-size:70px"><span id="t1-w0" class="word">Existen</span> <span id="t1-w1" class="word">momentos</span></div></div>
+        <div id="t2" class="clip phrase" data-start="3.2" data-duration="2.35" data-track-index="5"><div id="t2-line" class="line italic" style="left:540px;top:1460px;font-size:84px"><span id="t2-w0" class="word">donde</span> <span id="t2-w1" class="word">sabes,</span></div></div>
+        <div id="t3" class="clip phrase" data-start="8.3" data-duration="5.4" data-track-index="5"><div id="t3-line" class="line" style="left:540px;top:560px;font-size:72px"><span id="t3-w0" class="word">que</span> <span id="t3-w1" class="word">es</span> <span id="t3-w2" class="word">tiempo</span> <span id="t3-w3" class="word">de:</span></div></div>
+        <div id="t4" class="clip phrase" data-start="17.366666666666667" data-duration="2.533" data-track-index="5"><div id="t4-line" class="line italic" style="left:540px;top:420px;font-size:132px"><span id="t4-w0" class="word">Dar</span> <span id="t4-w1" class="word">el</span> <span id="t4-w2" class="word">salto</span></div></div>
+      </div>
+      <div id="fade-out"></div>
+      </div>
+
+      <script>
+        const tl = gsap.timeline({ paused: true });
+        tl.set("#st-a1", {"opacity":1,"scale":1.02}, 0);
+        tl.to("#st-a1", { ...{"scale":1.06}, duration: 3.10, ease: "none" }, 0);
+        tl.set("#st-eye", {"opacity":0,"scale":1.12,"transformOrigin":"50% 50%"}, 0);
+        tl.to("#st-eye", { opacity: 1, duration: 0.6, ease: "sine.inOut" }, 2.7);
+        tl.to("#st-eye", { ...{"scale":1}, duration: 2.70, ease: "sine.inOut" }, 2.7);
+        tl.set("#st-a2", {"opacity":0,"scale":1.02}, 0);
+        tl.to("#st-a2", { opacity: 1, duration: 0.35, ease: "sine.inOut" }, 5);
+        tl.to("#st-a2", { ...{"scale":1.06}, duration: 1.94, ease: "none" }, 5);
+        tl.set("#st-wheat", {"opacity":0,"scale":1.1,"x":60,"y":0}, 0);
+        tl.to("#st-wheat", { opacity: 1, duration: 0.25, ease: "sine.inOut" }, 6.766666666666667);
+        tl.to("#st-wheat", { ...{"scale":1.06,"x":0,"y":0}, duration: 1.55, ease: "power1.out" }, 6.766666666666667);
+        tl.set("#st-wind", {"opacity":0,"scale":1.1,"x":40,"y":0}, 0);
+        tl.to("#st-wind", { opacity: 1, duration: 0.3, ease: "sine.inOut" }, 8);
+        tl.to("#st-wind", { ...{"scale":1.06,"x":0,"y":0}, duration: 1.40, ease: "power1.out" }, 8);
+        tl.set("#st-rain", {"opacity":0,"scale":1.1,"x":30,"y":-10}, 0);
+        tl.to("#st-rain", { opacity: 1, duration: 0.3, ease: "sine.inOut" }, 9.1);
+        tl.to("#st-rain", { ...{"scale":1.06,"x":0,"y":0}, duration: 1.30, ease: "power1.out" }, 9.1);
+        tl.set("#st-city", {"opacity":0,"scale":1.1,"x":-30,"y":0}, 0);
+        tl.to("#st-city", { opacity: 1, duration: 0.25, ease: "sine.inOut" }, 10.1);
+        tl.to("#st-city", { ...{"scale":1.06,"x":0,"y":0}, duration: 1.20, ease: "power1.out" }, 10.1);
+        tl.set("#st-snow", {"opacity":0,"scale":1.1,"x":30,"y":10}, 0);
+        tl.to("#st-snow", { opacity: 1, duration: 0.3, ease: "sine.inOut" }, 11);
+        tl.to("#st-snow", { ...{"scale":1.06,"x":0,"y":0}, duration: 1.20, ease: "power1.out" }, 11);
+        tl.set("#st-ridge", {"opacity":0,"scale":1.04,"transformOrigin":"50% 50%"}, 0);
+        tl.to("#st-ridge", { opacity: 1, duration: 0.4, ease: "sine.inOut" }, 11.9);
+        tl.to("#st-ridge", { ...{"scale":1.12}, duration: 2.10, ease: "sine.inOut" }, 11.9);
+        tl.set("#st-hat", {"opacity":0,"scale":1,"transformOrigin":"50% 45%"}, 0);
+        tl.to("#st-hat", { opacity: 1, duration: 0.8, ease: "sine.inOut" }, 13.6);
+        tl.to("#st-hat", { ...{"scale":1.14}, duration: 3.00, ease: "sine.inOut" }, 13.6);
+        tl.set("#st-b", {"opacity":0,"scale":1.02}, 0);
+        tl.to("#st-b", { opacity: 1, duration: 0.7, ease: "sine.inOut" }, 16.2);
+        tl.to("#st-b", { ...{"scale":1.06}, duration: 3.90, ease: "none" }, 16.2);
+        tl.set("#st-inside", {"opacity":0,"scale":1,"transformOrigin":"50% 78%"}, 0);
+        tl.to("#st-inside", { opacity: 1, duration: 0.7, ease: "sine.inOut" }, 19.5);
+        tl.to("#st-inside", { ...{"scale":2.1}, duration: 2.30, ease: "sine.inOut" }, 19.5);
+        tl.set("#stage", { y: 0 }, 0);
+        tl.to("#stage", { y: -14, duration: 0.22, ease: "sine.out", yoyo: true, repeat: 1 }, 6.766666666666667);
+        tl.to("#stage", { y: -14, duration: 0.22, ease: "sine.out", yoyo: true, repeat: 1 }, 8);
+        tl.to("#stage", { y: -14, duration: 0.22, ease: "sine.out", yoyo: true, repeat: 1 }, 9.1);
+        tl.to("#stage", { y: -14, duration: 0.22, ease: "sine.out", yoyo: true, repeat: 1 }, 10.1);
+        tl.to("#stage", { y: -14, duration: 0.22, ease: "sine.out", yoyo: true, repeat: 1 }, 11);
+        tl.fromTo("#fade-out", { opacity: 0 }, { opacity: 1, duration: 0.9, ease: "sine.in" }, 20.5);
+        tl.set("#words", { color: "#2b1a0d", mixBlendMode: "multiply", textShadow: "0 0 26px rgba(255, 232, 190, 0.55)" }, 0.00);
+        tl.set("#words", { color: "#fbf0dc", mixBlendMode: "screen", textShadow: "0 0 22px rgba(255, 196, 120, 0.45)" }, 9.25);
+        tl.set("#words", { color: "#2b1a0d", mixBlendMode: "multiply", textShadow: "0 0 26px rgba(255, 232, 190, 0.55)" }, 11.15);
+        tl.set("#words", { color: "#fbf0dc", mixBlendMode: "screen", textShadow: "0 0 22px rgba(255, 196, 120, 0.45)" }, 19.85);
+        tl.fromTo("#t1-w0", { opacity: 0, filter: "blur(14px)", y: 18 }, { opacity: 1, filter: "blur(0px)", y: 0, duration: 1.1, ease: "sine.out" }, 0.60);
+        tl.fromTo("#t1-w1", { opacity: 0, filter: "blur(14px)", y: 18 }, { opacity: 1, filter: "blur(0px)", y: 0, duration: 1.1, ease: "sine.out" }, 0.95);
+        tl.fromTo("#t1-line", { scale: 0.9 }, { scale: 1.06, duration: 2.10, ease: "none" }, 0.6);
+        tl.to("#t1-line", { opacity: 0, filter: "blur(10px)", scale: 1.14, duration: 0.6, ease: "sine.in" }, 2.70);
+        tl.fromTo("#t2-line", { opacity: 0, scale: 1.45, filter: "blur(20px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 1.3, ease: "power2.out" }, 3.2);
+        tl.to("#t2-line", { opacity: 0, scale: 0.9, filter: "blur(8px)", duration: 0.55, ease: "sine.in" }, 5.00);
+        tl.fromTo("#t3-w0", { opacity: 0, x: 40, filter: "blur(10px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.8, ease: "sine.out" }, 8.30);
+        tl.fromTo("#t3-w1", { opacity: 0, x: 40, filter: "blur(10px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.8, ease: "sine.out" }, 8.52);
+        tl.fromTo("#t3-w2", { opacity: 0, x: 40, filter: "blur(10px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.8, ease: "sine.out" }, 8.74);
+        tl.fromTo("#t3-w3", { opacity: 0, x: 40, filter: "blur(10px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.8, ease: "sine.out" }, 8.96);
+        tl.to("#t3-line", { x: -16, skewX: -4, duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 1 }, 8.00);
+        tl.to("#t3-line", { filter: "blur(3px)", duration: 0.35, ease: "sine.inOut", yoyo: true, repeat: 1 }, 9.10);
+        tl.fromTo("#t3-line", { scale: 1 }, { scale: 0.86, duration: 5.40, ease: "none" }, 8.3);
+        tl.to("#t3-line", { opacity: 0, filter: "blur(12px)", y: -30, duration: 0.8, ease: "sine.in" }, 12.90);
+        tl.fromTo("#t4-w0", { opacity: 0, y: 90, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.7, ease: "power2.out" }, 17.37);
+        tl.fromTo("#t4-w1", { opacity: 0, y: 90, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.7, ease: "power2.out" }, 17.51);
+        tl.fromTo("#t4-w2", { opacity: 0, y: 90, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.7, ease: "power2.out" }, 17.65);
+        tl.to("#t4-line", { x: -216, y: 440, scale: 0.12, filter: "blur(6px)", opacity: 0, duration: 0.75, ease: "power2.in" }, 18.68);
+        window.__timelines["story"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

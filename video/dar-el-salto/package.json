@@ -1,0 +1,13 @@
+{
+  "name": "co-reel-dar-el-salto",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "fetch-media": "bash scripts/fetch-media.sh",
+    "build": "node scripts/build-salto.mjs",
+    "dev": "npx --yes hyperframes@0.8.81 preview",
+    "check": "npx --yes hyperframes@0.8.81 check",
+    "render": "npx --yes hyperframes@0.8.81 render",
+    "publish": "npx --yes hyperframes@0.8.81 publish"
+  }
+}

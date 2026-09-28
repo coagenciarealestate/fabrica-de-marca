@@ -1,6 +1,6 @@
 # Fábrica de Assets de Marca — C&O
 
-App de producción para generar todas las piezas de marca de C&O — La Casa del Real Estate desde un solo lugar (redes sociales, comercial, presentaciones y landing de campaña).
+App de producción para generar todas las piezas de marca de C&O — La Casa del Marketing desde un solo lugar (redes sociales, comercial, presentaciones y landing de campaña).
 
 ## Estado actual
 
@@ -29,6 +29,7 @@ Requisitos: Node.js 22+ y FFmpeg (en Claude Code web se instala solo con el hook
 ### Reels
 
 - [`video/lo-que-te-rodea/`](video/lo-que-te-rodea/) — *"Lo que te rodea cambia, cuando tú cambias. Nosotros entendemos por qué."* Macros de materia cuyo borde natural hace el match cut + diseño sonoro cinematográfico. Planeación en [`PLAN.md`](video/lo-que-te-rodea/PLAN.md).
+- [`video/dar-el-salto/`](video/dar-el-salto/) — *"Existen momentos donde sabes, que es tiempo de: Dar el salto"*. Un conejo cruza un mundo que cambia hasta saltar dentro de un sombrero de mago. Fotografía de arte dorada, dos clips de video, texto que vive en el aire. Planeación en [`PLAN.md`](video/dar-el-salto/PLAN.md).
 
 ## Próximas fases
 

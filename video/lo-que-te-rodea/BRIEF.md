@@ -2,7 +2,7 @@
 workflow: general-video
 flow: automation
 storyboard: no
-message: "Lo que te rodea cambia, cuando tú cambias. Nosotros entendemos por qué."
+message: "Para transformar el mundo, hay que empezar cambiando las cosas en casa."
 destination: reel (Instagram / TikTok)
 aspect: "9:16"
 language: es

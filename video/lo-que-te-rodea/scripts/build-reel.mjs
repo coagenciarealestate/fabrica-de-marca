@@ -97,11 +97,11 @@ const SMEAR = [snap(8 * BEAT), snap(21 * BEAT)];
 // Frases sobre el borde. Cambian en un corte, como en la referencia.
 const at = (target) => shots.reduce((best, s) => (Math.abs(s.t - target) < Math.abs(best - target) ? s.t : best), 0);
 const phrases = [
-  { id: "p1", text: "Lo que te rodea", start: 9 * BEAT, size: 58 },
-  { id: "p2", text: "cambia,", start: 13 * BEAT, size: 64, italic: true },
-  { id: "p3", text: "cuando tú cambias.", start: 16 * BEAT, size: 58 },
-  { id: "p4", text: "Nosotros entendemos", start: 21 * BEAT, size: 60 },
-  { id: "p5", text: "por qué.", start: 24 * BEAT, size: 96, italic: true },
+  { id: "p1", text: "Para transformar", start: 9 * BEAT, size: 58 },
+  { id: "p2", text: "el mundo,", start: 13 * BEAT, size: 66, italic: true },
+  { id: "p3", text: "hay que empezar", start: 16 * BEAT, size: 60 },
+  { id: "p4", text: "cambiando las cosas", start: 21 * BEAT, size: 62 },
+  { id: "p5", text: "en casa.", start: 24 * BEAT, size: 100, italic: true },
 ].map((p) => ({ ...p, start: snap(p.start) }));
 phrases.forEach((p, i) => (p.end = i + 1 < phrases.length ? phrases[i + 1].start : snap(LOGO_AT - 0.2)));
 
@@ -118,34 +118,35 @@ function buildHtml() {
   // Alineación: cada foto escala desde su propio borde (transform-origin en el borde), que
   // se desplaza a HORIZON. Así el horizonte queda quieto aunque la toma respire.
   // Cada toma respira distinto: un empuje lento con deriva leve (nada idéntico, nada rígido)
+  // El texto no es indiferente a la toma: vive en #reel-motion, que se mueve exactamente como
+  // la superficie (mismo acercamiento, deriva y giro, con el pivote en el horizonte). Como en el
+  // referente, la frase queda posada sobre la materia y se acerca con ella.
+  const f3 = (v) => +(+v).toFixed(4);
   const shotTweens = shots
     .map((s) => {
       const im = IMG[s.id];
       const y0 = (im.edge / 100) * H;
       const cover = Math.max(1, HORIZON / y0, (H - HORIZON) / (H - y0)) * 1.025;
       const dy = (HORIZON - y0).toFixed(1);
-      const d = Math.max(0.3, s.end - s.t + 0.2).toFixed(2);
+      const d = Math.floor((s.end - s.t) * 1000 - 1) / 1000; // termina justo antes del siguiente corte
       const sel = `"#reel-shot-${s.i}"`;
       const side = r() < 0.5 ? -1 : 1;
+      // k = acercamiento relativo (1 = cuadro justo cubierto), x en px, rot en grados
+      let a, b;
+      if (s.i === 0) { a = { k: 1, x: 0, rot: 0 }; b = { k: 1.1, x: 0, rot: 0 }; } // nos acercamos al mundo
+      else if (im.move === "D") { a = { k: 1.06, x: 34 * side, rot: 0 }; b = { k: 1.075, x: -10 * side, rot: 0 }; } // deriva
+      else if (im.move === "G") { a = { k: 1.08, x: 0, rot: 1.1 * side }; b = { k: 1.1, x: 0, rot: 0 }; } // giro leve
+      else if (im.move === "V") { a = { k: 1.04, x: 0, rot: -0.9 * side }; b = { k: 1.1, x: 0, rot: 0.4 * side }; } // materia viva
+      else { a = { k: 1, x: f3((r() - 0.5) * 12), rot: 0 }; b = { k: f3(1.05 + r() * 0.03), x: 0, rot: 0 }; } // se acerca
+      const hue = s.id === 213;
       const lines = [`        tl.set(${sel}, { transformOrigin: "50% ${im.edge}%", y: ${dy} }, 0);`];
-      let from, to;
-      if (s.i === 0) {
-        from = { scale: (cover * 1.1).toFixed(3) }; to = { scale: cover.toFixed(3) };
-      } else if (im.move === "D") { // deriva lateral
-        from = { scale: (cover * 1.06).toFixed(3), x: 34 * side }; to = { scale: (cover * 1.05).toFixed(3), x: -10 * side };
-      } else if (im.move === "G") { // giro leve alrededor del borde
-        from = { scale: (cover * 1.09).toFixed(3), rotation: 1.1 * side }; to = { scale: (cover * 1.07).toFixed(3), rotation: 0 };
-      } else if (im.move === "V") { // materia viva: empuje, giro lento y, en la burbuja, color que fluye
-        from = { scale: (cover * 1.1).toFixed(3), rotation: -0.9 * side }; to = { scale: (cover * 1.06).toFixed(3), rotation: 0.4 * side };
-        if (s.id === 213) { from.filter = "hue-rotate(0deg)"; to.filter = "hue-rotate(50deg)"; }
-      } else { // empuje
-        from = { scale: (cover * (1.04 + r() * 0.03)).toFixed(3), x: ((r() - 0.5) * 12).toFixed(1) }; to = { scale: cover.toFixed(3), x: 0 };
-      }
-      const obj = (o) => "{ " + Object.entries(o).map(([k, v]) => `${k}: ${typeof v === "string" && isNaN(+v) ? `"${v}"` : v}`).join(", ") + " }";
-      lines.push(`        tl.fromTo(${sel}, ${obj(from)}, { ...${obj(to)}, duration: ${s.i === 0 ? 1.8 : d}, ease: "sine.out" }, ${s.t});`);
-      if (SMEAR.some((x) => Math.abs(x - s.t) < 0.01) && s.id !== 213) {
+      lines.push(`        tl.fromTo(${sel}, { scale: ${f3(cover * a.k)}, x: ${a.x}, rotation: ${a.rot}${hue ? ', filter: "hue-rotate(0deg)"' : ""} }, { scale: ${f3(cover * b.k)}, x: ${b.x}, rotation: ${b.rot}${hue ? ', filter: "hue-rotate(50deg)"' : ""}, duration: ${d}, ease: "sine.inOut" }, ${s.t});`);
+      if (SMEAR.some((x) => Math.abs(x - s.t) < 0.01) && !hue) {
         lines.push(`        tl.fromTo(${sel}, { filter: "blur(18px) brightness(1.25)" }, { filter: "blur(0px) brightness(1)", duration: 0.28, ease: "power2.out" }, ${s.t});`);
       }
+      // el texto hace el mismo movimiento que la superficie
+      lines.push(`        tl.set("#reel-motion", { scale: ${a.k}, x: ${a.x}, rotation: ${a.rot} }, ${s.t});`);
+      lines.push(`        tl.to("#reel-motion", { scale: ${b.k}, x: ${b.x}, rotation: ${b.rot}, duration: ${d}, ease: "sine.inOut" }, ${s.t});`);
       return lines.join("\n");
     })
     .join("\n");
@@ -170,7 +171,7 @@ function buildHtml() {
   const phraseTweens = phrases
     .map((p) => {
       const inD = p.id === "p1" ? 0.6 : 0.24, outD = p.id === "p5" ? 0.5 : 0.16;
-      return `        tl.fromTo("#reel-${p.id}-text", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: ${inD}, ease: "sine.out" }, ${p.start});\n        tl.to("#reel-${p.id}-text", { opacity: 0, duration: ${outD}, ease: "sine.in" }, ${(p.end - outD).toFixed(3)});`;
+      return `        tl.fromTo("#reel-${p.id}-text", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: ${inD}, ease: "sine.out" }, ${p.start});\n        tl.to("#reel-${p.id}-text", { opacity: 0, duration: ${outD}, ease: "sine.in" }, ${(p.end - outD).toFixed(3)});\n        tl.fromTo("#reel-${p.id}", { scale: 1 }, { scale: ${p.id === "p5" ? 1.12 : 1.06}, duration: ${(p.end - p.start).toFixed(3)}, ease: "none" }, ${p.start});`;
     })
     .join("\n");
   // Fundido a negro al final del clímax (la última toma no se corta)
@@ -212,7 +213,13 @@ function buildHtml() {
           inset: 0;
           color: #f4e7cb;
         }
+        #reel-motion {
+          position: absolute;
+          inset: 0;
+          transform-origin: 50% ${HORIZON}px;
+        }
         #reel-words .phrase {
+          transform-origin: 50% ${HORIZON}px;
           display: flex;
           align-items: flex-end;
           justify-content: center;
@@ -236,7 +243,9 @@ function buildHtml() {
 ${shotTags}
       </div>
       <div id="reel-words">
+        <div id="reel-motion">
 ${phraseTags}
+        </div>
       </div>
       <div id="reel-fade"></div>
       </div>

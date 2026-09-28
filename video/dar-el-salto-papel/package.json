@@ -1,0 +1,14 @@
+{
+  "name": "co-reel-dar-el-salto-papel",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "fetch-media": "bash scripts/fetch-media.sh",
+    "cut": "python3 scripts/cut-sprites.py && python3 scripts/cut-hat.py",
+    "build": "node scripts/build-papel.mjs",
+    "dev": "npx --yes hyperframes@0.8.81 preview",
+    "check": "npx --yes hyperframes@0.8.81 check",
+    "render": "npx --yes hyperframes@0.8.81 render",
+    "publish": "npx --yes hyperframes@0.8.81 publish"
+  }
+}

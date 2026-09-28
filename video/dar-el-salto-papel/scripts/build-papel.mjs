@@ -318,97 +318,56 @@ ${tw.map((l) => "        " + l).join("\n")}
 `;
 }
 
-// ─── Música: violín solista y cuerdas, 120 BPM, Si menor → Re mayor ─────────
-// Un solo arco dramático y continuo, sin cortes: el violín canta la duda sola en la madriguera;
-// al salir entran las cuerdas con un ostinato que empuja (el camino); cada lugar sube un
-// escalón de armonía; en el sombrero todo crece hasta el despegue (16.0, tiempo fuerte, con
-// percusión); cuando entra al sombrero la orquesta respira (no se corta) y resuelve cálida
-// en Re mayor bajo la marca. El mundo de papel queda muy discreto por debajo.
+// ─── Música: el lenguaje sonoro del video de referencia (Opus) ─────────────
+// Mismo instrumento y misma arquitectura, notas propias:
+//  · colchón sostenido Re add9 (Re2 + Mi4 Fa#4 La4 Mi5) que suena casi todo el tiempo y crece;
+//  · campanitas (fundamental + octava, caída de afinación al atacar) en parejas, una por pulso,
+//    en la pentatónica de Re — cada 0.5 s al inicio, cada 0.25 s desde la tormenta, más rápido
+//    en el sombrero;
+//  · crepitar granulado que aparece a mitad del viaje y crece con la densidad;
+//  · SILENCIO cuando el conejo entra al sombrero; regreso del colchón con tres notas lentas;
+//  · la marca: colchón y notas que se quedan y se apagan.
 function buildAudio() {
-  const m = createMix(TOTAL, 20261001);
+  const m = createMix(TOTAL, 20261002);
   const r = m.r;
-  const b = (n) => n * BEAT; // tiempo en pulsos
+  const DROP = q(ENTRY + 0.02), BACK = 17.3;
 
-  // Armonía por compases (inicio, fin, [chelos], [violas/violines 2], intensidad)
-  const chords = [
-    [0.0, 3.5, [35, 47], [54, 62], 0.18],          // Si m — la duda (solo chelos y violas muy suaves)
-    [3.5, 6.0, [35, 47], [54, 59, 62, 66], 0.38],  // Si m — sale
-    [6.0, 8.0, [31, 43], [50, 55, 59, 62], 0.48],  // Sol
-    [8.0, 9.5, [28, 40], [52, 55, 59, 64], 0.6],   // Mi m — la tormenta
-    [9.5, 11.0, [30, 42], [50, 54, 57, 62], 0.7], // Re/Fa#
-    [11.0, 12.0, [31, 43], [50, 55, 59, 62], 0.8],// Sol
-    [12.0, 13.0, [33, 45], [52, 57, 61, 64], 0.9],// La
-    [13.0, 14.0, [35, 47], [54, 59, 62, 66], 1.0],// Si m — el sombrero
-    [14.0, 15.0, [31, 43], [55, 59, 62, 67], 1.15],// Sol
-    [15.0, 15.5, [38, 50], [54, 57, 62, 66], 1.3], // Re
-    [15.5, 16.0, [33, 45], [52, 57, 61, 64], 1.45], // La
-    [16.0, 16.9, [38, 50], [54, 57, 62, 66, 69], 1.7], // RE — el salto
-  ];
-  let prevHi = null;
-  chords.forEach(([t0, t1, lo, hi, k]) => {
-    const d = t1 - t0 + 0.12; // se enciman un poco: legato, sin huecos
-    lo.forEach((n, i) => m.bowed(t0, d, n, 0.045 * k * (i ? 0.8 : 1), { players: 3, body: "cello", att: t0 === 0 ? 1.5 : 0.35, rel: 0.5, from: null, pan: -0.25 + i * 0.1 }));
-    hi.forEach((n, i) => m.bowed(t0, d, n, 0.03 * k, { players: 3, body: i < 2 ? "viola" : "violin", att: t0 === 0 ? 1.8 : 0.3, rel: 0.5, bright: 0.6 + 0.4 * k, pan: -0.4 + (i / Math.max(1, hi.length - 1)) * 0.8, from: prevHi && prevHi[i] != null && Math.abs(prevHi[i] - n) <= 4 ? prevHi[i] : null }));
-    prevHi = hi;
+  // 1) Colchón (crece de casi nada a pleno, como en la referencia)
+  m.drone(0.5, DROP, [38], 0.05, { att: 3, rel: 0.02, swell: 2.2, send: 0.2, bright: 0.2 });           // Re2 (la base)
+  m.drone(0.5, DROP, [64, 66, 69], 0.03, { att: 2.5, rel: 0.02, swell: 1.6, send: 0.55, bright: 0.45 }); // Mi4 Fa#4 La4
+  m.drone(6.0, DROP, [76], 0.014, { att: 2, rel: 0.02, swell: 1.2, send: 0.6, bright: 0.5 });           // Mi5 se suma
+
+  // 2) Campanitas: parejas de notas en la rejilla, cada vez más densa
+  const pool = [78, 69, 76, 85, 73, 81, 66, 74, 83, 71]; // Fa#5 La4 Mi5 Do#6 Do#5 La5 Fa#4 Re5 Si5 Si4
+  const grid = [];
+  for (let t = 1.0; t < 8.0 - 1e-6; t += 0.5) grid.push(t);
+  for (let t = 8.0; t < 13.0 - 1e-6; t += 0.25) grid.push(t);
+  for (let t = 13.0; t < DROP - 0.05; t += t < 15.0 ? 0.25 : 0.125) grid.push(t);
+  grid.forEach((t, i) => {
+    const u = t / DROP;
+    const a = pool[(i * 3) % pool.length], bnote = pool[(i * 3 + 5) % pool.length];
+    const vel = (0.13 + 0.1 * u) * (0.85 + r() * 0.3);
+    m.chime(t + (r() - 0.5) * 0.006, a, vel, { pan: i % 2 ? 0.35 : -0.35, delay: 0.3 + 0.15 * u });
+    if (t >= 2.0) m.chime(t + 0.004, bnote, vel * 0.7, { pan: i % 2 ? -0.25 : 0.25, delay: 0.3 });
   });
 
-  // Ostinato (el camino): corcheas de violas en spiccato desde que sale; crece y se duplica
-  const pattern = (lo, hi) => [hi[0], hi[1] ?? hi[0], hi[hi.length - 1] ?? hi[0], hi[1] ?? hi[0]];
-  for (let t = 3.5; t < 16.0 - 1e-6; t += BEAT / 2) {
-    const c = chords.find(([t0, t1]) => t >= t0 && t < t1);
-    const k = c[4], pat = pattern(c[2], c[3]);
-    const i = Math.round(t / (BEAT / 2));
-    m.bowed(t, 0.2, pat[i % 4], 0.05 * k * (i % 2 ? 0.75 : 1), { players: 3, body: "viola", short: true, pan: i % 2 ? 0.3 : -0.3, send: 0.35 });
-    if (t >= 9.5 && i % 2 === 0) m.bowed(t, 0.2, c[2][1], 0.055 * k, { players: 3, body: "cello", short: true, send: 0.3 });
-    if (t >= 13.0) m.bowed(t + BEAT / 4, 0.16, pat[(i + 2) % 4] + 12, 0.035 * k, { players: 3, body: "violin", short: true, pan: i % 2 ? -0.35 : 0.35, send: 0.35 });
-  }
+  // 3) Crepitar que crece desde la mitad del viaje hasta el salto
+  m.grains(7.5, DROP, { density: [6, 120], gain: [0.01, 0.08] });
+  m.noise(12.0, DROP, { type: "hp", f: 4200, gain: 0.02, env: (u) => Math.pow(u, 2.2), send: 0.5 }); // aire
 
-  // El violín solista: la voz del conejo (legato, portamento entre notas)
-  const solo = [
-    // la duda (sola, íntima)
-    [b(1), b(3), 78], [b(4), b(1), 76], [b(5), b(2), 74],
-    // sale (las cuerdas entran)
-    [3.5, b(1), 71], [4.0, b(1), 73], [4.5, b(2), 74], [5.5, b(1), 78], [6.0, b(2), 76], [7.0, b(1), 74], [7.5, b(1), 73],
-    // la tormenta y el camino (sube)
-    [8.0, b(2), 79], [9.0, b(1), 78], [9.5, b(2), 81], [10.5, b(1), 79], [11.0, b(2), 83], [12.0, b(1), 81], [12.5, b(1), 85],
-    // el sombrero: canta alto
-    [13.0, b(2), 86], [14.0, b(1), 83], [14.5, b(1), 85], [15.0, b(1), 86], [15.5, b(1), 88], [16.0, b(3), 86],
-    // adentro: respira y resuelve
-    [17.5, b(2), 81], [18.5, b(1), 78], [19.0, b(1), 76],
-    // la marca
-    [19.5, b(6), 74],
-  ];
-  solo.forEach(([t, d, n], i) => {
-    const prev = solo[i - 1];
-    const legato = prev && Math.abs(prev[0] + prev[1] - t) < 0.02 && Math.abs(prev[2] - n) <= 7;
-    const inten = t < 3.5 ? 0.07 : t < 8 ? 0.09 : t < 13 ? 0.11 : t < 17 ? 0.17 : t < 19.5 ? 0.08 : 0.11;
-    m.bowed(t, d + (legato ? 0.03 : 0), n, inten, { from: legato ? prev[2] : null, att: legato ? 0.05 : 0.22, rel: t >= 19.5 ? 2.2 : 0.3, vib: 1.1, pan: 0.05, send: 0.75, swell: d > 1 ? 0.25 : 0 });
+  // 4) SILENCIO (el conejo desaparece en el sombrero) → regreso
+  m.gate(DROP, BACK);
+  m.drone(BACK, TOTAL - 1.4, [38], 0.06, { att: 0.25, rel: 1.4, send: 0.2, bright: 0.2 });
+  m.drone(BACK, TOTAL - 1.4, [62, 66, 69, 76], 0.028, { att: 0.3, rel: 1.4, send: 0.6, bright: 0.45 });
+  [[BACK, 66], [BACK + 0.5, 76], [BACK + 1.0, 69], [BACK + 1.9, 78], [BACK + 2.4, 74]].forEach(([t, n], i) => m.chime(t, n, 0.17 - i * 0.012, { pan: i % 2 ? 0.3 : -0.3, delay: 0.45, len: 2.6 }));
+
+  // 5) La marca: notas que se abren y se quedan
+  [[END_AT, 74, 86], [END_AT + 0.5, 78, 0], [END_AT + 1.0, 81, 0], [END_AT + 2.0, 76, 0], [END_AT + 3.0, 69, 0]].forEach(([t, n, n2], i) => {
+    m.chime(t, n, 0.17 - i * 0.016, { pan: (i % 3 - 1) * 0.35, delay: 0.5, len: 3 });
+    if (n2) m.chime(t + 0.004, n2, 0.07, { pan: 0.3, delay: 0.5, len: 3 });
   });
-  // violines 1 doblan la melodía una octava abajo desde el sombrero (épico)
-  solo.filter(([t]) => t >= 13 && t < 17).forEach(([t, d, n], i, arr) => m.bowed(t, d, n - 12, 0.06, { players: 4, from: i ? arr[i - 1][2] - 12 : null, att: 0.08, rel: 0.3, pan: -0.2, send: 0.7 }));
 
-  // Percusión de cine: tambores graves con cuerpo (no sub) que entran con la tormenta
-  const drum = (t, g) => { m.tone(t, 0.5, 120, 70, g, { decay: 7, send: 0.45 }); m.noise(t, t + 0.12, { f: 500, gain: g * 0.6, env: (u) => Math.exp(-u * 5), send: 0.5 }); };
-  for (let t = 8.0; t < 16.0; t += t < 12.0 ? 1.0 : BEAT) drum(t, 0.03 + 0.08 * ((t - 8) / 8) ** 1.5);
-  drum(16.0, 0.16); // el salto
-  m.noise(14.0, 16.0, { type: "hp", f: 4500, gain: 0.035, env: (u) => Math.pow(u, 3), send: 0.6 }); // platillo que crece
-  m.noise(16.0, 18.5, { type: "hp", f: 5000, gain: 0.03, env: (u) => Math.exp(-u * 3), send: 0.7 }); // y se abre
-
-  // Después del salto: la orquesta respira (decrece, no se corta) y resuelve en Re
-  m.bowed(16.8, 2.9, 38, 0.025, { players: 3, body: "cello", att: 0.6, rel: 1 });
-  m.bowed(16.8, 2.9, 50, 0.022, { players: 3, body: "cello", att: 0.6, rel: 1 });
-  [57, 62, 66].forEach((n, i) => m.bowed(16.9, 2.8, n, 0.016, { players: 3, body: i ? "violin" : "viola", att: 0.8, rel: 1, pan: -0.3 + i * 0.3 }));
-  // La Casa del Marketing: Re add9, amplio, cálido, se queda
-  [[38, "cello"], [45, "cello"], [50, "viola"], [57, "viola"], [62, "violin"], [64, "violin"], [66, "violin"], [69, "violin"]].forEach(([n, body], i) =>
-    m.bowed(END_AT, TOTAL - END_AT - 1.2, n, body === "cello" ? 0.05 : 0.038, { players: 3, body, att: 0.9, rel: 1.4, pan: -0.45 + (i / 7) * 0.9, swell: 0.2 }));
-  [[END_AT + 0.05, 86], [END_AT + 0.6, 90], [END_AT + 1.3, 93]].forEach(([t, n], i) => m.bell(t, n, 0.028, { pan: (i - 1) * 0.4, len: 3 }));
-
-  // La magia al entrar (campanas suaves) y el mundo de papel, muy discreto
-  [93, 90, 86, 81].forEach((n, i) => m.bell(ENTRY + 0.05 + i * 0.09, n, 0.035, { pan: 0.4 - i * 0.25, len: 2.5 }));
-  scenes.slice(1, 8).forEach((sc) => m.noise(sc.start, sc.start + 0.09, { type: "bp", f: 2600, q: 0.8, gain: 0.008, env: (u) => Math.sin(Math.PI * u) * (1 - u), send: 0.25 }));
-  for (let t = 0.2; t < 3.3; t += 0.42) for (let k = 0; k < 3; k++) m.tone(t + k * 0.035, 0.025, 4700, 4600, 0.003, { decay: 90, pan: 0.5, send: 0.4 });
-
-  const { L, R } = m.render(3, { hp: 32, delayTime: 0.375, feedback: 0.25 });
+  const { L, R } = m.render(3, { hp: 30, delayTime: 0.375, feedback: 0.32 });
   const f0 = Math.floor((TOTAL - 1.4) * 44100);
   for (let i = f0; i < L.length; i++) { const g = 1 - (i - f0) / (L.length - f0); L[i] *= g; R[i] *= g; }
   return wav16(L, R);

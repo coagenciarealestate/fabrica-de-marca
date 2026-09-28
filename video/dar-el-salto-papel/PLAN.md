@@ -38,18 +38,16 @@ dorada, la marca.
 | 18.0–20.0 | Adentro del sombrero | — | — |
 | 20.0–24.5 | C&O · *La Casa del Marketing* | — | — |
 
-**Música: violín solista y cuerdas (120 BPM, Si menor → Re mayor).** Todos los cortes caen en
-un tiempo del compás (3.5 · 6 · 8 · 9.5 · 11 · 12 · 13) y el despegue al sombrero cae en el
-tiempo fuerte de 16.0.
-- La duda: el violín canta solo sobre chelos casi inaudibles.
-- Sale al mundo: entran las cuerdas y un ostinato de violas en corcheas (el camino); cada lugar
-  sube un escalón de armonía (Si m → Sol → Mi m → Re/Fa# → Sol → La).
-- Desde la tormenta: tambores graves con cuerpo (sin sub) que se aceleran; en el sombrero los
-  violines doblan la melodía, platillo que crece → **Re mayor en el salto** (el punto más alto).
-- Cuando entra al sombrero la orquesta **respira** (baja sin cortarse) y resuelve cálida; bajo la
-  marca, un Re add9 amplio que se queda. Sin silencios ni cortes: todo ligado.
-- El violín es síntesis de cuerda frotada (sierra PolyBLEP → resonancias de caja, vibrato tardío,
-  ruido de arco, portamento). Arco dinámico: −25 dB (duda) → −12 dB (salto) → −23 (respira) → −14 (marca).
+**Música: el lenguaje sonoro del video de referencia (Opus), con notas propias.** No usamos
+su pista (es música de un comercial ajeno); replicamos instrumento y arquitectura:
+- Colchón sostenido Re add9 (Re2 + Mi4 Fa#4 La4, luego Mi5): líneas limpias, crece de casi nada.
+- Campanitas: fundamental + octava casi igual, caída de afinación de ~35 cents al atacar,
+  decaimiento ~0.6 s, en parejas, pentatónica de Re; cada 0.5 s → 0.25 s desde la tormenta →
+  0.125 s antes del salto. Delay estéreo y reverb.
+- Crepitar granulado (400–1600 Hz) que aparece a mitad del viaje y crece con la densidad.
+- Silencio cuando el conejo entra al sombrero (16.45 → 17.3 s, igual que el drop de la
+  referencia en 16.2); regresa el colchón con tres notas lentas; la marca queda sonando y se apaga.
+- Los cortes de imagen caen en la rejilla de 0.5 s (120 BPM).
 
 ## Archivos
 

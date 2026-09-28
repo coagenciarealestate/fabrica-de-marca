@@ -255,6 +255,69 @@ export function createMix(totalSecs, seed = 1) {
     }
   };
 
+  // Campanita (el timbre de las notas del video de referencia): fundamental + octava casi igual,
+  // un toque de 3er parcial, ataque de 6 ms con una caída de afinación de ~35 cents en 60 ms
+  // (los "ganchos" del espectrograma), decaimiento ~0.6 s; va a reverb y a delay.
+  api.chime = (t0, midi, vel = 0.1, { pan = 0, send = 0.55, delay = 0.35, len = 2.2, bend = 0.35, octave = 0.75, dec = 3.2 } = {}) => {
+    const f = midiHz(midi);
+    const s0 = Math.floor(t0 * SR);
+    const n = Math.floor(len * SR);
+    const [gl, gr] = panG(pan);
+    let p1 = 0, p2 = 0, p3 = 0;
+    for (let i = 0; i < n; i++) {
+      const t = i / SR;
+      const bendNow = Math.pow(2, (bend * Math.exp(-t / 0.03)) / 12);
+      p1 += (2 * Math.PI * f * bendNow) / SR;
+      p2 += (2 * Math.PI * f * 2.002 * bendNow) / SR;
+      p3 += (2 * Math.PI * f * 3.01 * bendNow) / SR;
+      const att = Math.min(1, t / 0.006);
+      const v = (Math.sin(p1) * Math.exp(-t * dec) + octave * Math.sin(p2) * Math.exp(-t * dec * 1.4) + 0.06 * Math.sin(p3) * Math.exp(-t * dec * 3)) * att * vel * 0.5;
+      add(dry, s0 + i, v * gl, v * gr);
+      add(wet, s0 + i, v * gl * send, v * gr * send);
+      add(dly, s0 + i, v * gl * delay, v * gr * delay);
+    }
+  };
+
+  // Colchón sostenido (órgano/cuerdas suaves): pocos armónicos, chorus lento, crece con swell
+  api.drone = (t0, t1, midis, vel = 0.05, { att = 1.5, rel = 0.3, swell = 0, send = 0.5, bright = 0.4 } = {}) => {
+    const s0 = Math.floor(t0 * SR);
+    const hold = t1 - t0;
+    const n = Math.floor((hold + rel) * SR);
+    const voices = [];
+    midis.forEach((m, k) => voices.push({ f: midiHz(m), ph: r() * 6.28, lr: 0.2 + r() * 0.3, pan: midis.length > 1 ? (k / (midis.length - 1) - 0.5) * 0.7 : 0 })); // una voz limpia por nota
+    const lpL = biquad("lp", 900 + bright * 2400, 0.6), lpR = biquad("lp", 900 + bright * 2400, 0.6);
+    for (let i = 0; i < n; i++) {
+      const t = i / SR;
+      let e = Math.min(1, t / att) * (1 + swell * Math.min(1, t / hold));
+      if (t > hold) e *= Math.max(0, 1 - (t - hold) / rel);
+      let l = 0, rr = 0;
+      for (const v of voices) {
+        const ch = 1;
+        const w = 2 * Math.PI * v.f * ch * t + v.ph;
+        const smp = Math.sin(w) + 0.14 * Math.sin(2 * w) + 0.03 * Math.sin(3 * w); // limpio, casi puro
+        const [gl, gr] = panG(v.pan);
+        l += smp * gl; rr += smp * gr;
+      }
+      const sc = (vel * e) / Math.sqrt(voices.length);
+      const ol = bq(lpL, l) * sc, or = bq(lpR, rr) * sc;
+      add(dry, s0 + i, ol, or);
+      add(wet, s0 + i, ol * send, or * send);
+    }
+  };
+
+  // Granos (el crepitar que crece en la referencia): chispitas de ruido en 400–1500 Hz
+  api.grains = (t0, t1, { density = [5, 60], gain = [0.01, 0.04], f = [400, 1600] } = {}) => {
+    let t = t0;
+    while (t < t1) {
+      const u = (t - t0) / (t1 - t0);
+      const d = density[0] + (density[1] - density[0]) * u * u;
+      const g = gain[0] + (gain[1] - gain[0]) * u * u;
+      const ff = f[0] + r() * (f[1] - f[0]);
+      api.noise(t, t + 0.012 + r() * 0.02, { type: "bp", f: ff, q: 4, gain: g * (0.5 + r()), env: (x) => Math.sin(Math.PI * x), send: 0.3, pan: (r() - 0.5) * 1.4 });
+      t += (0.5 + r()) / d;
+    }
+  };
+
   // Cuerda frotada (violín / viola / chelo): sierra con PolyBLEP (el arco) → resonancias de la
   // caja (picos de cuerpo y "bridge hill") → paso-bajos. Vibrato que entra tarde, presión de arco
   // que respira, ruido de crin, portamento cuando viene ligada de otra nota.

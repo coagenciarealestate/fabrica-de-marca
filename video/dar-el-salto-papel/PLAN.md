@@ -38,16 +38,17 @@ dorada, la marca.
 | 18.0–20.0 | Adentro del sombrero | — | — |
 | 20.0–24.5 | C&O · *La Casa del Marketing* | — | — |
 
-**Música: el lenguaje sonoro del video de referencia (Opus), con notas propias.** No usamos
-su pista (es música de un comercial ajeno); replicamos instrumento y arquitectura:
-- Colchón sostenido Re add9 (Re2 + Mi4 Fa#4 La4, luego Mi5): líneas limpias, crece de casi nada.
-- Campanitas: fundamental + octava casi igual, caída de afinación de ~35 cents al atacar,
-  decaimiento ~0.6 s, en parejas, pentatónica de Re; cada 0.5 s → 0.25 s desde la tormenta →
-  0.125 s antes del salto. Delay estéreo y reverb.
-- Crepitar granulado (400–1600 Hz) que aparece a mitad del viaje y crece con la densidad.
-- Silencio cuando el conejo entra al sombrero (16.45 → 17.3 s, igual que el drop de la
-  referencia en 16.2); regresa el colchón con tres notas lentas; la marca queda sonando y se apaga.
-- Los cortes de imagen caen en la rejilla de 0.5 s (120 BPM).
+**Música: una experiencia sonora con el timbre del video de referencia (notas propias).**
+- Cada mundo tiene su armonía y el colchón cambia ligado de uno a otro (Si m → Sol maj7 → Re/Fa#
+  → Mi m9 → La sus → Si m → Sol → La, que crece en el sombrero → **Re mayor en el salto**;
+  adentro Sol maj7 → La; la marca en Re add9). Una nota grave de piano ancla cada cambio.
+- Melodía (campanitas) que cuenta la historia: pregunta que cae en la madriguera, esperanza al
+  salir, tormenta, sube lugar a lugar, el punto más alto en el sombrero, Re en el salto.
+- Arpegio que sigue la armonía y se acelera con el viaje; crepitar y aire que crecen al salto.
+- Soplos que llevan a cada corte; el clima como música (grillos, viento, lluvia de cristal con
+  trueno lejano, nieve de campanitas altas, niebla).
+- Sin cortes: al entrar al sombrero caen campanas y la música **respira** (baja suave y vuelve);
+  final que se desvanece en 1.8 s.
 
 ## Archivos
 

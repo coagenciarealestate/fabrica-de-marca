@@ -428,6 +428,10 @@ export function createMix(totalSecs, seed = 1) {
     api.noise(t0, t0 + 0.06, { f: 900, gain: gain * 0.8, env: (u) => Math.exp(-u * 5), send: 0.15, pan });
   };
 
+  // Respiración: baja el volumen general a `depth` (0–1) con curvas suaves (sin cortes)
+  const ducks = [];
+  api.duck = (t0, t1, depth = 0.2, fade = 0.3) => ducks.push([t0, t1, depth, fade]);
+
   // Silencio absoluto en un rango (también corta colas de reverb al masterizar)
   const gates = [];
   api.gate = (t0, t1) => gates.push([t0, t1]);
@@ -450,6 +454,17 @@ export function createMix(totalSecs, seed = 1) {
     for (let i = 0; i < N; i++) {
       L[i] = dry.L[i] + rvL[i] * 0.9;
       R[i] = dry.R[i] + rvR[i] * 0.9;
+    }
+    for (const [a, b, depth, fade] of ducks) {
+      const i0 = Math.floor((a - fade) * SR), i1 = Math.floor((b + fade) * SR);
+      for (let i = Math.max(0, i0); i < i1 && i < N; i++) {
+        const t = i / SR;
+        let u = 1; // 1 = dentro del duck
+        if (t < a) u = (t - (a - fade)) / fade; else if (t > b) u = 1 - (t - b) / fade;
+        u = 0.5 - 0.5 * Math.cos(Math.PI * Math.max(0, Math.min(1, u)));
+        const g = 1 - (1 - depth) * u;
+        L[i] *= g; R[i] *= g;
+      }
     }
     for (const [a, b] of gates) {
       const i0 = Math.floor(a * SR), i1 = Math.floor(b * SR);

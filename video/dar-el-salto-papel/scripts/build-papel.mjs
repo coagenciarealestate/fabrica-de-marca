@@ -318,58 +318,97 @@ ${tw.map((l) => "        " + l).join("\n")}
 `;
 }
 
-// ─── Música: el lenguaje sonoro del video de referencia (Opus) ─────────────
-// Mismo instrumento y misma arquitectura, notas propias:
-//  · colchón sostenido Re add9 (Re2 + Mi4 Fa#4 La4 Mi5) que suena casi todo el tiempo y crece;
-//  · campanitas (fundamental + octava, caída de afinación al atacar) en parejas, una por pulso,
-//    en la pentatónica de Re — cada 0.5 s al inicio, cada 0.25 s desde la tormenta, más rápido
-//    en el sombrero;
-//  · crepitar granulado que aparece a mitad del viaje y crece con la densidad;
-//  · SILENCIO cuando el conejo entra al sombrero; regreso del colchón con tres notas lentas;
-//  · la marca: colchón y notas que se quedan y se apagan.
+// ─── Música: una experiencia sonora (timbre del video de referencia, historia propia) ──
+// Campanitas + colchón limpio + crepitar, pero ahora cada mundo tiene su armonía (el colchón
+// cambia ligado de un acorde al otro), una melodía que cuenta la historia (pregunta → esperanza →
+// tormenta → sube → el salto en Re mayor), arpegios que siguen la armonía, soplos que llevan a
+// cada corte y el clima de cada lugar tejido como música. Sin cortes: donde había silencio,
+// ahora la música respira (baja suave y vuelve).
 function buildAudio() {
-  const m = createMix(TOTAL, 20261002);
+  const m = createMix(TOTAL, 20261003);
   const r = m.r;
-  const DROP = q(ENTRY + 0.02), BACK = 17.3;
+  const X = 0.35; // encime entre acordes (legato)
 
-  // 1) Colchón (crece de casi nada a pleno, como en la referencia)
-  m.drone(0.5, DROP, [38], 0.05, { att: 3, rel: 0.02, swell: 2.2, send: 0.2, bright: 0.2 });           // Re2 (la base)
-  m.drone(0.5, DROP, [64, 66, 69], 0.03, { att: 2.5, rel: 0.02, swell: 1.6, send: 0.55, bright: 0.45 }); // Mi4 Fa#4 La4
-  m.drone(6.0, DROP, [76], 0.014, { att: 2, rel: 0.02, swell: 1.2, send: 0.6, bright: 0.5 });           // Mi5 se suma
+  // Armonía: [inicio, fin, bajo, [colchón], intensidad]
+  const H = [
+    [0.4, 3.5, 47, [62, 66, 73], 0.35],        // Si m(add9) — la duda
+    [3.5, 6.0, 43, [62, 66, 71], 0.45],        // Sol maj7 — sale
+    [6.0, 8.0, 42, [62, 69, 76], 0.55],        // Re/Fa# — el mundo se abre
+    [8.0, 9.5, 40, [67, 71, 78], 0.65],        // Mi m9 — la tormenta
+    [9.5, 11.0, 45, [64, 71, 74], 0.72],       // La sus — sigue
+    [11.0, 12.0, 47, [66, 74, 78], 0.8],       // Si m
+    [12.0, 13.0, 43, [67, 71, 74], 0.86],      // Sol
+    [13.0, 16.0, 45, [64, 69, 73, 76], 0.95],  // La — el sombrero: tensión que crece
+    [16.0, 17.3, 38, [66, 69, 74, 76], 1.1],   // RE — el salto
+    [17.3, 18.4, 43, [62, 66, 71], 0.6],       // Sol maj7 — adentro
+    [18.4, 19.5, 45, [64, 69, 73], 0.7],       // La — hacia la luz
+    [19.5, TOTAL - 1.3, 38, [62, 66, 69, 76], 0.85], // Re add9 — la marca
+  ];
+  H.forEach(([t0, t1, bass, mids, k], i) => {
+    const s0 = Math.max(0, t0 - X), s1 = t1 + X;
+    const swell = i === 7 ? 1.4 : 0.25;
+    m.drone(s0, s1, [bass], 0.05 * k, { att: i ? 0.7 : 2.5, rel: 0.7, send: 0.25, bright: 0.2, swell });
+    m.drone(s0, s1, mids, 0.03 * k, { att: i ? 0.7 : 2.8, rel: 0.8, send: 0.6, bright: 0.45, swell });
+    if (i) m.piano(t0, bass + 12, 0.07 * k, { send: 0.8, len: 3 }); // nota grave que ancla cada cambio
+  });
+  const chordAt = (t) => H.find(([t0, t1]) => t >= t0 && t < t1) || H[0];
 
-  // 2) Campanitas: parejas de notas en la rejilla, cada vez más densa
-  const pool = [78, 69, 76, 85, 73, 81, 66, 74, 83, 71]; // Fa#5 La4 Mi5 Do#6 Do#5 La5 Fa#4 Re5 Si5 Si4
+  // Arpegio que sigue la armonía; su rejilla se acelera con el viaje
   const grid = [];
   for (let t = 1.0; t < 8.0 - 1e-6; t += 0.5) grid.push(t);
   for (let t = 8.0; t < 13.0 - 1e-6; t += 0.25) grid.push(t);
-  for (let t = 13.0; t < DROP - 0.05; t += t < 15.0 ? 0.25 : 0.125) grid.push(t);
+  for (let t = 13.0; t < 16.0 - 1e-6; t += t < 14.5 ? 0.25 : 0.125) grid.push(t);
+  const shape = [0, 1, 2, 3, 4, 3, 2, 1];
   grid.forEach((t, i) => {
-    const u = t / DROP;
-    const a = pool[(i * 3) % pool.length], bnote = pool[(i * 3 + 5) % pool.length];
-    const vel = (0.13 + 0.1 * u) * (0.85 + r() * 0.3);
-    m.chime(t + (r() - 0.5) * 0.006, a, vel, { pan: i % 2 ? 0.35 : -0.35, delay: 0.3 + 0.15 * u });
-    if (t >= 2.0) m.chime(t + 0.004, bnote, vel * 0.7, { pan: i % 2 ? -0.25 : 0.25, delay: 0.3 });
+    const [, , , mids, k] = chordAt(t);
+    const tones = [...mids.map((n) => n + 12), ...mids.map((n) => n + 24)].sort((x, y) => x - y);
+    const n = tones[shape[i % shape.length] % tones.length];
+    m.chime(t + (r() - 0.5) * 0.006, n, (0.06 + 0.05 * k) * (0.85 + r() * 0.3), { pan: i % 2 ? 0.4 : -0.4, delay: 0.35, octave: 0.55, dec: 3.6 });
   });
 
-  // 3) Crepitar que crece desde la mitad del viaje hasta el salto
-  m.grains(7.5, DROP, { density: [6, 120], gain: [0.01, 0.08] });
-  m.noise(12.0, DROP, { type: "hp", f: 4200, gain: 0.02, env: (u) => Math.pow(u, 2.2), send: 0.5 }); // aire
-
-  // 4) SILENCIO (el conejo desaparece en el sombrero) → regreso
-  m.gate(DROP, BACK);
-  m.drone(BACK, TOTAL - 1.4, [38], 0.06, { att: 0.25, rel: 1.4, send: 0.2, bright: 0.2 });
-  m.drone(BACK, TOTAL - 1.4, [62, 66, 69, 76], 0.028, { att: 0.3, rel: 1.4, send: 0.6, bright: 0.45 });
-  [[BACK, 66], [BACK + 0.5, 76], [BACK + 1.0, 69], [BACK + 1.9, 78], [BACK + 2.4, 74]].forEach(([t, n], i) => m.chime(t, n, 0.17 - i * 0.012, { pan: i % 2 ? 0.3 : -0.3, delay: 0.45, len: 2.6 }));
-
-  // 5) La marca: notas que se abren y se quedan
-  [[END_AT, 74, 86], [END_AT + 0.5, 78, 0], [END_AT + 1.0, 81, 0], [END_AT + 2.0, 76, 0], [END_AT + 3.0, 69, 0]].forEach(([t, n, n2], i) => {
-    m.chime(t, n, 0.17 - i * 0.016, { pan: (i % 3 - 1) * 0.35, delay: 0.5, len: 3 });
-    if (n2) m.chime(t + 0.004, n2, 0.07, { pan: 0.3, delay: 0.5, len: 3 });
+  // La melodía: la voz del conejo
+  const MEL = [
+    [1.0, 78], [2.0, 76], [2.5, 74], [3.0, 73],                       // ¿me quedo?
+    [3.5, 74], [4.0, 76], [4.5, 78], [5.0, 81], [5.5, 78],            // salgo
+    [6.0, 81], [6.5, 78], [7.0, 76], [7.5, 81],                       // el mundo
+    [8.0, 83], [8.5, 79], [9.0, 78],                                  // la tormenta
+    [9.5, 76], [10.0, 81], [10.5, 83],                                // sigue
+    [11.0, 86], [11.5, 85], [12.0, 83], [12.5, 86],                   // casi
+    [13.0, 88], [13.5, 85], [14.0, 81], [14.5, 88], [15.0, 90], [15.5, 88], // el sombrero
+    [16.0, 86],                                                       // ¡el salto!
+    [17.3, 78], [17.9, 76], [18.5, 74], [19.0, 76],                   // adentro, hacia la luz
+    [19.5, 74], [20.1, 78], [20.7, 76], [21.6, 81], [22.6, 86],       // la marca
+  ];
+  MEL.forEach(([t, n], i) => {
+    const k = chordAt(t)[4];
+    const v = t === 16.0 ? 0.24 : (0.13 + 0.07 * k);
+    m.chime(t, n, v, { pan: 0.08, send: 0.7, delay: 0.5, octave: 0.8, dec: t >= 17.3 ? 1.8 : 2.6, len: 3.2 });
+    if (t === 16.0) { m.chime(t + 0.01, 90, 0.16, { pan: -0.3, delay: 0.5, len: 3.2 }); m.chime(t + 0.02, 81, 0.14, { pan: 0.3, delay: 0.5, len: 3.2 }); }
+    void i;
   });
 
-  const { L, R } = m.render(3, { hp: 30, delayTime: 0.375, feedback: 0.32 });
-  const f0 = Math.floor((TOTAL - 1.4) * 44100);
-  for (let i = f0; i < L.length; i++) { const g = 1 - (i - f0) / (L.length - f0); L[i] *= g; R[i] *= g; }
+  // Soplos que llevan a cada corte (transiciones que respiran)
+  scenes.slice(1, 8).forEach((sc) => m.noise(sc.start - 0.45, sc.start + 0.05, { f: 500, fEnd: 2600, gain: 0.02 + 0.02 * chordAt(sc.start)[4], env: (u) => Math.pow(u, 2) * (u > 0.9 ? (1 - u) * 10 : 1), send: 0.5 }));
+
+  // El clima como música
+  const S = (id) => scenes.find((x) => x.id === id);
+  for (let t = 0.3; t < 3.4; t += 0.45) m.tone(t, 0.02, 4700, 4650, 0.0025, { decay: 90, pan: 0.5, send: 0.4 }); // grillos
+  m.noise(S("e03").start, S("e03").end + 0.3, { f: 650, fEnd: 400, gain: 0.025, env: (u, tt) => Math.sin(Math.PI * u) * (0.7 + 0.3 * Math.sin(tt * 6)), send: 0.4 }); // viento
+  for (let t = S("e04").start; t < S("e04").end; t += 0.06 + r() * 0.07) m.chime(t, [90, 93, 95, 97, 98][Math.floor(r() * 5)], 0.012 + r() * 0.01, { pan: (r() - 0.5) * 1.6, send: 0.6, delay: 0.1, len: 0.8, dec: 7, octave: 0.2 }); // lluvia de cristal
+  m.noise(S("e04").start + 0.05, S("e04").start + 1.4, { f: 220, gain: 0.025, env: (u) => Math.exp(-u * 3) * Math.min(1, u * 15), send: 0.6 }); // trueno lejano
+  for (let t = S("e06").start; t < S("e06").end; t += 0.18 + r() * 0.2) m.chime(t, [95, 98, 100][Math.floor(r() * 3)], 0.01, { pan: (r() - 0.5) * 1.4, send: 0.8, delay: 0.2, len: 1.2, dec: 4, octave: 0.1 }); // nieve
+  m.noise(S("e07").start - 0.2, S("e07").end + 0.2, { f: 380, gain: 0.02, env: (u) => Math.sin(Math.PI * u), send: 0.7 }); // niebla
+  m.grains(8.0, 16.2, { density: [4, 70], gain: [0.006, 0.05] }); // crepitar que crece
+  m.noise(13.0, 16.1, { type: "hp", f: 4200, gain: 0.025, env: (u) => Math.pow(u, 2.2), send: 0.5 }); // aire hacia el salto
+
+  // Entra al sombrero: la magia (campanas que caen) y la música RESPIRA (baja suave y vuelve)
+  [93, 90, 86, 81, 78].forEach((n, i) => m.chime(ENTRY + 0.05 + i * 0.11, n, 0.09 - i * 0.01, { pan: 0.45 - i * 0.22, send: 0.8, delay: 0.5, len: 2.6, octave: 0.5 }));
+  m.duck(ENTRY + 0.35, 17.0, 0.5, 0.55);
+  m.noise(16.9, 17.35, { type: "hp", f: 3000, fEnd: 6000, gain: 0.02, env: (u) => Math.pow(u, 2), send: 0.7 }); // vuelve
+
+  const { L, R } = m.render(3, { hp: 30, delayTime: 0.375, feedback: 0.34 });
+  const f0 = Math.floor((TOTAL - 1.8) * 44100);
+  for (let i = f0; i < L.length; i++) { const u = (i - f0) / (L.length - f0); const g = 0.5 + 0.5 * Math.cos(Math.PI * u); L[i] *= g; R[i] *= g; }
   return wav16(L, R);
 }
 

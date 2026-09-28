@@ -28,7 +28,7 @@ Requisitos: Node.js 22+ y FFmpeg (en Claude Code web se instala solo con el hook
 
 ### Reels
 
-- [`video/lo-que-te-rodea/`](video/lo-que-te-rodea/) — *"Lo que te rodea cambia, cuando tú cambias. Nosotros entendemos por qué."* Match cut sobre un horizonte curvo + match sound (una nota por corte). Planeación en [`PLAN.md`](video/lo-que-te-rodea/PLAN.md).
+- [`video/lo-que-te-rodea/`](video/lo-que-te-rodea/) — *"Lo que te rodea cambia, cuando tú cambias. Nosotros entendemos por qué."* Macros de materia cuyo borde natural hace el match cut + diseño sonoro cinematográfico. Planeación en [`PLAN.md`](video/lo-que-te-rodea/PLAN.md).
 
 ## Próximas fases
 

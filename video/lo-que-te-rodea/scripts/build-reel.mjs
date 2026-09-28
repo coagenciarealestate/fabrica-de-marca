@@ -1,153 +1,134 @@
-// Genera el reel "Lo que te rodea cambia" a partir de UNA sola lista de cortes:
-//   - compositions/reel.html  (imágenes recortadas por el mismo horizonte curvo = match cut)
-//   - assets/reel/reel-audio.m4a (una nota afinada por corte = match sound)
-// Así cada corte de imagen y su nota comparten exactamente el mismo instante.
+// Guion del reel "Lo que te rodea cambia" — una sola lista de cortes genera:
+//   - compositions/reel.html      (tomas a pantalla completa; el horizonte lo pone cada foto)
+//   - assets/reel/reel-audio.m4a  (diseño sonoro, ver scripts/sound.mjs)
 //
-// Uso:  node scripts/build-reel.mjs      (desde video/)
-// Todo es determinista: el "azar humano" (timing, velocidad, paneo) usa una semilla fija.
+// Dirección: no imponemos una forma. Cada imagen es un macro de materia real cuyo propio
+// borde (el filo de un muro, el borde de una taza, la línea de agua de una tina) cae a la
+// mitad del cuadro. La continuidad se encuentra, no se fuerza.
+//
+// Uso (desde video/lo-que-te-rodea):  node scripts/build-reel.mjs
 
-import { writeFileSync, mkdirSync, unlinkSync } from "node:fs";
+import { writeFileSync, mkdirSync, unlinkSync, existsSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createMix, wav16, rng } from "./sound.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const FPS = 30;
 const snap = (t) => Math.round(t * FPS) / FPS;
 
-// ─── Guion ──────────────────────────────────────────────────────────────────
-export const REEL_END = 15.4; // corte a silencio (como el drop de la referencia)
-export const TOTAL = 20.5; // fin del end card
+export const REEL_END = 15.4; // corte a silencio
+export const LOGO_AT = 16.0;
+export const TOTAL = 20.5;
 
-// Imágenes (assets/reel/NN.jpg) — ver scripts/fetch-reel-images.sh
+// ─── Imágenes (Higgsfield, 9:16) — ver scripts/fetch-reel-images.sh ─────────
+// ink: tono del texto sobre el borde si aún no hay imagen local para medirlo.
 const IMG = {
-  "00": "Fachada colonial — foto 35mm",
-  "01": "Fachada minimalista — foto arquitectura",
-  "02": "Fachada mediterránea — risograph",
-  "03": "Fachada de ladrillo — grabado",
-  "04": "Casa tropical en palafitos — acuarela",
-  "05": "Casa de adobe andina — collage de papel",
-  "06": "Puerta que se abre — foto 35mm (la mutación hacia adentro)",
-  "07": "Cocina: abuela y niña amasando arepas — foto",
-  "08": "Sala: pareja leyendo con su perro — óleo",
-  "09": "Comedor: almuerzo de domingo cenital — foto",
-  "10": "Habitación: niño saltando en la cama — plano técnico",
-  "11": "Baño: afeitada con vapor — foto sepia",
-  "12": "Estudio: home office con gato — risograph",
-  "13": "Terraza: amigos brindando — acuarela",
-  "14": "Patio de ropas: sábanas al viento — cianotipia",
-  "15": "Jardín: padre e hija regando — grabado coloreado",
-  "16": "Escalera: pareja mudándose — gouache",
-  "17": "Cuarto del bebé de noche — carboncillo",
-  "18": "Cocina de noche: pareja bailando — foto con flash",
-  "19": "Rincón de lectura: abuelo con café — azulejo",
+  100: { alt: "Amanecer sobre la línea de techos de la ciudad", ink: "light" },
+  101: { alt: "Filo de un muro de cal contra el cielo de la mañana", ink: "dark" },
+  102: { alt: "Cumbrera de tejas de barro con musgo", ink: "dark" },
+  103: { alt: "Muro de ladrillo al atardecer", ink: "light" },
+  104: { alt: "Baranda de balcón en madera, pintura descascarada", ink: "dark" },
+  105: { alt: "Muro de adobe con paja contra el cielo andino", ink: "light" },
+  106: { alt: "Filo de concreto de una casa moderna en la hora azul", ink: "light" },
+  107: { alt: "Línea de luz bajo una puerta", ink: "light" },
+  108: { alt: "Borde de una taza de café con vapor", ink: "light" },
+  109: { alt: "Corteza de pan recién horneado", ink: "dark" },
+  110: { alt: "Masa de arepa con huellas de dedos pequeños", ink: "light" },
+  111: { alt: "Pliegue de una sábana de lino con luz de ventana", ink: "dark" },
+  112: { alt: "Línea de agua de una tina con espuma", ink: "dark" },
+  113: { alt: "Dibujo en crayola de una casa y una familia", ink: "dark" },
+  114: { alt: "Borde de una mesa de comedor con migas", ink: "light" },
+  115: { alt: "Borde de una hoja de monstera a contraluz", ink: "dark" },
+  116: { alt: "Manta tejida mostaza", ink: "dark" },
+  117: { alt: "Borde de un plato pintado a mano de Carmen de Viboral", ink: "light" },
+  118: { alt: "Páginas de un libro a la luz de una lámpara", ink: "light" },
+  119: { alt: "Bordado en un bastidor de madera", ink: "light" },
+  120: { alt: "Plano de una casa a lápiz sobre papel mantequilla", ink: "dark" },
+  121: { alt: "Maracuyá partido sobre una tabla", ink: "dark" },
 };
 
-// Escala pentatónica de Re (D E F# A B). Índices de nota → frecuencia.
-const PENTA = [0, 2, 4, 7, 9];
-const noteHz = (deg, baseOct = 3) => {
-  const oct = Math.floor(deg / 5);
-  const semis = PENTA[((deg % 5) + 5) % 5] + 12 * (oct + baseOct - 3);
-  return 146.832 * Math.pow(2, semis / 12); // D3 = 146.83 Hz
-};
-
-// Lista de cortes: [inicio, imagen, grado de nota]. Los cortes se aceleran
-// (0.6s → 0.5s → 0.35s → 0.22s) igual que el video de referencia.
-const cuts = [];
-const push = (t, img, deg) => cuts.push({ t: snap(t), img, deg });
-
-// Acto 1 — Fachadas (exterior, registro grave)
-["00", "01", "02", "03", "04", "05"].forEach((img, i) => push(1.0 + i * 0.6, img, [0, 2, 1, 3, 2, 4][i]));
-// La mutación: la puerta se abre y nos lleva adentro (se sostiene 1s)
-push(4.6, "06", 5);
-// Acto 2 — Espacios del hogar (interior, el registro sube)
-const interiors = ["07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"];
-const interiorGaps = [0.55, 0.55, 0.5, 0.5, 0.45, 0.45, 0.4, 0.4, 0.35, 0.35, 0.35, 0.3, 0.3];
-const interiorDegs = [5, 7, 6, 8, 7, 9, 8, 10, 9, 11, 10, 12, 11];
-{
-  let t = 5.6;
-  interiors.forEach((img, i) => {
-    push(t, img, interiorDegs[i]);
-    t += interiorGaps[i];
-  });
-  // Acto 3 — Clímax: todo el hogar a la vez, cortes cada vez más rápidos
-  const climax = ["00", "07", "02", "09", "04", "12", "01", "13", "08", "03", "16", "10", "05", "18", "15", "14", "19", "11", "17"];
-  let k = 0;
-  while (t < REEL_END - 0.2) {
-    const gap = 0.3 - 0.08 * Math.min(1, (t - 11) / 4);
-    push(t, climax[k % climax.length], [12, 14, 13, 15, 14, 16, 15, 17][k % 8]);
-    t += gap;
-    k++;
+// Mide la luminancia justo encima del borde para decidir el tono del texto
+function inkFor(id) {
+  const f = join(ROOT, "assets/reel", `${id}.jpg`);
+  if (!existsSync(f)) return IMG[id].ink;
+  try {
+    const out = execFileSync("ffmpeg", ["-loglevel", "error", "-i", f, "-vf", "crop=iw*0.6:ih*0.1:iw*0.2:ih*0.37,scale=1:1,format=gray", "-f", "rawvideo", "-"]);
+    return out[0] > 150 ? "dark" : "light";
+  } catch {
+    return IMG[id].ink;
   }
 }
 
-// Frases sobre el horizonte
+// ─── Cortes ─────────────────────────────────────────────────────────────────
+const cuts = [];
+const push = (t, id) => cuts.push({ t: snap(t), id });
+
+push(0, 100); // el amanecer abre (como la referencia)
+[101, 102, 103, 104, 105, 106].forEach((id, i) => push(1.0 + i * 0.6, id)); // piel de la ciudad
+push(4.6, 107); // umbral: la luz bajo la puerta
+const interiors = [108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120];
+const gaps = [0.55, 0.55, 0.5, 0.5, 0.45, 0.45, 0.4, 0.4, 0.35, 0.35, 0.35, 0.3, 0.3];
+let t = 5.6;
+interiors.forEach((id, i) => { push(t, id); t += gaps[i]; });
+// Clímax: afuera y adentro se alternan — el entorno cambia cada vez más rápido
+const climax = [101, 111, 102, 109, 103, 117, 104, 112, 105, 115, 106, 121, 113, 116, 108, 118, 110, 119, 114, 120];
+for (let k = 0; t < REEL_END - 0.2; k++) {
+  push(t, climax[k % climax.length]);
+  t += 0.3 - 0.08 * Math.min(1, (t - 11) / 4);
+}
+const shots = cuts.map((c, i) => ({ ...c, i, end: i + 1 < cuts.length ? cuts[i + 1].t : REEL_END, ink: inkFor(c.id) }));
+
+// Frases sobre el borde. Cambian en un corte, como en la referencia.
+const at = (target) => shots.reduce((best, s) => (Math.abs(s.t - target) < Math.abs(best - target) ? s.t : best), 0);
 const phrases = [
-  { id: "p1", text: "Lo que te rodea", start: 4.9, end: 7.2, size: 66 },
-  { id: "p2", text: "cambia,", start: 7.2, end: 9.4, size: 72, italic: true },
-  { id: "p3", text: "cuando tú cambias.", start: 9.4, end: 12.2, size: 66 },
-  { id: "p4", text: "Nosotros entendemos", start: 12.2, end: 13.9, size: 70 },
-  { id: "p5", text: "por qué.", start: 13.9, end: REEL_END, size: 92, italic: true },
-].map((p) => ({ ...p, start: snap(p.start), end: snap(p.end) }));
+  { id: "p1", text: "Lo que te rodea", start: 4.9, size: 58 },
+  { id: "p2", text: "cambia,", start: at(7.2), size: 64, italic: true },
+  { id: "p3", text: "cuando tú cambias.", start: at(9.4), size: 58 },
+  { id: "p4", text: "Nosotros entendemos", start: at(12.2), size: 60 },
+  { id: "p5", text: "por qué.", start: at(13.9), size: 96, italic: true },
+];
+phrases.forEach((p, i) => (p.end = i + 1 < phrases.length ? phrases[i + 1].start : REEL_END));
 
-// ─── Composición HTML ───────────────────────────────────────────────────────
+// ─── HTML ───────────────────────────────────────────────────────────────────
 function buildHtml() {
-  const shots = cuts.map((c, i) => {
-    const end = i + 1 < cuts.length ? cuts[i + 1].t : REEL_END;
-    return { ...c, i, dur: +(end - c.t).toFixed(4) };
-  });
-
-  // Polvo en el cielo (posiciones deterministas)
-  let seed = 7;
-  const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
-  const dust = Array.from({ length: 46 }, (_, i) => ({
-    i,
-    x: Math.round(rnd() * 1060 + 10),
-    y: Math.round(rnd() * 900 + 40),
-    s: +(1.5 + rnd() * 3).toFixed(1),
-    o: +(0.15 + rnd() * 0.5).toFixed(2),
-    drift: Math.round(20 + rnd() * 60),
-  }));
-
+  const r = rng(11);
   const shotTags = shots
-    .map(
-      (s) =>
-        `        <img id="reel-shot-${s.i}" class="clip shot" src="assets/reel/${s.img}.jpg" alt="${IMG[s.img]}" data-start="${s.t}" data-duration="${s.dur}" data-track-index="${2 + (s.i % 2)}" />`,
-    )
+    .map((s) => `        <img id="reel-shot-${s.i}" class="clip shot" src="assets/reel/${s.id}.jpg" alt="${IMG[s.id].alt}" data-start="${s.t}" data-duration="${+(s.end - s.t).toFixed(4)}" data-track-index="${1 + (s.i % 2)}" />`)
     .join("\n");
-
   const phraseTags = phrases
-    .map(
-      (p) =>
-        `      <div id="reel-${p.id}" class="clip phrase" data-start="${p.start}" data-duration="${+(p.end - p.start).toFixed(4)}" data-track-index="5"><span id="reel-${p.id}-text" class="phrase-text${p.italic ? " italic" : ""}" style="font-size:${p.size}px">${p.text}</span></div>`,
-    )
+    .map((p) => `        <div id="reel-${p.id}" class="clip phrase" data-start="${p.start}" data-duration="${+(p.end - p.start).toFixed(4)}" data-track-index="4"><span id="reel-${p.id}-text" class="phrase-text${p.italic ? " italic" : ""}" style="font-size:${p.size}px">${p.text}</span></div>`)
     .join("\n");
 
-  const dustTags = dust
-    .map(
-      (d) =>
-        `        <i id="reel-dust-${d.i}" class="dust" style="left:${d.x}px;top:${d.y}px;width:${d.s}px;height:${d.s}px;opacity:${d.o}"></i>`,
-    )
-    .join("\n");
-
-  // Tweens: empuje lento dentro de cada toma (vida), entrada de frases, polvo.
+  // Cada toma respira distinto: un empuje lento con deriva leve (nada idéntico, nada rígido)
   const shotTweens = shots
-    .map(
-      (s) =>
-        `        tl.fromTo("#reel-shot-${s.i}", { scale: 1.08 }, { scale: 1, duration: ${Math.max(0.3, s.dur).toFixed(2)}, ease: "power2.out" }, ${s.t});`,
-    )
+    .map((s) => {
+      const d = Math.max(0.3, s.end - s.t + 0.2).toFixed(2);
+      const x = ((r() - 0.5) * 14).toFixed(1), y = ((r() - 0.5) * 10).toFixed(1);
+      const from = s.i === 0 ? 1.1 : (1.035 + r() * 0.03).toFixed(3);
+      return `        tl.fromTo("#reel-shot-${s.i}", { scale: ${from}, x: ${x}, y: ${y} }, { scale: 1, x: 0, y: 0, duration: ${s.i === 0 ? 1.2 : d}, ease: "sine.out" }, ${s.t});`;
+    })
+    .join("\n");
+
+  // El texto cambia de tinta según la imagen que tiene debajo
+  const INK = {
+    light: { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)" },
+    dark: { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)" },
+  };
+  let last = null;
+  const inkSets = shots
+    .filter((s) => s.t >= phrases[0].start - 0.7)
+    .map((s) => {
+      if (s.ink === last) return null;
+      last = s.ink;
+      const k = INK[s.ink];
+      return `        tl.set("#reel-words", { color: "${k.color}", textShadow: "${k.textShadow}" }, ${Math.max(0, s.t)});`;
+    })
+    .filter(Boolean)
     .join("\n");
   const phraseTweens = phrases
-    .map(
-      (p) =>
-        `        tl.fromTo("#reel-${p.id}-text", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, ${p.start});`,
-    )
-    .join("\n");
-  const dustTweens = dust
-    .map(
-      (d) =>
-        `        tl.fromTo("#reel-dust-${d.i}", { y: 0 }, { y: -${d.drift}, duration: ${REEL_END}, ease: "none" }, 0);`,
-    )
+    .map((p) => `        tl.fromTo("#reel-${p.id}-text", { opacity: 0 }, { opacity: 1, duration: ${p.id === "p1" ? 0.6 : 0.18}, ease: "sine.out" }, ${p.start});`)
     .join("\n");
 
   return `<!doctype html>
@@ -163,104 +144,57 @@ function buildHtml() {
           position: absolute;
           inset: 0;
           overflow: hidden;
-          background: radial-gradient(120% 60% at 50% 55%, #2a221c 0%, var(--co-carbon) 45%, #0d0b0a 100%);
+          background: #0d0b0a;
         }
-        /* Cielo: polvo suspendido */
-        #reel-sky {
+        #reel-plates {
           position: absolute;
           inset: 0;
         }
-        #reel-sky .dust {
-          position: absolute;
-          display: block;
-          border-radius: 50%;
-          background: var(--co-marfil);
-        }
-        /* Brillo de amanecer del intro (latón → sanguina) */
-        #reel-dawn {
-          position: absolute;
-          left: -10%;
-          width: 120%;
-          top: 700px;
-          height: 520px;
-          background: radial-gradient(62% 34% at 50% 50%, rgba(244, 231, 203, 0.75) 0%, rgba(205, 150, 90, 0.6) 22%, rgba(139, 54, 28, 0.45) 45%, rgba(44, 49, 31, 0.25) 65%, rgba(28, 23, 20, 0) 85%);
-        }
-        /* EL HORIZONTE: la misma curva recorta todas las imágenes = match cut */
-        #reel-horizon {
-          position: absolute;
-          left: 0;
-          top: 960px;
-          width: 1080px;
-          height: 960px;
-          overflow: hidden;
-          clip-path: ellipse(110% 100% at 50% 100%);
-          background: #0d0b0a;
-        }
-        #reel-horizon .shot {
+        #reel-plates .shot {
           width: 100%;
           height: 100%;
           object-fit: cover;
-          transform-origin: 50% 0%;
+          transform-origin: 50% 50%;
         }
-        /* Sombra suave bajo el borde para dar volumen de "planeta" */
-        #reel-shade {
+        /* Frases: serif pequeña posada sobre el borde de cada imagen */
+        #reel-words {
           position: absolute;
           inset: 0;
-          background: linear-gradient(180deg, rgba(13, 11, 10, 0.55) 0%, rgba(13, 11, 10, 0) 18%, rgba(13, 11, 10, 0) 70%, rgba(13, 11, 10, 0.45) 100%);
+          color: #f4e7cb;
         }
-        /* Filo de luz sobre la curva, constante entre cortes */
-        #reel-rim {
-          position: absolute;
-          left: -648px;
-          top: 958px;
-          width: 2376px;
-          height: 1920px;
-          border-radius: 50%;
-          box-shadow: 0 -3px 24px rgba(244, 231, 203, 0.28), inset 0 2px 2px rgba(244, 231, 203, 0.55);
-        }
-        /* Frases: serif pequeña posada sobre el horizonte */
-        #root .phrase {
+        #reel-words .phrase {
           display: flex;
           align-items: flex-end;
           justify-content: center;
-          padding-bottom: 972px;
+          padding-bottom: 986px;
         }
-        #root .phrase-text {
+        #reel-words .phrase-text {
           display: block;
           font-family: var(--co-font-display);
           font-weight: 400;
           line-height: 1;
-          color: var(--co-marfil);
+          letter-spacing: -0.005em;
           white-space: nowrap;
-          text-shadow: 0 2px 18px rgba(13, 11, 10, 0.85), 0 0 2px rgba(13, 11, 10, 0.6);
         }
-        #root .phrase-text.italic {
+        #reel-words .phrase-text.italic {
           font-style: italic;
         }
       </style>
 
       <div id="root" data-composition-id="reel" data-width="1080" data-height="1920">
-      <div id="reel-sky">
-${dustTags}
-      </div>
-      <div id="reel-dawn" data-layout-allow-overflow></div>
-      <div id="reel-horizon">
+      <div id="reel-plates">
 ${shotTags}
-        <div id="reel-shade"></div>
       </div>
-      <div id="reel-rim" data-layout-allow-overflow></div>
+      <div id="reel-words">
 ${phraseTags}
+      </div>
       </div>
 
       <script>
         const tl = gsap.timeline({ paused: true });
-        // Intro: el amanecer se enciende y se apaga cuando entra la primera fachada
-        tl.fromTo("#reel-dawn", { opacity: 0 }, { opacity: 1, duration: 0.9, ease: "sine.out" }, 0);
-        tl.to("#reel-dawn", { opacity: 0.25, duration: 0.3, ease: "power1.in" }, ${cuts[0].t - 0.1});
-        tl.fromTo("#reel-rim", { opacity: 0.4 }, { opacity: 1, duration: 1, ease: "sine.out" }, 0);
 ${shotTweens}
+${inkSets}
 ${phraseTweens}
-${dustTweens}
         window.__timelines["reel"] = tl;
       </script>
     </template>
@@ -269,175 +203,90 @@ ${dustTweens}
 `;
 }
 
-// ─── Sonido ─────────────────────────────────────────────────────────────────
-function buildAudio(outWav) {
-  const SR = 44100;
-  const N = Math.ceil(TOTAL * SR);
-  const L = new Float32Array(N);
-  const R = new Float32Array(N);
-  const notes = new Float32Array(N); // bus de notas → reverb
-  const notesR = new Float32Array(N);
+// ─── Sonido: un camino, no un golpe por corte ───────────────────────────────
+function buildAudio() {
+  const m = createMix(TOTAL, 20260927);
+  const r = m.r;
+  const shotAt = (id, n = 0) => shots.filter((s) => s.id === id)[n]?.t;
 
-  let seed = 20260927;
-  const rnd = () => ((seed = (seed * 48271) % 2147483647) / 2147483647);
+  // 0–4.6 · AFUERA — aire de amanecer, pájaros lejanos, piano que piensa
+  m.noise(0, 4.75, { f: 650, q: 0.5, gain: 0.045, send: 0.25, env: (u, tt) => Math.min(1, tt / 2.2) * (0.75 + 0.25 * Math.sin(tt * 1.7) * Math.sin(tt * 0.6)) * (u > 0.965 ? Math.max(0, (1 - u) / 0.035) : 1) });
+  m.noise(0, 4.7, { type: "hp", f: 5200, gain: 0.0025, send: 0.4, env: (u, tt) => Math.min(1, tt / 2.5) }); // brillo del aire
+  [[0.55, 0.6], [0.68, 0.6], [2.35, -0.5], [2.47, -0.5], [2.56, -0.5], [3.9, 0.7]].forEach(([tt, pan]) => m.tone(tt, 0.08, 2900 + r() * 500, 3600 + r() * 400, 0.018, { decay: 30, pan, send: 0.9 }));
+  m.piano(0.1, 38, 0.14, { len: 7, send: 0.7 }); // Re grave: el suelo
+  m.piano(1.0, 69, 0.13, { pan: -0.2 });
+  m.piano(2.2, 66, 0.14, { pan: 0.2 });
+  m.piano(3.4, 64, 0.15, { pan: -0.1 });
+  const tiles = shotAt(102);
+  [0.12, 0.31, 0.44].forEach((d) => m.tone(tiles + d, 0.05, 1900 + r() * 300, 900, 0.022, { decay: 60, pan: 0.4, send: 0.6 })); // gotas en las tejas
 
-  // Cuerda pulsada (Karplus-Strong) + mazo suave: cálido, orgánico, "tocado a mano"
-  function pluck(t0, hz, vel, pan, dur = 2.4) {
-    const start = Math.floor(t0 * SR);
-    const len = Math.min(Math.floor(dur * SR), N - start);
-    if (len <= 0) return;
-    const P = Math.max(2, Math.round(SR / hz));
-    const buf = new Float32Array(P);
-    let lp = 0;
-    for (let i = 0; i < P; i++) {
-      lp = lp * 0.55 + (rnd() * 2 - 1) * 0.45; // ataque suave (fieltro)
-      buf[i] = lp;
-    }
-    const gl = Math.cos((pan + 1) * Math.PI / 4);
-    const gr = Math.sin((pan + 1) * Math.PI / 4);
-    let idx = 0;
-    for (let n = 0; n < len; n++) {
-      const a = buf[idx];
-      const b = buf[(idx + 1) % P];
-      buf[idx] = 0.4985 * (a + b);
-      idx = (idx + 1) % P;
-      const t = n / SR;
-      const mallet = Math.sin(2 * Math.PI * hz * t) * Math.exp(-t * 2.6) * 0.55 + Math.sin(2 * Math.PI * hz * 4 * t) * Math.exp(-t * 14) * 0.12;
-      const env = n < 64 ? n / 64 : 1;
-      const s = (a * 0.9 + mallet) * vel * env;
-      notes[start + n] += s * gl;
-      notesR[start + n] += s * gr;
-    }
-  }
+  // 4.6 · EL UMBRAL — la puerta: el mundo se apaga, entra la luz
+  const door = shotAt(107);
+  m.noise(door, door + 1.2, { f: 220, gain: 0.035, env: (u) => 1 - u, send: 0.2 }); // el viento, ya del otro lado
+  m.thump(door, 0.16, { f0: 70, f1: 38, len: 0.9, body: 0.2 });
+  m.piano(door + 0.03, 50, 0.17, { send: 0.8 });
+  m.piano(door + 0.06, 57, 0.14, { send: 0.8 });
+  m.noise(door, REEL_END, { f: 240, gain: 0.03, send: 0.1, env: (u, tt) => Math.min(1, tt / 0.8) }); // tono de cuarto: estamos adentro
 
-  // Roce de papel en cada corte: textura táctil muy baja
-  function brush(t0, vel) {
-    const start = Math.floor(t0 * SR);
-    const len = Math.min(Math.floor(0.09 * SR), N - start);
-    let hp = 0, prev = 0;
-    for (let n = 0; n < len; n++) {
-      const w = rnd() * 2 - 1;
-      hp = 0.7 * (hp + w - prev);
-      prev = w;
-      const env = Math.exp(-n / (0.018 * SR));
-      L[start + n] += hp * env * vel;
-      R[start + n] += hp * env * vel * 0.8;
-    }
-  }
+  // 4.9–15.4 · ADENTRO — las cuerdas sostienen, el piano canta, la casa suena
+  m.strings(4.9, 7.2, [50, 54, 57, 62], 0.11, { att: 1.6, bright: 0.35 });
+  m.strings(7.2, 9.4, [47, 54, 59, 62], 0.12, { att: 0.9, bright: 0.4 });
+  m.strings(9.4, 12.2, [43, 50, 59, 62, 66], 0.13, { att: 0.8, bright: 0.5 });
+  m.strings(12.2, 13.9, [45, 52, 57, 61, 64], 0.15, { att: 0.5, bright: 0.6 });
+  m.strings(13.9, REEL_END, [38, 50, 57, 62, 66, 69], 0.17, { att: 0.35, bright: 0.7, swell: 0.9 });
+  [[5.6, 69, 0.2], [6.7, 71, 0.18], [7.2, 74, 0.22], [8.13, 73, 0.17], [8.6, 71, 0.17], [9.4, 69, 0.2], [10.1, 71, 0.17], [10.73, 74, 0.18], [11.33, 76, 0.16], [12.2, 78, 0.2], [12.77, 76, 0.14], [13.27, 74, 0.14], [13.9, 81, 0.2]].forEach(([tt, n, v], i) => m.piano(snap(tt), n, v, { pan: i % 2 ? 0.25 : -0.25 }));
+  [[9.4, 50], [12.2, 45], [13.9, 50]].forEach(([tt, n]) => m.piano(tt, n, 0.16, { send: 0.8 }));
 
-  // Match sound: cada corte dispara su nota (con microvariaciones humanas)
-  cuts.forEach((c, i) => {
-    const human = (rnd() - 0.5) * 0.012;
-    const t = Math.max(0, c.t + human);
-    const climax = c.t > 11;
-    const grow = Math.min(1, c.t / REEL_END); // crescendo: de un susurro al clímax
-    const vel = (0.1 + 0.26 * Math.pow(grow, 1.2)) * (climax ? 0.85 : 1) * (0.85 + rnd() * 0.3);
-    const pan = (i % 2 ? 0.35 : -0.35) * (0.6 + rnd() * 0.4);
-    pluck(t, noteHz(c.deg), vel, pan, climax ? 1.4 : 2.6);
-    if (c.img === "06") pluck(t + 0.004, noteHz(c.deg - 5), 0.22, 0, 3); // la puerta: octava abajo, más peso
-    brush(c.t, (climax ? 0.05 : 0.035) * (0.4 + 0.6 * Math.min(1, c.t / REEL_END)));
+  // Foley: cada material deja su huella, muy bajito (match sound por materia)
+  const f = (id, fn) => { const tt = shotAt(id); if (tt != null) fn(tt); };
+  f(108, (tt) => m.noise(tt, tt + 0.9, { type: "bp", f: 4200, q: 0.9, gain: 0.03, env: (u) => Math.sin(Math.PI * u), send: 0.5, pan: 0.2 })); // vapor
+  f(109, (tt) => { for (let k = 0; k < 7; k++) m.tone(tt + r() * 0.35, 0.012, 2600, 1800, 0.025, { decay: 300, pan: (r() - 0.5) * 0.6, send: 0.3 }); }); // corteza que cruje
+  f(110, (tt) => m.noise(tt, tt + 0.22, { f: 500, gain: 0.06, env: (u) => Math.sin(Math.PI * u), send: 0.2 })); // masa
+  f(111, (tt) => m.noise(tt - 0.1, tt + 0.45, { f: 1400, fEnd: 380, gain: 0.045, env: (u) => Math.sin(Math.PI * u), send: 0.4 })); // la sábana
+  f(112, (tt) => { m.tone(tt + 0.05, 0.1, 1500, 650, 0.06, { decay: 30, pan: -0.2, send: 0.8 }); m.tone(tt + 0.3, 0.09, 1250, 600, 0.04, { decay: 34, pan: 0.2, send: 0.8 }); }); // gota
+  f(113, (tt) => { for (let k = 0; k < 3; k++) m.noise(tt + k * 0.11, tt + k * 0.11 + 0.08, { type: "bp", f: 2600, q: 1.2, gain: 0.035, env: (u) => Math.sin(Math.PI * u), send: 0.2 }); }); // crayola
+  f(115, (tt) => m.noise(tt, tt + 0.35, { type: "bp", f: 3200, q: 0.7, gain: 0.03, env: (u) => Math.sin(Math.PI * u), send: 0.4, pan: 0.3 })); // hoja
+  f(118, (tt) => m.noise(tt, tt + 0.25, { type: "bp", f: 2000, q: 0.8, gain: 0.03, env: (u) => Math.sin(Math.PI * u), send: 0.3 })); // página
+
+  // Latido: desde "cuando tú cambias" el pulso sigue los cortes y crece
+  shots.filter((s) => s.t >= at(9.4) && s.t < REEL_END).forEach((s) => {
+    const g = 0.07 + 0.16 * Math.min(1, (s.t - 9.4) / 6);
+    m.thump(s.t, g, { f0: 62, f1: 44, len: 0.32, body: 0.1 });
   });
-  // Intro: una sola nota grave bajo el amanecer
-  pluck(0.12, noteHz(0, 2), 0.16, 0, 3.5);
-  // Cada frase entra con una nota grave que la sostiene
-  phrases.forEach((p, i) => pluck(p.start, noteHz([0, 3, 1, 2, 0][i], 2), 0.3, 0, 3));
+  // Clímax: arpegio muy suave en cada corte + riser de aire que se abre
+  shots.filter((s) => s.t >= 12.2).forEach((s, k) => m.piano(s.t, [62, 66, 69, 74, 78, 81][k % 6] + (s.t > 14.3 ? 12 : 0), 0.07, { pan: k % 2 ? 0.4 : -0.4, len: 2, send: 0.7 }));
+  m.noise(11.8, REEL_END, { type: "bp", f: 260, fEnd: 5200, q: 1.1, gain: 0.2, env: (u) => Math.pow(u, 2.6), send: 0.5 });
+  m.noise(14.2, REEL_END, { type: "hp", f: 4500, gain: 0.07, env: (u) => Math.pow(u, 4), send: 0.3 });
 
-  // Colchón armónico que crece hasta el drop (Re add9)
-  const chord = [73.42, 110.0, 146.83, 185.0, 220.0, 329.63];
-  const endPad = Math.floor(REEL_END * SR);
-  let lpL = 0, lpR = 0;
-  for (let n = 0; n < endPad; n++) {
-    const t = n / SR;
-    const grow = Math.min(1, t / REEL_END);
-    const amp = 0.03 + 0.3 * Math.pow(grow, 2);
-    let sL = 0, sR = 0;
-    chord.forEach((f, k) => {
-      const ph1 = (t * f * 1.0015) % 1;
-      const ph2 = (t * f * 0.9985) % 1;
-      sL += (2 * ph1 - 1) / chord.length;
-      sR += (2 * ph2 - 1) / chord.length;
-    });
-    const cutoff = 0.012 + 0.05 * grow + 0.004 * Math.sin(t * 0.9); // se abre el filtro
-    lpL += cutoff * (sL - lpL);
-    lpR += cutoff * (sR - lpR);
-    const tail = n > endPad - 0.02 * SR ? (endPad - n) / (0.02 * SR) : 1; // corte seco
-    const fadeIn = Math.min(1, t / 1.2);
-    L[n] += lpL * amp * tail * fadeIn;
-    R[n] += lpR * amp * tail * fadeIn;
-  }
+  // 15.4–16.0 · SILENCIO
+  m.gate(REEL_END, LOGO_AT - 0.002);
 
-  // Resolución con el logo: acorde que se abre despacio, cola larga
-  const T_LOGO = 16.0;
-  [[0, 0.3], [3, 0.24], [5, 0.26], [7, 0.2], [9, 0.16]].forEach(([deg, v], k) => pluck(T_LOGO + k * 0.06, noteHz(deg, 3), v, (k - 2) * 0.25, 4.4));
+  // 16.0 · LOGO — boom grave y un acorde que se queda
+  m.thump(LOGO_AT, 0.3, { f0: 58, f1: 30, len: 3, body: 0.25 });
+  [38, 45, 54, 64, 69].forEach((n, k) => m.piano(LOGO_AT + k * 0.035, n, 0.24 - k * 0.02, { pan: (k - 2) * 0.2, len: 4.5, send: 0.8 }));
+  m.strings(LOGO_AT + 0.1, TOTAL - 1.4, [38, 50, 57, 62, 66], 0.07, { att: 1.8, rel: 1.2, bright: 0.25 });
+  m.noise(LOGO_AT, TOTAL, { type: "hp", f: 6000, gain: 0.004, env: (u) => Math.sin(Math.PI * u), send: 0.6 });
 
-  // Reverb Schroeder sobre el bus de notas
-  function reverb(input, out, offset) {
-    const combs = [1557, 1617, 1491, 1422].map((d) => ({ d: d + offset, buf: new Float32Array(d + offset), i: 0 }));
-    const aps = [225, 556].map((d) => ({ d: d + offset, buf: new Float32Array(d + offset), i: 0 }));
-    for (let n = 0; n < N; n++) {
-      const x = input[n];
-      let y = 0;
-      for (const c of combs) {
-        const o = c.buf[c.i];
-        c.buf[c.i] = x + o * 0.84;
-        c.i = (c.i + 1) % c.d;
-        y += o;
-      }
-      y *= 0.25;
-      for (const a of aps) {
-        const o = a.buf[a.i];
-        const v = y + o * 0.5;
-        a.buf[a.i] = v;
-        a.i = (a.i + 1) % a.d;
-        y = o - v * 0.5;
-      }
-      out[n] += x + y * 0.35;
-    }
-  }
-  reverb(notes, L, 0);
-  reverb(notesR, R, 23);
-
-  // El drop: silencio absoluto entre el último corte y el logo (también corta la cola de reverb)
-  const g0 = Math.floor(REEL_END * SR), g1 = Math.floor(T_LOGO * SR) - 1;
-  for (let n = g0; n < g1; n++) {
-    const k = Math.min(1, (n - g0) / (0.03 * SR));
-    L[n] *= 1 - k;
-    R[n] *= 1 - k;
-  }
-
-  // Normalizar y fade final
-  let peak = 0;
-  for (let n = 0; n < N; n++) peak = Math.max(peak, Math.abs(L[n]), Math.abs(R[n]));
-  const g = 0.89 / peak;
-  const fadeStart = Math.floor((TOTAL - 1.2) * SR);
-  const pcm = Buffer.alloc(N * 4);
-  for (let n = 0; n < N; n++) {
-    const f = n > fadeStart ? 1 - (n - fadeStart) / (N - fadeStart) : 1;
-    pcm.writeInt16LE(Math.round(Math.max(-1, Math.min(1, L[n] * g * f)) * 32767), n * 4);
-    pcm.writeInt16LE(Math.round(Math.max(-1, Math.min(1, R[n] * g * f)) * 32767), n * 4 + 2);
-  }
-  const hdr = Buffer.alloc(44);
-  hdr.write("RIFF", 0);
-  hdr.writeUInt32LE(36 + pcm.length, 4);
-  hdr.write("WAVEfmt ", 8);
-  hdr.writeUInt32LE(16, 16);
-  hdr.writeUInt16LE(1, 20);
-  hdr.writeUInt16LE(2, 22);
-  hdr.writeUInt32LE(SR, 24);
-  hdr.writeUInt32LE(SR * 4, 28);
-  hdr.writeUInt16LE(4, 32);
-  hdr.writeUInt16LE(16, 34);
-  hdr.write("data", 36);
-  hdr.writeUInt32LE(pcm.length, 40);
-  writeFileSync(outWav, Buffer.concat([hdr, pcm]));
+  const { L, R } = m.render();
+  // Fade final
+  const SRr = 44100, f0 = Math.floor((TOTAL - 1.3) * SRr);
+  for (let i = f0; i < L.length; i++) { const g = 1 - (i - f0) / (L.length - f0); L[i] *= g; R[i] *= g; }
+  return wav16(L, R);
 }
 
 // ─── Main ───────────────────────────────────────────────────────────────────
 mkdirSync(join(ROOT, "assets/reel"), { recursive: true });
 writeFileSync(join(ROOT, "compositions/reel.html"), buildHtml());
 const wav = join(ROOT, "assets/reel/reel-audio.wav");
-buildAudio(wav);
-execFileSync("ffmpeg", ["-loglevel", "error", "-y", "-i", wav, "-c:a", "aac", "-b:a", "192k", join(ROOT, "assets/reel/reel-audio.m4a")]);
+writeFileSync(wav, buildAudio());
+// Loudness de entrega: −16 LUFS integrados, pico real −1.5 dB (dos pasadas)
+let ln = "loudnorm=I=-16:TP=-1.5:LRA=11";
+try {
+  const errOut = execFileSync("bash", ["-c", `ffmpeg -hide_banner -i "${wav}" -af loudnorm=I=-16:TP=-1.5:LRA=11:print_format=json -f null - 2>&1 | sed -n '/^{/,/^}/p'`]).toString();
+  const j = JSON.parse(errOut);
+  ln += `:measured_I=${j.input_i}:measured_TP=${j.input_tp}:measured_LRA=${j.input_lra}:measured_thresh=${j.input_thresh}:offset=${j.target_offset}:linear=true`;
+} catch {}
+execFileSync("ffmpeg", ["-loglevel", "error", "-y", "-i", wav, "-af", ln, "-ar", "44100", "-c:a", "aac", "-b:a", "224k", join(ROOT, "assets/reel/reel-audio.m4a")]);
 unlinkSync(wav);
-console.log(`reel.html: ${cuts.length} cortes, ${phrases.length} frases · audio ${TOTAL}s → assets/reel/reel-audio.m4a`);
-console.log(cuts.map((c) => `${c.t.toFixed(2)}:${c.img}`).join(" "));
+console.log(`reel.html: ${shots.length} tomas, ${phrases.length} frases · audio ${TOTAL}s`);
+console.log(shots.map((s) => `${s.t.toFixed(2)}:${s.id}${s.ink === "dark" ? "·d" : ""}`).join(" "));

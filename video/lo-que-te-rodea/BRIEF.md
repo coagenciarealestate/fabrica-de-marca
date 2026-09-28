@@ -17,6 +17,11 @@ Fachadas de viviendas de estilos distintos → mutan (puerta que se abre) hacia 
 hogar con vida cotidiana en estilos gráficos variados → cierre con el logo de C&O.
 
 ## Assets
-- 20 imágenes generadas en Higgsfield (gpt_image_2_5, 9:8, calidad low) — `scripts/fetch-reel-images.sh`.
+- v2: 22 macros de materia generados en Higgsfield (gpt_image_2_5, 9:16, calidad medium) — `scripts/fetch-reel-images.sh`.
 - Logo, fuentes y tokens de la marca C&O.
-- Sonido sintetizado en código (`scripts/build-reel.mjs`).
+- Diseño sonoro cinematográfico sintetizado en código (`scripts/sound.mjs`).
+
+## Notes
+- Feedback v1 (usuaria): estética y texturas poco humanas; el círculo acopla cosas a una forma en
+  vez de encontrar cosas con la misma forma; sonido intrusivo que agita. Conservar estructura y
+  momentum; mejorar dirección, indirecta y emotiva, con sonido de cine. Ver PLAN.md § 1.

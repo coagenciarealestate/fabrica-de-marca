@@ -26,6 +26,10 @@ npm run render -- --output renders/co-intro.mp4
 
 Requisitos: Node.js 22+ y FFmpeg (en Claude Code web se instala solo con el hook de `.claude/`). Incluye una intro vertical de ejemplo (casa cromada + titular → logo sting) con textos editables como variables. Para crear un video nuevo con Claude, pide p. ej. *"Usando /hyperframes, crea un reel de 15 s para …"*.
 
+### Reels
+
+- [`video/lo-que-te-rodea/`](video/lo-que-te-rodea/) — *"Lo que te rodea cambia, cuando tú cambias. Nosotros entendemos por qué."* Match cut sobre un horizonte curvo + match sound (una nota por corte). Planeación en [`PLAN.md`](video/lo-que-te-rodea/PLAN.md).
+
 ## Próximas fases
 
 1. Templates de Redes Sociales (post 1080x1080, quote card, banner, historia)

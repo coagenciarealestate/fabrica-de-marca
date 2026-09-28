@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="es" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>C&amp;O — Lo que te rodea cambia</title>
+    <!-- Reel match cut + match sound. Cortes, frases y audio salen de scripts/build-reel.mjs -->
+    <script src="assets/vendor/gsap.min.js"></script>
+    <link rel="stylesheet" href="assets/brand.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #0d0b0a;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #0d0b0a;
+      }
+      .clip {
+        position: absolute;
+        inset: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="20.5"
+      data-width="1080"
+      data-height="1920"
+    >
+      <div
+        id="reel"
+        class="clip"
+        data-composition-id="reel"
+        data-composition-src="compositions/reel.html"
+        data-start="0"
+        data-duration="15.4"
+        data-track-index="1"
+        data-width="1080"
+        data-height="1920"
+      ></div>
+
+      <!-- 15.4–16.0: negro y silencio (el respiro antes del logo) -->
+
+      <div
+        id="endcard"
+        class="clip"
+        data-composition-id="endcard"
+        data-composition-src="compositions/endcard.html"
+        data-start="16"
+        data-duration="4.5"
+        data-track-index="2"
+        data-width="1080"
+        data-height="1920"
+      ></div>
+
+      <audio
+        id="reel-audio"
+        src="assets/reel/reel-audio.m4a"
+        data-start="0"
+        data-duration="20.5"
+        data-track-index="9"
+      ></audio>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

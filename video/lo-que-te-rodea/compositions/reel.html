@@ -1,0 +1,286 @@
+<!doctype html>
+<!-- GENERADO por scripts/build-reel.mjs — edita el guion allá y vuelve a correrlo. -->
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          background: radial-gradient(120% 60% at 50% 55%, #2a221c 0%, var(--co-carbon) 45%, #0d0b0a 100%);
+        }
+        /* Cielo: polvo suspendido */
+        #reel-sky {
+          position: absolute;
+          inset: 0;
+        }
+        #reel-sky .dust {
+          position: absolute;
+          display: block;
+          border-radius: 50%;
+          background: var(--co-marfil);
+        }
+        /* Brillo de amanecer del intro (latón → sanguina) */
+        #reel-dawn {
+          position: absolute;
+          left: -10%;
+          width: 120%;
+          top: 700px;
+          height: 520px;
+          background: radial-gradient(62% 34% at 50% 50%, rgba(244, 231, 203, 0.75) 0%, rgba(205, 150, 90, 0.6) 22%, rgba(139, 54, 28, 0.45) 45%, rgba(44, 49, 31, 0.25) 65%, rgba(28, 23, 20, 0) 85%);
+        }
+        /* EL HORIZONTE: la misma curva recorta todas las imágenes = match cut */
+        #reel-horizon {
+          position: absolute;
+          left: 0;
+          top: 960px;
+          width: 1080px;
+          height: 960px;
+          overflow: hidden;
+          clip-path: ellipse(110% 100% at 50% 100%);
+          background: #0d0b0a;
+        }
+        #reel-horizon .shot {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transform-origin: 50% 0%;
+        }
+        /* Sombra suave bajo el borde para dar volumen de "planeta" */
+        #reel-shade {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(180deg, rgba(13, 11, 10, 0.55) 0%, rgba(13, 11, 10, 0) 18%, rgba(13, 11, 10, 0) 70%, rgba(13, 11, 10, 0.45) 100%);
+        }
+        /* Filo de luz sobre la curva, constante entre cortes */
+        #reel-rim {
+          position: absolute;
+          left: -648px;
+          top: 958px;
+          width: 2376px;
+          height: 1920px;
+          border-radius: 50%;
+          box-shadow: 0 -3px 24px rgba(244, 231, 203, 0.28), inset 0 2px 2px rgba(244, 231, 203, 0.55);
+        }
+        /* Frases: serif pequeña posada sobre el horizonte */
+        #root .phrase {
+          display: flex;
+          align-items: flex-end;
+          justify-content: center;
+          padding-bottom: 972px;
+        }
+        #root .phrase-text {
+          display: block;
+          font-family: var(--co-font-display);
+          font-weight: 400;
+          line-height: 1;
+          color: var(--co-marfil);
+          white-space: nowrap;
+          text-shadow: 0 2px 18px rgba(13, 11, 10, 0.85), 0 0 2px rgba(13, 11, 10, 0.6);
+        }
+        #root .phrase-text.italic {
+          font-style: italic;
+        }
+      </style>
+
+      <div id="root" data-composition-id="reel" data-width="1080" data-height="1920">
+      <div id="reel-sky">
+        <i id="reel-dust-0" class="dust" style="left:10px;top:869px;width:2.4px;height:2.4px;opacity:0.26"></i>
+        <i id="reel-dust-1" class="dust" style="left:575px;top:336px;width:3.8px;height:3.8px;opacity:0.53"></i>
+        <i id="reel-dust-2" class="dust" style="left:736px;top:612px;width:4px;height:4px;opacity:0.27"></i>
+        <i id="reel-dust-3" class="dust" style="left:760px;top:668px;width:1.7px;height:1.7px;opacity:0.49"></i>
+        <i id="reel-dust-4" class="dust" style="left:988px;top:767px;width:1.9px;height:1.9px;opacity:0.41"></i>
+        <i id="reel-dust-5" class="dust" style="left:740px;top:619px;width:3.2px;height:3.2px;opacity:0.61"></i>
+        <i id="reel-dust-6" class="dust" style="left:405px;top:342px;width:4px;height:4px;opacity:0.32"></i>
+        <i id="reel-dust-7" class="dust" style="left:325px;top:426px;width:2.4px;height:2.4px;opacity:0.62"></i>
+        <i id="reel-dust-8" class="dust" style="left:783px;top:830px;width:1.7px;height:1.7px;opacity:0.29"></i>
+        <i id="reel-dust-9" class="dust" style="left:549px;top:419px;width:2.1px;height:2.1px;opacity:0.6"></i>
+        <i id="reel-dust-10" class="dust" style="left:397px;top:350px;width:3.5px;height:3.5px;opacity:0.61"></i>
+        <i id="reel-dust-11" class="dust" style="left:185px;top:405px;width:2.4px;height:2.4px;opacity:0.33"></i>
+        <i id="reel-dust-12" class="dust" style="left:363px;top:518px;width:3.3px;height:3.3px;opacity:0.27"></i>
+        <i id="reel-dust-13" class="dust" style="left:495px;top:817px;width:3.4px;height:3.4px;opacity:0.47"></i>
+        <i id="reel-dust-14" class="dust" style="left:545px;top:660px;width:4.3px;height:4.3px;opacity:0.35"></i>
+        <i id="reel-dust-15" class="dust" style="left:276px;top:568px;width:2.6px;height:2.6px;opacity:0.32"></i>
+        <i id="reel-dust-16" class="dust" style="left:852px;top:830px;width:1.8px;height:1.8px;opacity:0.56"></i>
+        <i id="reel-dust-17" class="dust" style="left:441px;top:178px;width:1.7px;height:1.7px;opacity:0.65"></i>
+        <i id="reel-dust-18" class="dust" style="left:680px;top:170px;width:2.9px;height:2.9px;opacity:0.45"></i>
+        <i id="reel-dust-19" class="dust" style="left:987px;top:836px;width:4.2px;height:4.2px;opacity:0.59"></i>
+        <i id="reel-dust-20" class="dust" style="left:817px;top:288px;width:1.5px;height:1.5px;opacity:0.27"></i>
+        <i id="reel-dust-21" class="dust" style="left:12px;top:595px;width:2.2px;height:2.2px;opacity:0.52"></i>
+        <i id="reel-dust-22" class="dust" style="left:739px;top:254px;width:4.1px;height:4.1px;opacity:0.27"></i>
+        <i id="reel-dust-23" class="dust" style="left:958px;top:147px;width:3px;height:3px;opacity:0.15"></i>
+        <i id="reel-dust-24" class="dust" style="left:685px;top:870px;width:1.6px;height:1.6px;opacity:0.6"></i>
+        <i id="reel-dust-25" class="dust" style="left:1037px;top:549px;width:3.5px;height:3.5px;opacity:0.28"></i>
+        <i id="reel-dust-26" class="dust" style="left:231px;top:548px;width:1.7px;height:1.7px;opacity:0.53"></i>
+        <i id="reel-dust-27" class="dust" style="left:767px;top:488px;width:1.6px;height:1.6px;opacity:0.21"></i>
+        <i id="reel-dust-28" class="dust" style="left:149px;top:659px;width:4.2px;height:4.2px;opacity:0.17"></i>
+        <i id="reel-dust-29" class="dust" style="left:923px;top:933px;width:4.4px;height:4.4px;opacity:0.53"></i>
+        <i id="reel-dust-30" class="dust" style="left:273px;top:695px;width:4.1px;height:4.1px;opacity:0.35"></i>
+        <i id="reel-dust-31" class="dust" style="left:439px;top:838px;width:3.2px;height:3.2px;opacity:0.33"></i>
+        <i id="reel-dust-32" class="dust" style="left:789px;top:342px;width:3.7px;height:3.7px;opacity:0.36"></i>
+        <i id="reel-dust-33" class="dust" style="left:340px;top:927px;width:4.5px;height:4.5px;opacity:0.47"></i>
+        <i id="reel-dust-34" class="dust" style="left:983px;top:220px;width:3.4px;height:3.4px;opacity:0.22"></i>
+        <i id="reel-dust-35" class="dust" style="left:601px;top:734px;width:4.3px;height:4.3px;opacity:0.39"></i>
+        <i id="reel-dust-36" class="dust" style="left:483px;top:189px;width:3.5px;height:3.5px;opacity:0.41"></i>
+        <i id="reel-dust-37" class="dust" style="left:547px;top:721px;width:2.6px;height:2.6px;opacity:0.53"></i>
+        <i id="reel-dust-38" class="dust" style="left:327px;top:528px;width:2.1px;height:2.1px;opacity:0.51"></i>
+        <i id="reel-dust-39" class="dust" style="left:260px;top:634px;width:2.8px;height:2.8px;opacity:0.19"></i>
+        <i id="reel-dust-40" class="dust" style="left:882px;top:864px;width:4.2px;height:4.2px;opacity:0.49"></i>
+        <i id="reel-dust-41" class="dust" style="left:37px;top:726px;width:3.3px;height:3.3px;opacity:0.51"></i>
+        <i id="reel-dust-42" class="dust" style="left:49px;top:162px;width:1.7px;height:1.7px;opacity:0.2"></i>
+        <i id="reel-dust-43" class="dust" style="left:20px;top:585px;width:4.3px;height:4.3px;opacity:0.25"></i>
+        <i id="reel-dust-44" class="dust" style="left:224px;top:647px;width:2.2px;height:2.2px;opacity:0.38"></i>
+        <i id="reel-dust-45" class="dust" style="left:458px;top:646px;width:3.8px;height:3.8px;opacity:0.35"></i>
+      </div>
+      <div id="reel-dawn" data-layout-allow-overflow></div>
+      <div id="reel-horizon">
+        <img id="reel-shot-0" class="clip shot" src="assets/reel/00.jpg" alt="Fachada colonial — foto 35mm" data-start="1" data-duration="0.6" data-track-index="2" />
+        <img id="reel-shot-1" class="clip shot" src="assets/reel/01.jpg" alt="Fachada minimalista — foto arquitectura" data-start="1.6" data-duration="0.6" data-track-index="3" />
+        <img id="reel-shot-2" class="clip shot" src="assets/reel/02.jpg" alt="Fachada mediterránea — risograph" data-start="2.2" data-duration="0.6" data-track-index="2" />
+        <img id="reel-shot-3" class="clip shot" src="assets/reel/03.jpg" alt="Fachada de ladrillo — grabado" data-start="2.8" data-duration="0.6" data-track-index="3" />
+        <img id="reel-shot-4" class="clip shot" src="assets/reel/04.jpg" alt="Casa tropical en palafitos — acuarela" data-start="3.4" data-duration="0.6" data-track-index="2" />
+        <img id="reel-shot-5" class="clip shot" src="assets/reel/05.jpg" alt="Casa de adobe andina — collage de papel" data-start="4" data-duration="0.6" data-track-index="3" />
+        <img id="reel-shot-6" class="clip shot" src="assets/reel/06.jpg" alt="Puerta que se abre — foto 35mm (la mutación hacia adentro)" data-start="4.6" data-duration="1" data-track-index="2" />
+        <img id="reel-shot-7" class="clip shot" src="assets/reel/07.jpg" alt="Cocina: abuela y niña amasando arepas — foto" data-start="5.6" data-duration="0.5333" data-track-index="3" />
+        <img id="reel-shot-8" class="clip shot" src="assets/reel/08.jpg" alt="Sala: pareja leyendo con su perro — óleo" data-start="6.133333333333334" data-duration="0.5667" data-track-index="2" />
+        <img id="reel-shot-9" class="clip shot" src="assets/reel/09.jpg" alt="Comedor: almuerzo de domingo cenital — foto" data-start="6.7" data-duration="0.5" data-track-index="3" />
+        <img id="reel-shot-10" class="clip shot" src="assets/reel/10.jpg" alt="Habitación: niño saltando en la cama — plano técnico" data-start="7.2" data-duration="0.5" data-track-index="2" />
+        <img id="reel-shot-11" class="clip shot" src="assets/reel/11.jpg" alt="Baño: afeitada con vapor — foto sepia" data-start="7.7" data-duration="0.4333" data-track-index="3" />
+        <img id="reel-shot-12" class="clip shot" src="assets/reel/12.jpg" alt="Estudio: home office con gato — risograph" data-start="8.133333333333333" data-duration="0.4667" data-track-index="2" />
+        <img id="reel-shot-13" class="clip shot" src="assets/reel/13.jpg" alt="Terraza: amigos brindando — acuarela" data-start="8.6" data-duration="0.4" data-track-index="3" />
+        <img id="reel-shot-14" class="clip shot" src="assets/reel/14.jpg" alt="Patio de ropas: sábanas al viento — cianotipia" data-start="9" data-duration="0.4" data-track-index="2" />
+        <img id="reel-shot-15" class="clip shot" src="assets/reel/15.jpg" alt="Jardín: padre e hija regando — grabado coloreado" data-start="9.4" data-duration="0.3333" data-track-index="3" />
+        <img id="reel-shot-16" class="clip shot" src="assets/reel/16.jpg" alt="Escalera: pareja mudándose — gouache" data-start="9.733333333333333" data-duration="0.3667" data-track-index="2" />
+        <img id="reel-shot-17" class="clip shot" src="assets/reel/17.jpg" alt="Cuarto del bebé de noche — carboncillo" data-start="10.1" data-duration="0.3333" data-track-index="3" />
+        <img id="reel-shot-18" class="clip shot" src="assets/reel/18.jpg" alt="Cocina de noche: pareja bailando — foto con flash" data-start="10.433333333333334" data-duration="0.3" data-track-index="2" />
+        <img id="reel-shot-19" class="clip shot" src="assets/reel/19.jpg" alt="Rincón de lectura: abuelo con café — azulejo" data-start="10.733333333333333" data-duration="0.3" data-track-index="3" />
+        <img id="reel-shot-20" class="clip shot" src="assets/reel/00.jpg" alt="Fachada colonial — foto 35mm" data-start="11.033333333333333" data-duration="0.3" data-track-index="2" />
+        <img id="reel-shot-21" class="clip shot" src="assets/reel/07.jpg" alt="Cocina: abuela y niña amasando arepas — foto" data-start="11.333333333333334" data-duration="0.3" data-track-index="3" />
+        <img id="reel-shot-22" class="clip shot" src="assets/reel/02.jpg" alt="Fachada mediterránea — risograph" data-start="11.633333333333333" data-duration="0.3" data-track-index="2" />
+        <img id="reel-shot-23" class="clip shot" src="assets/reel/09.jpg" alt="Comedor: almuerzo de domingo cenital — foto" data-start="11.933333333333334" data-duration="0.2667" data-track-index="3" />
+        <img id="reel-shot-24" class="clip shot" src="assets/reel/04.jpg" alt="Casa tropical en palafitos — acuarela" data-start="12.2" data-duration="0.3" data-track-index="2" />
+        <img id="reel-shot-25" class="clip shot" src="assets/reel/12.jpg" alt="Estudio: home office con gato — risograph" data-start="12.5" data-duration="0.2667" data-track-index="3" />
+        <img id="reel-shot-26" class="clip shot" src="assets/reel/01.jpg" alt="Fachada minimalista — foto arquitectura" data-start="12.766666666666667" data-duration="0.2667" data-track-index="2" />
+        <img id="reel-shot-27" class="clip shot" src="assets/reel/13.jpg" alt="Terraza: amigos brindando — acuarela" data-start="13.033333333333333" data-duration="0.2333" data-track-index="3" />
+        <img id="reel-shot-28" class="clip shot" src="assets/reel/08.jpg" alt="Sala: pareja leyendo con su perro — óleo" data-start="13.266666666666667" data-duration="0.2667" data-track-index="2" />
+        <img id="reel-shot-29" class="clip shot" src="assets/reel/03.jpg" alt="Fachada de ladrillo — grabado" data-start="13.533333333333333" data-duration="0.2667" data-track-index="3" />
+        <img id="reel-shot-30" class="clip shot" src="assets/reel/16.jpg" alt="Escalera: pareja mudándose — gouache" data-start="13.8" data-duration="0.2333" data-track-index="2" />
+        <img id="reel-shot-31" class="clip shot" src="assets/reel/10.jpg" alt="Habitación: niño saltando en la cama — plano técnico" data-start="14.033333333333333" data-duration="0.2333" data-track-index="3" />
+        <img id="reel-shot-32" class="clip shot" src="assets/reel/05.jpg" alt="Casa de adobe andina — collage de papel" data-start="14.266666666666667" data-duration="0.2333" data-track-index="2" />
+        <img id="reel-shot-33" class="clip shot" src="assets/reel/18.jpg" alt="Cocina de noche: pareja bailando — foto con flash" data-start="14.5" data-duration="0.2333" data-track-index="3" />
+        <img id="reel-shot-34" class="clip shot" src="assets/reel/15.jpg" alt="Jardín: padre e hija regando — grabado coloreado" data-start="14.733333333333333" data-duration="0.2333" data-track-index="2" />
+        <img id="reel-shot-35" class="clip shot" src="assets/reel/14.jpg" alt="Patio de ropas: sábanas al viento — cianotipia" data-start="14.966666666666667" data-duration="0.2" data-track-index="3" />
+        <img id="reel-shot-36" class="clip shot" src="assets/reel/19.jpg" alt="Rincón de lectura: abuelo con café — azulejo" data-start="15.166666666666666" data-duration="0.2333" data-track-index="2" />
+        <div id="reel-shade"></div>
+      </div>
+      <div id="reel-rim" data-layout-allow-overflow></div>
+      <div id="reel-p1" class="clip phrase" data-start="4.9" data-duration="2.3" data-track-index="5"><span id="reel-p1-text" class="phrase-text" style="font-size:66px">Lo que te rodea</span></div>
+      <div id="reel-p2" class="clip phrase" data-start="7.2" data-duration="2.2" data-track-index="5"><span id="reel-p2-text" class="phrase-text italic" style="font-size:72px">cambia,</span></div>
+      <div id="reel-p3" class="clip phrase" data-start="9.4" data-duration="2.8" data-track-index="5"><span id="reel-p3-text" class="phrase-text" style="font-size:66px">cuando tú cambias.</span></div>
+      <div id="reel-p4" class="clip phrase" data-start="12.2" data-duration="1.7" data-track-index="5"><span id="reel-p4-text" class="phrase-text" style="font-size:70px">Nosotros entendemos</span></div>
+      <div id="reel-p5" class="clip phrase" data-start="13.9" data-duration="1.5" data-track-index="5"><span id="reel-p5-text" class="phrase-text italic" style="font-size:92px">por qué.</span></div>
+      </div>
+
+      <script>
+        const tl = gsap.timeline({ paused: true });
+        // Intro: el amanecer se enciende y se apaga cuando entra la primera fachada
+        tl.fromTo("#reel-dawn", { opacity: 0 }, { opacity: 1, duration: 0.9, ease: "sine.out" }, 0);
+        tl.to("#reel-dawn", { opacity: 0.25, duration: 0.3, ease: "power1.in" }, 0.9);
+        tl.fromTo("#reel-rim", { opacity: 0.4 }, { opacity: 1, duration: 1, ease: "sine.out" }, 0);
+        tl.fromTo("#reel-shot-0", { scale: 1.08 }, { scale: 1, duration: 0.60, ease: "power2.out" }, 1);
+        tl.fromTo("#reel-shot-1", { scale: 1.08 }, { scale: 1, duration: 0.60, ease: "power2.out" }, 1.6);
+        tl.fromTo("#reel-shot-2", { scale: 1.08 }, { scale: 1, duration: 0.60, ease: "power2.out" }, 2.2);
+        tl.fromTo("#reel-shot-3", { scale: 1.08 }, { scale: 1, duration: 0.60, ease: "power2.out" }, 2.8);
+        tl.fromTo("#reel-shot-4", { scale: 1.08 }, { scale: 1, duration: 0.60, ease: "power2.out" }, 3.4);
+        tl.fromTo("#reel-shot-5", { scale: 1.08 }, { scale: 1, duration: 0.60, ease: "power2.out" }, 4);
+        tl.fromTo("#reel-shot-6", { scale: 1.08 }, { scale: 1, duration: 1.00, ease: "power2.out" }, 4.6);
+        tl.fromTo("#reel-shot-7", { scale: 1.08 }, { scale: 1, duration: 0.53, ease: "power2.out" }, 5.6);
+        tl.fromTo("#reel-shot-8", { scale: 1.08 }, { scale: 1, duration: 0.57, ease: "power2.out" }, 6.133333333333334);
+        tl.fromTo("#reel-shot-9", { scale: 1.08 }, { scale: 1, duration: 0.50, ease: "power2.out" }, 6.7);
+        tl.fromTo("#reel-shot-10", { scale: 1.08 }, { scale: 1, duration: 0.50, ease: "power2.out" }, 7.2);
+        tl.fromTo("#reel-shot-11", { scale: 1.08 }, { scale: 1, duration: 0.43, ease: "power2.out" }, 7.7);
+        tl.fromTo("#reel-shot-12", { scale: 1.08 }, { scale: 1, duration: 0.47, ease: "power2.out" }, 8.133333333333333);
+        tl.fromTo("#reel-shot-13", { scale: 1.08 }, { scale: 1, duration: 0.40, ease: "power2.out" }, 8.6);
+        tl.fromTo("#reel-shot-14", { scale: 1.08 }, { scale: 1, duration: 0.40, ease: "power2.out" }, 9);
+        tl.fromTo("#reel-shot-15", { scale: 1.08 }, { scale: 1, duration: 0.33, ease: "power2.out" }, 9.4);
+        tl.fromTo("#reel-shot-16", { scale: 1.08 }, { scale: 1, duration: 0.37, ease: "power2.out" }, 9.733333333333333);
+        tl.fromTo("#reel-shot-17", { scale: 1.08 }, { scale: 1, duration: 0.33, ease: "power2.out" }, 10.1);
+        tl.fromTo("#reel-shot-18", { scale: 1.08 }, { scale: 1, duration: 0.30, ease: "power2.out" }, 10.433333333333334);
+        tl.fromTo("#reel-shot-19", { scale: 1.08 }, { scale: 1, duration: 0.30, ease: "power2.out" }, 10.733333333333333);
+        tl.fromTo("#reel-shot-20", { scale: 1.08 }, { scale: 1, duration: 0.30, ease: "power2.out" }, 11.033333333333333);
+        tl.fromTo("#reel-shot-21", { scale: 1.08 }, { scale: 1, duration: 0.30, ease: "power2.out" }, 11.333333333333334);
+        tl.fromTo("#reel-shot-22", { scale: 1.08 }, { scale: 1, duration: 0.30, ease: "power2.out" }, 11.633333333333333);
+        tl.fromTo("#reel-shot-23", { scale: 1.08 }, { scale: 1, duration: 0.30, ease: "power2.out" }, 11.933333333333334);
+        tl.fromTo("#reel-shot-24", { scale: 1.08 }, { scale: 1, duration: 0.30, ease: "power2.out" }, 12.2);
+        tl.fromTo("#reel-shot-25", { scale: 1.08 }, { scale: 1, duration: 0.30, ease: "power2.out" }, 12.5);
+        tl.fromTo("#reel-shot-26", { scale: 1.08 }, { scale: 1, duration: 0.30, ease: "power2.out" }, 12.766666666666667);
+        tl.fromTo("#reel-shot-27", { scale: 1.08 }, { scale: 1, duration: 0.30, ease: "power2.out" }, 13.033333333333333);
+        tl.fromTo("#reel-shot-28", { scale: 1.08 }, { scale: 1, duration: 0.30, ease: "power2.out" }, 13.266666666666667);
+        tl.fromTo("#reel-shot-29", { scale: 1.08 }, { scale: 1, duration: 0.30, ease: "power2.out" }, 13.533333333333333);
+        tl.fromTo("#reel-shot-30", { scale: 1.08 }, { scale: 1, duration: 0.30, ease: "power2.out" }, 13.8);
+        tl.fromTo("#reel-shot-31", { scale: 1.08 }, { scale: 1, duration: 0.30, ease: "power2.out" }, 14.033333333333333);
+        tl.fromTo("#reel-shot-32", { scale: 1.08 }, { scale: 1, duration: 0.30, ease: "power2.out" }, 14.266666666666667);
+        tl.fromTo("#reel-shot-33", { scale: 1.08 }, { scale: 1, duration: 0.30, ease: "power2.out" }, 14.5);
+        tl.fromTo("#reel-shot-34", { scale: 1.08 }, { scale: 1, duration: 0.30, ease: "power2.out" }, 14.733333333333333);
+        tl.fromTo("#reel-shot-35", { scale: 1.08 }, { scale: 1, duration: 0.30, ease: "power2.out" }, 14.966666666666667);
+        tl.fromTo("#reel-shot-36", { scale: 1.08 }, { scale: 1, duration: 0.30, ease: "power2.out" }, 15.166666666666666);
+        tl.fromTo("#reel-p1-text", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 4.9);
+        tl.fromTo("#reel-p2-text", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 7.2);
+        tl.fromTo("#reel-p3-text", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 9.4);
+        tl.fromTo("#reel-p4-text", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 12.2);
+        tl.fromTo("#reel-p5-text", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 13.9);
+        tl.fromTo("#reel-dust-0", { y: 0 }, { y: -64, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-1", { y: 0 }, { y: -53, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-2", { y: 0 }, { y: -42, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-3", { y: 0 }, { y: -48, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-4", { y: 0 }, { y: -75, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-5", { y: 0 }, { y: -75, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-6", { y: 0 }, { y: -29, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-7", { y: 0 }, { y: -53, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-8", { y: 0 }, { y: -54, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-9", { y: 0 }, { y: -23, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-10", { y: 0 }, { y: -51, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-11", { y: 0 }, { y: -45, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-12", { y: 0 }, { y: -74, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-13", { y: 0 }, { y: -51, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-14", { y: 0 }, { y: -62, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-15", { y: 0 }, { y: -43, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-16", { y: 0 }, { y: -25, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-17", { y: 0 }, { y: -33, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-18", { y: 0 }, { y: -28, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-19", { y: 0 }, { y: -74, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-20", { y: 0 }, { y: -25, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-21", { y: 0 }, { y: -49, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-22", { y: 0 }, { y: -42, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-23", { y: 0 }, { y: -75, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-24", { y: 0 }, { y: -31, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-25", { y: 0 }, { y: -33, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-26", { y: 0 }, { y: -62, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-27", { y: 0 }, { y: -75, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-28", { y: 0 }, { y: -73, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-29", { y: 0 }, { y: -45, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-30", { y: 0 }, { y: -34, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-31", { y: 0 }, { y: -57, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-32", { y: 0 }, { y: -32, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-33", { y: 0 }, { y: -72, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-34", { y: 0 }, { y: -50, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-35", { y: 0 }, { y: -31, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-36", { y: 0 }, { y: -54, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-37", { y: 0 }, { y: -22, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-38", { y: 0 }, { y: -37, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-39", { y: 0 }, { y: -66, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-40", { y: 0 }, { y: -78, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-41", { y: 0 }, { y: -74, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-42", { y: 0 }, { y: -25, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-43", { y: 0 }, { y: -28, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-44", { y: 0 }, { y: -80, duration: 15.4, ease: "none" }, 0);
+        tl.fromTo("#reel-dust-45", { y: 0 }, { y: -45, duration: 15.4, ease: "none" }, 0);
+        window.__timelines["reel"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

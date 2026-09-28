@@ -1,0 +1,72 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[
+    {"id":"tagline","type":"string","label":"Tagline","default":"La Casa del Real Estate"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          background: linear-gradient(180deg, #0d0b0a 0%, var(--co-carbon) 55%, #241c16 100%);
+        }
+        /* Horizonte degradado abajo, como el cierre de la referencia */
+        #end-glow {
+          position: absolute;
+          left: -10%;
+          width: 120%;
+          top: 1180px;
+          height: 740px;
+          background: radial-gradient(75% 60% at 50% 100%, rgba(244, 231, 203, 0.7) 0%, rgba(205, 150, 90, 0.55) 22%, rgba(139, 54, 28, 0.35) 48%, rgba(28, 23, 20, 0) 85%);
+        }
+        #end-lockup {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+        #end-logo {
+          display: block;
+          width: 420px;
+          height: 224px;
+        }
+        #end-tagline {
+          display: block;
+          margin-top: 48px;
+          font-family: var(--co-font-ui);
+          font-weight: 500;
+          font-size: 26px;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: var(--co-pergamino);
+        }
+      </style>
+
+      <div id="root" data-composition-id="endcard" data-width="1080" data-height="1920">
+        <div id="end-glow" data-layout-allow-overflow></div>
+        <div id="end-lockup">
+          <img id="end-logo" src="assets/brand/logo-co-light.png" alt="C&amp;O" />
+          <span id="end-tagline" data-var-text="tagline">La Casa del Real Estate</span>
+        </div>
+      </div>
+
+      <script>
+        const tl = gsap.timeline({ paused: true });
+        tl.fromTo("#end-glow", { opacity: 0, y: 160 }, { opacity: 1, y: 0, duration: 2.2, ease: "power2.out" }, 0);
+        tl.fromTo("#end-logo", { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 1.4, ease: "power2.out" }, 0.1);
+        tl.fromTo("#end-tagline", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 1, ease: "power2.out" }, 0.9);
+        tl.to("#end-lockup", { opacity: 0, duration: 0.8, ease: "power1.in" }, 3.7);
+        window.__timelines["endcard"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

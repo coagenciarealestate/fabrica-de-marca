@@ -14,10 +14,15 @@ export const midiHz = (m) => 440 * Math.pow(2, (m - 69) / 12);
 const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
 
 // Filtro biquad (RBJ) para modelar aire, puertas, vapor…
-function biquad(type, f, q = 0.707) {
+function biquad(type, f, q = 0.707, gainDb = 0) {
   const w = (2 * Math.PI * clamp(f, 10, SR * 0.45)) / SR;
   const c = Math.cos(w), s = Math.sin(w), a = s / (2 * q);
   let b0, b1, b2, a0, a1, a2;
+  if (type === "peak") {
+    const A = Math.pow(10, gainDb / 40);
+    b0 = 1 + a * A; b1 = -2 * c; b2 = 1 - a * A; a0 = 1 + a / A; a1 = -2 * c; a2 = 1 - a / A;
+    return { b0: b0 / a0, b1: b1 / a0, b2: b2 / a0, a1: a1 / a0, a2: a2 / a0, x1: 0, x2: 0, y1: 0, y2: 0 };
+  }
   if (type === "lp") { b0 = (1 - c) / 2; b1 = 1 - c; b2 = (1 - c) / 2; }
   else if (type === "hp") { b0 = (1 + c) / 2; b1 = -(1 + c); b2 = (1 + c) / 2; }
   else { b0 = a; b1 = 0; b2 = -a; } // bp
@@ -250,6 +255,57 @@ export function createMix(totalSecs, seed = 1) {
     }
   };
 
+  // Cuerda frotada (violín / viola / chelo): sierra con PolyBLEP (el arco) → resonancias de la
+  // caja (picos de cuerpo y "bridge hill") → paso-bajos. Vibrato que entra tarde, presión de arco
+  // que respira, ruido de crin, portamento cuando viene ligada de otra nota.
+  // players > 1 = sección (desafinación, vibratos y entradas distintas, abierta en estéreo).
+  api.bowed = (t0, dur, midi, vel = 0.1, o = {}) => {
+    const { pan = 0, players = 1, att = 0.14, rel = 0.3, vib = 1, bright = 1, from = null, send = 0.6, body = "violin", swell = 0, short = false } = o;
+    const formants = body === "cello" ? [[110, 1.2, 5], [220, 1.4, 4], [1500, 1, 3], [3000, 1.2, -4]]
+      : body === "viola" ? [[220, 1.3, 5], [380, 1.4, 4], [2200, 1.1, 4], [4500, 1.2, -3]]
+      : [[285, 1.4, 6], [460, 1.5, 4], [1100, 1.2, 2], [2900, 1.0, 6], [5200, 1.4, -5]];
+    const lpF = (body === "cello" ? 2600 : body === "viola" ? 4500 : 6500) * (0.7 + 0.3 * bright);
+    for (let p = 0; p < players; p++) {
+      const det = players > 1 ? (r() - 0.5) * 0.12 : 0; // ± 6 cents
+      const f1 = midiHz(midi + det), f0 = from != null ? midiHz(from + det) : f1;
+      const lag = players > 1 ? r() * 0.035 : 0;
+      const s0 = Math.floor((t0 + lag) * SR);
+      const n = Math.floor((dur + rel) * SR);
+      const vr = 5.1 + r() * 0.9, vph = r() * 6.28, dph = r() * 6.28;
+      const ppan = players > 1 ? clamp(pan + (p / (players - 1) - 0.5) * 0.9, -1, 1) : pan;
+      const [gl, gr] = panG(ppan);
+      const fs = formants.map(([f, q, g]) => biquad("peak", f, q, g));
+      const lp1 = biquad("lp", lpF, 0.6), lp2 = biquad("lp", lpF * 1.3, 0.6);
+      const nz = biquad("bp", 3500, 0.7);
+      let ph = r(), bowL = 0;
+      for (let i = 0; i < n; i++) {
+        const t = i / SR;
+        const glide = from != null ? Math.min(1, t / 0.07) : 1;
+        let f = f0 + (f1 - f0) * (glide * glide * (3 - 2 * glide));
+        const vibAmt = vib * 0.0042 * Math.min(1, Math.max(0, (t - 0.22) / 0.35));
+        f *= 1 + vibAmt * Math.sin(2 * Math.PI * vr * t + vph) + 0.0007 * Math.sin(2 * Math.PI * 0.7 * t + dph);
+        const dt = f / SR;
+        ph += dt; if (ph >= 1) ph -= 1;
+        // sierra PolyBLEP
+        let saw = 2 * ph - 1;
+        if (ph < dt) { const x = ph / dt; saw -= x + x - x * x - 1; }
+        else if (ph > 1 - dt) { const x = (ph - 1) / dt; saw -= x * x + x + x + 1; }
+        // envolvente del arco
+        let e = short ? Math.min(1, t / 0.018) * Math.exp(-t * 9) : Math.min(1, t / att) ** 1.5;
+        if (!short) e *= 1 + swell * Math.min(1, t / Math.max(0.01, dur));
+        if (t > dur) e *= Math.max(0, 1 - (t - dur) / rel);
+        bowL = 0.999 * bowL + 0.001 * (r() - 0.5); // presión que respira
+        e *= 1 + bowL * 1.2 + 0.04 * Math.sin(2 * Math.PI * 1.3 * t + dph);
+        let v = saw * 0.9 + bq(nz, r() * 2 - 1) * 0.07 * (short ? 1.5 : 1);
+        for (const b of fs) v = bq(b, v);
+        v = bq(lp2, bq(lp1, v));
+        const out = v * e * vel / Math.sqrt(players);
+        add(dry, s0 + i, out * gl, out * gr);
+        add(wet, s0 + i, out * gl * send, out * gr * send);
+      }
+    }
+  };
+
   // Cuerda pulsada brillante (el arpegio): muchos armónicos que se apagan de arriba hacia abajo,
   // ataque con un soplo de púa, leve desafinación entre canales. Envía a reverb y a delay.
   api.pluck = (t0, midi, vel = 0.1, { pan = 0, send = 0.45, delay = 0.35, bright = 1, len = 2.8 } = {}) => {
@@ -350,7 +406,7 @@ export function createMix(totalSecs, seed = 1) {
     for (let i = 0; i < N; i++) {
       const x = Math.max(Math.abs(L[i]), Math.abs(R[i])) * pre;
       env = x > env ? env + (x - env) * 0.002 : env + (x - env) * 0.00005;
-      const gr = env > 0.35 ? Math.pow(0.35 / env, 0.4) : 1;
+      const gr = env > 0.6 ? Math.pow(0.6 / env, 0.35) : 1; // compresión suave: deja respirar la dinámica
       L[i] = Math.tanh(L[i] * pre * gr * 1.2) / Math.tanh(1.2);
       R[i] = Math.tanh(R[i] * pre * gr * 1.2) / Math.tanh(1.2);
     }

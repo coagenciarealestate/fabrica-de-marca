@@ -1,7 +1,7 @@
 # Dar el salto — papel y stop motion
 
 **Frase:** "Cuando ya no te gusta donde estás. Solo tienes que: Dar el salto"
-**Cierre:** C&O — *La Casa del Marketing* · **Formato:** 1080×1920 · 24.5 s
+**Cierre:** C&O — *La Casa del Marketing* · **Formato:** 1080×1920 · 24 s
 
 ## Idea
 
@@ -38,17 +38,18 @@ dorada, la marca.
 | 18.0–20.0 | Adentro del sombrero | — | — |
 | 20.0–24.5 | C&O · *La Casa del Marketing* | — | — |
 
-**Sonido (arquitectura del video de Opus):**
-- Arpegio pulsado y brillante en Si menor → Re mayor: una nota fuerte en cada cambio de mundo y
-  una rejilla de notas que se acelera sola porque los lugares duran cada vez menos. En el
-  sombrero se vuelve una cascada (corcheas → semicorcheas).
-- Sub-grave que crece sin golpes de casi nada (−) a pleno a lo largo del viaje; cuerdas que se
-  abren; pulso de shaker desde el faro; aire que sube hasta el salto. Delay estéreo de ida y
-  vuelta y reverb de sala: el acabado premium.
-- **Silencio seco** cuando el conejo entra al sombrero (16.8–17.3 s), una campana sola, y el
-  **regreso cálido**: el sub vuelve en Re y notas lentas mientras bajamos a la luz.
-- Cierre: Re add9 que se abre bajo *La Casa del Marketing*. El mundo de papel (hojas que se
-  voltean, pasos, grillos, viento, lluvia, hojas) queda discreto por debajo. −15 LUFS.
+**Música: violín solista y cuerdas (120 BPM, Si menor → Re mayor).** Todos los cortes caen en
+un tiempo del compás (3.5 · 6 · 8 · 9.5 · 11 · 12 · 13) y el despegue al sombrero cae en el
+tiempo fuerte de 16.0.
+- La duda: el violín canta solo sobre chelos casi inaudibles.
+- Sale al mundo: entran las cuerdas y un ostinato de violas en corcheas (el camino); cada lugar
+  sube un escalón de armonía (Si m → Sol → Mi m → Re/Fa# → Sol → La).
+- Desde la tormenta: tambores graves con cuerpo (sin sub) que se aceleran; en el sombrero los
+  violines doblan la melodía, platillo que crece → **Re mayor en el salto** (el punto más alto).
+- Cuando entra al sombrero la orquesta **respira** (baja sin cortarse) y resuelve cálida; bajo la
+  marca, un Re add9 amplio que se queda. Sin silencios ni cortes: todo ligado.
+- El violín es síntesis de cuerda frotada (sierra PolyBLEP → resonancias de caja, vibrato tardío,
+  ruido de arco, portamento). Arco dinámico: −25 dB (duda) → −12 dB (salto) → −23 (respira) → −14 (marca).
 
 ## Archivos
 

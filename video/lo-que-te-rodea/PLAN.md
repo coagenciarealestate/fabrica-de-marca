@@ -2,9 +2,13 @@
 
 > **v3 (actual):** imágenes nuevas según el estudio del referente — ver `REFERENTE-v3.md`
 > (diagnóstico y lista de tomas) y `PROMPTS-v3.md` (prompts de Higgsfield). Bordes curvos,
-> fondo liso arriba, técnicas y colores que cambian en cada corte, un movimiento por toma
-> (empuje, deriva, giro, materia viva) y barridos de movimiento en el umbral y en "Nosotros
-> entendemos". La música y el pulso de la v2 final se mantienen. Lo de abajo es la v2.
+> fondo liso arriba, técnicas y colores que cambian en cada corte. Como en el referente
+> (medido cuadro a cuadro), las tomas son quietas: solo la apertura se acerca, la materia
+> viva se mece apenas y dos cortes llegan con barrido. Texto: "Para transformar el mundo, hay
+> que empezar cambiando las cosas en casa." — quieto sobre el horizonte, doblado según la
+> curva de cada borde, con la óptica de la toma (desenfoque; tinta impresa sobre papel, luz
+> sobre lo oscuro) y creciendo un paso en cada corte; el cierre en negrita. La música y el
+> pulso de la v2 final se mantienen. Lo de abajo es la v2.
 
 
 ## 1. Dónde nos alejamos del referente (v1)

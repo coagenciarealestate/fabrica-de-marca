@@ -8,7 +8,7 @@
 //
 // Uso (desde video/lo-que-te-rodea):  node scripts/build-reel.mjs
 
-import { writeFileSync, mkdirSync, unlinkSync, existsSync } from "node:fs";
+import { writeFileSync, readFileSync, mkdirSync, unlinkSync, existsSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -29,31 +29,32 @@ const HORIZON = 0.46 * H; // donde se encuentran todos los bordes (y donde se po
 // Cada imagen sigue las reglas del referente: borde curvo (un domo, como un horizonte de
 // planeta), fondo liso de un color arriba, escala sorpresa y técnica distinta a la anterior.
 // edge: altura (% del cuadro) de la cima del borde, medida con scripts/measure-edges.py.
-// move: cómo respira la toma — E empuje · D deriva lateral · G giro leve · V viva (líquidos).
+// curve: curvatura del borde (k en y = cima + k·dx², px) — la frase se dobla igual.
+// soft: desenfoque de la toma (px) — el texto toma la misma óptica.
 const IMGDIR = "assets/reel-v3";
 const IMG = {
-  200: { edge: 48.9, move: "E", ink: "light", alt: "Horizonte curvo de los Andes al amanecer visto desde muy alto" },
-  201: { edge: 38.5, move: "E", ink: "light", alt: "Corte de una teja de barro contra un fondo cobalto" },
-  202: { edge: 49.6, move: "D", ink: "dark", alt: "Grabado en tinta de una fachada colonial con arco" },
-  203: { edge: 40.6, move: "G", ink: "light", alt: "Plano en tiza del arco de una puerta sobre papel azul" },
-  204: { edge: 41.5, move: "E", ink: "dark", alt: "Corte de guadua al microscopio" },
-  205: { edge: 46.0, move: "D", ink: "light", alt: "Techo de teja en cámara térmica con el calor de la casa" },
-  206: { edge: 47.9, move: "E", ink: "light", alt: "Una línea de luz cálida sobre el piso en la oscuridad" },
-  207: { edge: 37.8, move: "V", ink: "light", alt: "La crema de un café, como un planeta" },
-  208: { edge: 44.7, move: "E", ink: "dark", alt: "Masa de arepa con huellas de dedos pequeños" },
-  209: { edge: 42.3, move: "D", ink: "light", alt: "Tejido de una mochila wayuu" },
-  210: { edge: 44.6, move: "G", ink: "dark", alt: "Dibujo en crayola de una casa y una familia" },
-  211: { edge: 35.3, move: "E", ink: "dark", alt: "Sala en collage de papel recortado" },
-  212: { edge: 37.5, move: "D", ink: "light", alt: "Cortina de encaje" },
-  213: { edge: 39.0, move: "V", ink: "light", alt: "Película iridiscente de una burbuja de jabón" },
-  214: { edge: 45.7, move: "E", ink: "dark", alt: "Filo de un plato pintado de Carmen de Viboral" },
-  215: { edge: 47.1, move: "G", ink: "light", alt: "Cristales de panela en luz polarizada" },
-  216: { edge: 47.7, move: "D", ink: "dark", alt: "Borde de una hoja de helecho a contraluz" },
-  217: { edge: 43.5, move: "G", ink: "dark", alt: "Construcción de un arco en lápiz" },
-  218: { edge: 38.2, move: "E", ink: "dark", alt: "Ilustración antigua de una casa de bahareque" },
-  219: { edge: 34.2, move: "D", ink: "dark", alt: "Plano de una casa en tinta sobre papel kraft" },
-  220: { edge: 45.5, move: "V", ink: "light", alt: "Panela derretida con burbujas" },
-  221: { edge: 40.9, move: "E", ink: "light", alt: "Mota de algodón a contraluz" },
+  200: { edge: 48.9, curve: 0.0001, soft: 0.6, ink: "light", alt: "Horizonte curvo de los Andes al amanecer visto desde muy alto" },
+  201: { edge: 38.5, curve: 0.000587, soft: 0, ink: "light", alt: "Corte de una teja de barro contra un fondo cobalto" },
+  202: { edge: 49.6, curve: 0.000273, soft: 0, ink: "dark", alt: "Grabado en tinta de una fachada colonial con arco" },
+  203: { edge: 40.6, curve: 0.000209, soft: 0, ink: "light", alt: "Plano en tiza del arco de una puerta sobre papel azul" },
+  204: { edge: 41.5, curve: 0.000278, soft: 0, ink: "dark", alt: "Corte de guadua al microscopio" },
+  205: { edge: 46.0, curve: 0.000328, soft: 0, ink: "light", alt: "Techo de teja en cámara térmica con el calor de la casa" },
+  206: { edge: 47.9, curve: 0.000173, soft: 1.4, ink: "light", alt: "Una línea de luz cálida sobre el piso en la oscuridad" },
+  207: { edge: 37.8, curve: 0.000221, soft: 1.0, ink: "light", alt: "La crema de un café, como un planeta" },
+  208: { edge: 44.7, curve: 0.000679, soft: 0, ink: "dark", alt: "Masa de arepa con huellas de dedos pequeños" },
+  209: { edge: 42.3, curve: 0.0003, soft: 0, ink: "light", alt: "Tejido de una mochila wayuu" },
+  210: { edge: 44.6, curve: 0.000375, soft: 0, ink: "dark", alt: "Dibujo en crayola de una casa y una familia" },
+  211: { edge: 35.3, curve: 0.00032, soft: 0, ink: "dark", alt: "Sala en collage de papel recortado" },
+  212: { edge: 37.5, curve: 0.00029, soft: 0.6, ink: "light", alt: "Cortina de encaje" },
+  213: { edge: 39.0, curve: 0.000431, soft: 0, ink: "light", alt: "Película iridiscente de una burbuja de jabón" },
+  214: { edge: 45.7, curve: 0.000362, soft: 0, ink: "dark", alt: "Filo de un plato pintado de Carmen de Viboral" },
+  215: { edge: 47.1, curve: 0.000337, soft: 0, ink: "light", alt: "Cristales de panela en luz polarizada" },
+  216: { edge: 47.7, curve: 0.000321, soft: 1.0, ink: "dark", alt: "Borde de una hoja de helecho a contraluz" },
+  217: { edge: 43.5, curve: 0.000488, soft: 0, ink: "dark", alt: "Construcción de un arco en lápiz" },
+  218: { edge: 38.2, curve: 0.00035, soft: 0, ink: "dark", alt: "Ilustración antigua de una casa de bahareque" },
+  219: { edge: 34.2, curve: 0.000205, soft: 0, ink: "dark", alt: "Plano de una casa en tinta sobre papel kraft" },
+  220: { edge: 45.5, curve: 0.000482, soft: 0.8, ink: "light", alt: "Panela derretida con burbujas" },
+  221: { edge: 40.9, curve: 0.000933, soft: 1.8, ink: "light", alt: "Mota de algodón a contraluz" },
 };
 
 // Mide la luminancia justo encima del borde para decidir el tono del texto
@@ -94,16 +95,36 @@ const shots = cuts.map((c, i) => ({ ...c, i, end: i + 1 < cuts.length ? cuts[i +
 // Barrido de movimiento en los cortes grandes (como la transición borrosa del referente)
 const SMEAR = [snap(8 * BEAT), snap(21 * BEAT)];
 
-// Frases sobre el borde. Cambian en un corte, como en la referencia.
-const at = (target) => shots.reduce((best, s) => (Math.abs(s.t - target) < Math.abs(best - target) ? s.t : best), 0);
+// Frases sobre el borde, como en el referente:
+//  · quietas en su lugar (no viajan con la imagen) y posadas sobre el horizonte;
+//  · se doblan siguiendo la curva del borde de cada toma (cambia en cada corte);
+//  · toman la óptica de la toma: su desenfoque y su luz (tinta impresa sobre papel, luz
+//    sobre lo oscuro);
+//  · crecen a saltos, un paso en cada corte: mientras más se acerca, más conecta. El cierre
+//    llega en negrita.
 const phrases = [
-  { id: "p1", text: "Para transformar", start: 9 * BEAT, size: 58 },
-  { id: "p2", text: "el mundo,", start: 13 * BEAT, size: 66, italic: true },
-  { id: "p3", text: "hay que empezar", start: 16 * BEAT, size: 60 },
+  { id: "p1", text: "Para transformar", start: 9 * BEAT, size: 50 },
+  { id: "p2", text: "el mundo,", start: 13 * BEAT, size: 58, italic: true },
+  { id: "p3", text: "hay que empezar", start: 16 * BEAT, size: 58 },
   { id: "p4", text: "cambiando las cosas", start: 21 * BEAT, size: 62 },
-  { id: "p5", text: "en casa.", start: 24 * BEAT, size: 100, italic: true },
+  { id: "p5", text: "en casa.", start: 24 * BEAT, size: 104, bold: true },
 ].map((p) => ({ ...p, start: snap(p.start) }));
 phrases.forEach((p, i) => (p.end = i + 1 < phrases.length ? phrases[i + 1].start : snap(LOGO_AT - 0.2)));
+
+// Anchos de letra de Inria Serif (scripts/font-metrics.json, sacados de las fuentes del proyecto)
+// para ubicar cada letra sobre la curva.
+const METRICS = JSON.parse(readFileSync(join(ROOT, "scripts/font-metrics.json"), "utf8"));
+phrases.forEach((p) => {
+  const m = METRICS[p.bold ? "700" : p.italic ? "400i" : "400"];
+  const adv = [...p.text].map((c) => (m[c] ?? 0.5) * p.size);
+  const total = adv.reduce((x, y) => x + y, 0);
+  let acc = 0;
+  p.letters = [...p.text].map((c, i) => { const dx = acc + adv[i] / 2 - total / 2; acc += adv[i]; return { c, dx: +dx.toFixed(1) }; });
+  // un paso de crecimiento por corte, sin salirse del cuadro
+  const cutsIn = shots.filter((s) => s.t > p.start + 1e-6 && s.t < p.end - 1e-6).length;
+  const maxScale = Math.min(p.id === "p5" ? 1.45 : 1.35, 940 / total);
+  p.step = cutsIn ? (maxScale - 1) / cutsIn : 0;
+});
 
 // ─── HTML ───────────────────────────────────────────────────────────────────
 function buildHtml() {
@@ -112,66 +133,63 @@ function buildHtml() {
     .map((s) => `        <img id="reel-shot-${s.i}" class="clip shot" src="${IMGDIR}/${s.id}.jpg" alt="${IMG[s.id].alt}" data-start="${s.t}" data-duration="${+(s.end - s.t).toFixed(4)}" data-track-index="${1 + (s.i % 2)}" />`)
     .join("\n");
   const phraseTags = phrases
-    .map((p) => `        <div id="reel-${p.id}" class="clip phrase" data-start="${p.start}" data-duration="${+(p.end - p.start).toFixed(4)}" data-track-index="4"><span id="reel-${p.id}-text" class="phrase-text${p.italic ? " italic" : ""}" style="font-size:${p.size}px">${p.text}</span></div>`)
+    .map((p) => {
+      const letters = p.letters.map(({ c, dx }) => (c === " " ? `<span class="ch sp" style="--dx:${dx}">&nbsp;</span>` : `<span class="ch" style="--dx:${dx}">${c}</span>`)).join("");
+      return `        <div id="reel-${p.id}" class="clip phrase" data-start="${p.start}" data-duration="${+(p.end - p.start).toFixed(4)}" data-track-index="4"><span id="reel-${p.id}-text" class="phrase-text${p.italic ? " italic" : ""}${p.bold ? " bold" : ""}" style="font-size:${p.size}px">${letters}</span></div>`;
+    })
     .join("\n");
 
   // Alineación: cada foto escala desde su propio borde (transform-origin en el borde), que
-  // se desplaza a HORIZON. Así el horizonte queda quieto aunque la toma respire.
-  // Cada toma respira distinto: un empuje lento con deriva leve (nada idéntico, nada rígido)
-  // El texto no es indiferente a la toma: vive en #reel-motion, que se mueve exactamente como
-  // la superficie (mismo acercamiento, deriva y giro, con el pivote en el horizonte). Como en el
-  // referente, la frase queda posada sobre la materia y se acerca con ella.
-  const f3 = (v) => +(+v).toFixed(4);
+  // se desplaza a HORIZON. Como en el referente, las tomas son QUIETAS: el movimiento lo da
+  // el corte. Solo la apertura se acerca despacio al mundo, la materia viva (café, burbuja,
+  // panela) se mece apenas, y dos cortes grandes llegan con un barrido de movimiento.
+  const f4 = (v) => +(+v).toFixed(5);
   const shotTweens = shots
     .map((s) => {
       const im = IMG[s.id];
       const y0 = (im.edge / 100) * H;
       const cover = Math.max(1, HORIZON / y0, (H - HORIZON) / (H - y0)) * 1.025;
       const dy = (HORIZON - y0).toFixed(1);
-      const d = Math.floor((s.end - s.t) * 1000 - 1) / 1000; // termina justo antes del siguiente corte
+      const d = Math.floor((s.end - s.t) * 1000 - 1) / 1000;
       const sel = `"#reel-shot-${s.i}"`;
-      const side = r() < 0.5 ? -1 : 1;
-      // k = acercamiento relativo (1 = cuadro justo cubierto), x en px, rot en grados
-      let a, b;
-      if (s.i === 0) { a = { k: 1, x: 0, rot: 0 }; b = { k: 1.1, x: 0, rot: 0 }; } // nos acercamos al mundo
-      else if (im.move === "D") { a = { k: 1.06, x: 34 * side, rot: 0 }; b = { k: 1.075, x: -10 * side, rot: 0 }; } // deriva
-      else if (im.move === "G") { a = { k: 1.08, x: 0, rot: 1.1 * side }; b = { k: 1.1, x: 0, rot: 0 }; } // giro leve
-      else if (im.move === "V") { a = { k: 1.04, x: 0, rot: -0.9 * side }; b = { k: 1.1, x: 0, rot: 0.4 * side }; } // materia viva
-      else { a = { k: 1, x: f3((r() - 0.5) * 12), rot: 0 }; b = { k: f3(1.05 + r() * 0.03), x: 0, rot: 0 }; } // se acerca
-      const hue = s.id === 213;
-      const lines = [`        tl.set(${sel}, { transformOrigin: "50% ${im.edge}%", y: ${dy} }, 0);`];
-      lines.push(`        tl.fromTo(${sel}, { scale: ${f3(cover * a.k)}, x: ${a.x}, rotation: ${a.rot}${hue ? ', filter: "hue-rotate(0deg)"' : ""} }, { scale: ${f3(cover * b.k)}, x: ${b.x}, rotation: ${b.rot}${hue ? ', filter: "hue-rotate(50deg)"' : ""}, duration: ${d}, ease: "sine.inOut" }, ${s.t});`);
-      if (SMEAR.some((x) => Math.abs(x - s.t) < 0.01) && !hue) {
+      const lines = [`        tl.set(${sel}, { transformOrigin: "50% ${im.edge}%", y: ${dy}, scale: ${f4(cover)} }, 0);`];
+      if (s.i === 0) {
+        lines.push(`        tl.to(${sel}, { scale: ${f4(cover * 1.1)}, duration: ${d}, ease: "sine.inOut" }, 0);`);
+      } else if ([207, 213, 220].includes(s.id)) {
+        const hue = s.id === 213;
+        lines.push(`        tl.fromTo(${sel}, { scale: ${f4(cover)}, x: 0${hue ? ', filter: "hue-rotate(0deg)"' : ""} }, { scale: ${f4(cover * 1.02)}, x: 8${hue ? ', filter: "hue-rotate(40deg)"' : ""}, duration: ${d}, ease: "none" }, ${s.t});`);
+      }
+      if (SMEAR.some((x) => Math.abs(x - s.t) < 0.01) && s.id !== 213) {
         lines.push(`        tl.fromTo(${sel}, { filter: "blur(18px) brightness(1.25)" }, { filter: "blur(0px) brightness(1)", duration: 0.28, ease: "power2.out" }, ${s.t});`);
       }
-      // el texto hace el mismo movimiento que la superficie
-      lines.push(`        tl.set("#reel-motion", { scale: ${a.k}, x: ${a.x}, rotation: ${a.rot} }, ${s.t});`);
-      lines.push(`        tl.to("#reel-motion", { scale: ${b.k}, x: ${b.x}, rotation: ${b.rot}, duration: ${d}, ease: "sine.inOut" }, ${s.t});`);
       return lines.join("\n");
     })
     .join("\n");
 
-  // El texto cambia de tinta según la imagen que tiene debajo
+  // Cómo cambia el texto en cada corte: curva del borde, óptica, tinta y tamaño
+  const coverOf = (id) => { const y0 = (IMG[id].edge / 100) * H; return Math.max(1, HORIZON / y0, (H - HORIZON) / (H - y0)) * 1.025; };
   const INK = {
-    light: { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)" },
-    dark: { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)" },
+    light: { color: "#f4e7cb", mixBlendMode: "screen" }, // luz sobre lo oscuro
+    dark: { color: "#1c1714", mixBlendMode: "multiply" }, // tinta impresa sobre papel
   };
-  let last = null;
-  const inkSets = shots
-    .filter((s) => s.t >= phrases[0].start - 0.7)
-    .map((s) => {
-      if (s.ink === last) return null;
-      last = s.ink;
-      const k = INK[s.ink];
-      return `        tl.to("#reel-words", { color: "${k.color}", textShadow: "${k.textShadow}", duration: 0.12, ease: "sine.inOut" }, ${Math.max(0, s.t - 0.04).toFixed(3)});`;
-    })
-    .filter(Boolean)
-    .join("\n");
-  // Entran en el pulso con un leve ascenso y salen con fundido (nunca desaparecen de golpe)
+  const textSets = [];
+  phrases.forEach((p) => {
+    const inPhrase = shots.filter((s) => s.end > p.start + 1e-6 && s.t < p.end - 1e-6);
+    inPhrase.forEach((s, n) => {
+      const t0 = Math.max(s.t, p.start);
+      const scale = 1 + p.step * n;
+      const kEdge = IMG[s.id].curve / coverOf(s.id); // curvatura visible del borde
+      const kText = Math.min(0.0007, 1 / (1 / kEdge + 2 * 24)); // arco concéntrico, un poco más abierto
+      const ink = INK[s.ink];
+      textSets.push(`        tl.set("#reel-${p.id}", { scale: ${f4(scale)}, "--k": ${f4(kText * scale)} }, ${t0});`);
+      textSets.push(`        tl.set("#reel-words", { color: "${ink.color}", mixBlendMode: "${ink.mixBlendMode}", filter: "blur(${IMG[s.id].soft}px)" }, ${t0});`);
+    });
+  });
+  // Aparecen en el corte y se desvanecen rápido; el cierre respira más
   const phraseTweens = phrases
     .map((p) => {
-      const inD = p.id === "p1" ? 0.6 : 0.24, outD = p.id === "p5" ? 0.5 : 0.16;
-      return `        tl.fromTo("#reel-${p.id}-text", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: ${inD}, ease: "sine.out" }, ${p.start});\n        tl.to("#reel-${p.id}-text", { opacity: 0, duration: ${outD}, ease: "sine.in" }, ${(p.end - outD).toFixed(3)});\n        tl.fromTo("#reel-${p.id}", { scale: 1 }, { scale: ${p.id === "p5" ? 1.12 : 1.06}, duration: ${(p.end - p.start).toFixed(3)}, ease: "none" }, ${p.start});`;
+      const inD = p.id === "p1" ? 0.3 : 0.12, outD = p.id === "p5" ? 0.5 : 0.12;
+      return `        tl.fromTo("#reel-${p.id}-text", { opacity: 0 }, { opacity: 1, duration: ${inD}, ease: "sine.out" }, ${p.start});\n        tl.to("#reel-${p.id}-text", { opacity: 0, duration: ${outD}, ease: "sine.in" }, ${(p.end - outD).toFixed(3)});`;
     })
     .join("\n");
   // Fundido a negro al final del clímax (la última toma no se corta)
@@ -212,29 +230,32 @@ function buildHtml() {
           position: absolute;
           inset: 0;
           color: #f4e7cb;
-        }
-        #reel-motion {
-          position: absolute;
-          inset: 0;
-          transform-origin: 50% ${HORIZON}px;
+          opacity: 0.94;
         }
         #reel-words .phrase {
           transform-origin: 50% ${HORIZON}px;
           display: flex;
           align-items: flex-end;
           justify-content: center;
-          padding-bottom: ${Math.round(H - HORIZON + 14)}px;
+          padding-bottom: ${Math.round(H - HORIZON + 8)}px;
         }
         #reel-words .phrase-text {
           display: block;
           font-family: var(--co-font-display);
           font-weight: 400;
           line-height: 1;
-          letter-spacing: -0.005em;
           white-space: nowrap;
         }
         #reel-words .phrase-text.italic {
           font-style: italic;
+        }
+        #reel-words .phrase-text.bold {
+          font-weight: 700;
+        }
+        /* cada letra se sienta sobre la curva del borde: y = k·dx², girada según la pendiente */
+        #reel-words .ch {
+          display: inline-block;
+          transform: translateY(calc(var(--k, 0) * var(--dx) * var(--dx) * 1px)) rotate(calc(var(--k, 0) * var(--dx) * 2rad));
         }
       </style>
 
@@ -243,9 +264,7 @@ function buildHtml() {
 ${shotTags}
       </div>
       <div id="reel-words">
-        <div id="reel-motion">
 ${phraseTags}
-        </div>
       </div>
       <div id="reel-fade"></div>
       </div>
@@ -253,7 +272,7 @@ ${phraseTags}
       <script>
         const tl = gsap.timeline({ paused: true });
 ${shotTweens}
-${inkSets}
+${textSets.join("\n")}
 ${phraseTweens}
 ${fadeTween}
         window.__timelines["reel"] = tl;

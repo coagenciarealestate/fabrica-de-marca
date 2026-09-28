@@ -33,29 +33,32 @@
           position: absolute;
           inset: 0;
           color: #f4e7cb;
-        }
-        #reel-motion {
-          position: absolute;
-          inset: 0;
-          transform-origin: 50% 883.2px;
+          opacity: 0.94;
         }
         #reel-words .phrase {
           transform-origin: 50% 883.2px;
           display: flex;
           align-items: flex-end;
           justify-content: center;
-          padding-bottom: 1051px;
+          padding-bottom: 1045px;
         }
         #reel-words .phrase-text {
           display: block;
           font-family: var(--co-font-display);
           font-weight: 400;
           line-height: 1;
-          letter-spacing: -0.005em;
           white-space: nowrap;
         }
         #reel-words .phrase-text.italic {
           font-style: italic;
+        }
+        #reel-words .phrase-text.bold {
+          font-weight: 700;
+        }
+        /* cada letra se sienta sobre la curva del borde: y = k·dx², girada según la pendiente */
+        #reel-words .ch {
+          display: inline-block;
+          transform: translateY(calc(var(--k, 0) * var(--dx) * var(--dx) * 1px)) rotate(calc(var(--k, 0) * var(--dx) * 2rad));
         }
       </style>
 
@@ -102,213 +105,141 @@
         <img id="reel-shot-38" class="clip shot" src="assets/reel-v3/221.jpg" alt="Mota de algodón a contraluz" data-start="15.466666666666667" data-duration="0.7333" data-track-index="1" />
       </div>
       <div id="reel-words">
-        <div id="reel-motion">
-        <div id="reel-p1" class="clip phrase" data-start="5.4" data-duration="2.4" data-track-index="4"><span id="reel-p1-text" class="phrase-text" style="font-size:58px">Para transformar</span></div>
-        <div id="reel-p2" class="clip phrase" data-start="7.8" data-duration="1.8" data-track-index="4"><span id="reel-p2-text" class="phrase-text italic" style="font-size:66px">el mundo,</span></div>
-        <div id="reel-p3" class="clip phrase" data-start="9.6" data-duration="3" data-track-index="4"><span id="reel-p3-text" class="phrase-text" style="font-size:60px">hay que empezar</span></div>
-        <div id="reel-p4" class="clip phrase" data-start="12.6" data-duration="1.8" data-track-index="4"><span id="reel-p4-text" class="phrase-text" style="font-size:62px">cambiando las cosas</span></div>
-        <div id="reel-p5" class="clip phrase" data-start="14.4" data-duration="1.6" data-track-index="4"><span id="reel-p5-text" class="phrase-text italic" style="font-size:100px">en casa.</span></div>
-        </div>
+        <div id="reel-p1" class="clip phrase" data-start="5.4" data-duration="2.4" data-track-index="4"><span id="reel-p1-text" class="phrase-text" style="font-size:50px"><span class="ch" style="--dx:-186.4">P</span><span class="ch" style="--dx:-158.5">a</span><span class="ch" style="--dx:-134.1">r</span><span class="ch" style="--dx:-109.6">a</span><span class="ch sp" style="--dx:-90.4">&nbsp;</span><span class="ch" style="--dx:-75.1">t</span><span class="ch" style="--dx:-54.4">r</span><span class="ch" style="--dx:-29.9">a</span><span class="ch" style="--dx:-1">n</span><span class="ch" style="--dx:26.3">s</span><span class="ch" style="--dx:47">f</span><span class="ch" style="--dx:69.9">o</span><span class="ch" style="--dx:94.8">r</span><span class="ch" style="--dx:128.8">m</span><span class="ch" style="--dx:165.3">a</span><span class="ch" style="--dx:189.8">r</span></span></div>
+        <div id="reel-p2" class="clip phrase" data-start="7.8" data-duration="1.8" data-track-index="4"><span id="reel-p2-text" class="phrase-text italic" style="font-size:58px"><span class="ch" style="--dx:-117.6">e</span><span class="ch" style="--dx:-94.6">l</span><span class="ch sp" style="--dx:-79.6">&nbsp;</span><span class="ch" style="--dx:-46.3">m</span><span class="ch" style="--dx:-2.1">u</span><span class="ch" style="--dx:33.3">n</span><span class="ch" style="--dx:68.1">d</span><span class="ch" style="--dx:101.2">o</span><span class="ch" style="--dx:124.7">,</span></span></div>
+        <div id="reel-p3" class="clip phrase" data-start="9.6" data-duration="3" data-track-index="4"><span id="reel-p3-text" class="phrase-text" style="font-size:58px"><span class="ch" style="--dx:-209.1">h</span><span class="ch" style="--dx:-175.7">a</span><span class="ch" style="--dx:-144.7">y</span><span class="ch sp" style="--dx:-122.8">&nbsp;</span><span class="ch" style="--dx:-99.6">q</span><span class="ch" style="--dx:-65.7">u</span><span class="ch" style="--dx:-33.1">e</span><span class="ch sp" style="--dx:-11.3">&nbsp;</span><span class="ch" style="--dx:10.6">e</span><span class="ch" style="--dx:52.5">m</span><span class="ch" style="--dx:96">p</span><span class="ch" style="--dx:128">e</span><span class="ch" style="--dx:156.6">z</span><span class="ch" style="--dx:185.6">a</span><span class="ch" style="--dx:214">r</span></span></div>
+        <div id="reel-p4" class="clip phrase" data-start="12.6" data-duration="1.8" data-track-index="4"><span id="reel-p4-text" class="phrase-text" style="font-size:62px"><span class="ch" style="--dx:-277">c</span><span class="ch" style="--dx:-244.7">a</span><span class="ch" style="--dx:-199.4">m</span><span class="ch" style="--dx:-153.1">b</span><span class="ch" style="--dx:-126.1">i</span><span class="ch" style="--dx:-100.1">a</span><span class="ch" style="--dx:-64.2">n</span><span class="ch" style="--dx:-27.1">d</span><span class="ch" style="--dx:8.2">o</span><span class="ch sp" style="--dx:32.5">&nbsp;</span><span class="ch" style="--dx:48.6">l</span><span class="ch" style="--dx:74.4">a</span><span class="ch" style="--dx:105.8">s</span><span class="ch sp" style="--dx:127.6">&nbsp;</span><span class="ch" style="--dx:150.2">c</span><span class="ch" style="--dx:183">o</span><span class="ch" style="--dx:215">s</span><span class="ch" style="--dx:246.4">a</span><span class="ch" style="--dx:277.8">s</span></span></div>
+        <div id="reel-p5" class="clip phrase" data-start="14.4" data-duration="1.6" data-track-index="4"><span id="reel-p5-text" class="phrase-text bold" style="font-size:104px"><span class="ch" style="--dx:-164.4">e</span><span class="ch" style="--dx:-104.5">n</span><span class="ch sp" style="--dx:-60.4">&nbsp;</span><span class="ch" style="--dx:-22.6">c</span><span class="ch" style="--dx:31.5">a</span><span class="ch" style="--dx:84.4">s</span><span class="ch" style="--dx:137.4">a</span><span class="ch" style="--dx:178.6">.</span></span></div>
       </div>
       <div id="reel-fade"></div>
       </div>
 
       <script>
         const tl = gsap.timeline({ paused: true });
-        tl.set("#reel-shot-0", { transformOrigin: "50% 48.9%", y: -55.7 }, 0);
-        tl.fromTo("#reel-shot-0", { scale: 1.0832, x: 0, rotation: 0 }, { scale: 1.1915, x: 0, rotation: 0, duration: 1.799, ease: "sine.inOut" }, 0);
-        tl.set("#reel-motion", { scale: 1, x: 0, rotation: 0 }, 0);
-        tl.to("#reel-motion", { scale: 1.1, x: 0, rotation: 0, duration: 1.799, ease: "sine.inOut" }, 0);
-        tl.set("#reel-shot-1", { transformOrigin: "50% 38.5%", y: 144.0 }, 0);
-        tl.fromTo("#reel-shot-1", { scale: 1.2247, x: 1.3785, rotation: 0 }, { scale: 1.3155, x: 0, rotation: 0, duration: 0.598, ease: "sine.inOut" }, 1.8);
-        tl.set("#reel-motion", { scale: 1, x: 1.3785, rotation: 0 }, 1.8);
-        tl.to("#reel-motion", { scale: 1.0742, x: 0, rotation: 0, duration: 0.598, ease: "sine.inOut" }, 1.8);
-        tl.set("#reel-shot-2", { transformOrigin: "50% 49.6%", y: -69.1 }, 0);
-        tl.fromTo("#reel-shot-2", { scale: 1.1641, x: 34, rotation: 0 }, { scale: 1.1806, x: -10, rotation: 0, duration: 0.599, ease: "sine.inOut" }, 2.4);
-        tl.set("#reel-motion", { scale: 1.06, x: 34, rotation: 0 }, 2.4);
-        tl.to("#reel-motion", { scale: 1.075, x: -10, rotation: 0, duration: 0.599, ease: "sine.inOut" }, 2.4);
-        tl.set("#reel-shot-3", { transformOrigin: "50% 40.6%", y: 103.7 }, 0);
-        tl.fromTo("#reel-shot-3", { scale: 1.2542, x: 0, rotation: -1.1 }, { scale: 1.2775, x: 0, rotation: 0, duration: 0.599, ease: "sine.inOut" }, 3);
-        tl.set("#reel-motion", { scale: 1.08, x: 0, rotation: -1.1 }, 3);
-        tl.to("#reel-motion", { scale: 1.1, x: 0, rotation: 0, duration: 0.599, ease: "sine.inOut" }, 3);
-        tl.set("#reel-shot-4", { transformOrigin: "50% 41.5%", y: 86.4 }, 0);
-        tl.fromTo("#reel-shot-4", { scale: 1.1361, x: -1.4629, rotation: 0 }, { scale: 1.2234, x: 0, rotation: 0, duration: 0.599, ease: "sine.inOut" }, 3.6);
-        tl.set("#reel-motion", { scale: 1, x: -1.4629, rotation: 0 }, 3.6);
-        tl.to("#reel-motion", { scale: 1.0768, x: 0, rotation: 0, duration: 0.599, ease: "sine.inOut" }, 3.6);
-        tl.set("#reel-shot-5", { transformOrigin: "50% 46%", y: 0.0 }, 0);
-        tl.fromTo("#reel-shot-5", { scale: 1.0865, x: -34, rotation: 0 }, { scale: 1.1019, x: 10, rotation: 0, duration: 0.598, ease: "sine.inOut" }, 4.2);
-        tl.set("#reel-motion", { scale: 1.06, x: -34, rotation: 0 }, 4.2);
-        tl.to("#reel-motion", { scale: 1.075, x: 10, rotation: 0, duration: 0.598, ease: "sine.inOut" }, 4.2);
-        tl.set("#reel-shot-6", { transformOrigin: "50% 47.9%", y: -36.5 }, 0);
-        tl.fromTo("#reel-shot-6", { scale: 1.0624, x: -4.0285, rotation: 0 }, { scale: 1.1284, x: 0, rotation: 0, duration: 1.199, ease: "sine.inOut" }, 4.8);
+        tl.set("#reel-shot-0", { transformOrigin: "50% 48.9%", y: -55.7, scale: 1.08317 }, 0);
+        tl.to("#reel-shot-0", { scale: 1.19149, duration: 1.799, ease: "sine.inOut" }, 0);
+        tl.set("#reel-shot-1", { transformOrigin: "50% 38.5%", y: 144.0, scale: 1.22468 }, 0);
+        tl.set("#reel-shot-2", { transformOrigin: "50% 49.6%", y: -69.1, scale: 1.09821 }, 0);
+        tl.set("#reel-shot-3", { transformOrigin: "50% 40.6%", y: 103.7, scale: 1.16133 }, 0);
+        tl.set("#reel-shot-4", { transformOrigin: "50% 41.5%", y: 86.4, scale: 1.13614 }, 0);
+        tl.set("#reel-shot-5", { transformOrigin: "50% 46%", y: 0.0, scale: 1.025 }, 0);
+        tl.set("#reel-shot-6", { transformOrigin: "50% 47.9%", y: -36.5, scale: 1.06238 }, 0);
         tl.fromTo("#reel-shot-6", { filter: "blur(18px) brightness(1.25)" }, { filter: "blur(0px) brightness(1)", duration: 0.28, ease: "power2.out" }, 4.8);
-        tl.set("#reel-motion", { scale: 1, x: -4.0285, rotation: 0 }, 4.8);
-        tl.to("#reel-motion", { scale: 1.0621, x: 0, rotation: 0, duration: 1.199, ease: "sine.inOut" }, 4.8);
-        tl.set("#reel-shot-7", { transformOrigin: "50% 37.8%", y: 157.4 }, 0);
-        tl.fromTo("#reel-shot-7", { scale: 1.2972, x: 0, rotation: -0.9 }, { scale: 1.3721, x: 0, rotation: 0.4, duration: 0.598, ease: "sine.inOut" }, 6);
-        tl.set("#reel-motion", { scale: 1.04, x: 0, rotation: -0.9 }, 6);
-        tl.to("#reel-motion", { scale: 1.1, x: 0, rotation: 0.4, duration: 0.598, ease: "sine.inOut" }, 6);
-        tl.set("#reel-shot-8", { transformOrigin: "50% 44.7%", y: 25.0 }, 0);
-        tl.fromTo("#reel-shot-8", { scale: 1.0548, x: 1.5461, rotation: 0 }, { scale: 1.1279, x: 0, rotation: 0, duration: 0.599, ease: "sine.inOut" }, 6.6);
-        tl.set("#reel-motion", { scale: 1, x: 1.5461, rotation: 0 }, 6.6);
-        tl.to("#reel-motion", { scale: 1.0693, x: 0, rotation: 0, duration: 0.599, ease: "sine.inOut" }, 6.6);
-        tl.set("#reel-shot-9", { transformOrigin: "50% 42.3%", y: 71.0 }, 0);
-        tl.fromTo("#reel-shot-9", { scale: 1.1815, x: 34, rotation: 0 }, { scale: 1.1983, x: -10, rotation: 0, duration: 0.598, ease: "sine.inOut" }, 7.2);
-        tl.set("#reel-motion", { scale: 1.06, x: 34, rotation: 0 }, 7.2);
-        tl.to("#reel-motion", { scale: 1.075, x: -10, rotation: 0, duration: 0.598, ease: "sine.inOut" }, 7.2);
-        tl.set("#reel-shot-10", { transformOrigin: "50% 37.5%", y: 163.2 }, 0);
-        tl.fromTo("#reel-shot-10", { scale: 1.3328, x: 34, rotation: 0 }, { scale: 1.3516, x: -10, rotation: 0, duration: 0.599, ease: "sine.inOut" }, 7.8);
-        tl.set("#reel-motion", { scale: 1.06, x: 34, rotation: 0 }, 7.8);
-        tl.to("#reel-motion", { scale: 1.075, x: -10, rotation: 0, duration: 0.599, ease: "sine.inOut" }, 7.8);
-        tl.set("#reel-shot-11", { transformOrigin: "50% 44.6%", y: 26.9 }, 0);
-        tl.fromTo("#reel-shot-11", { scale: 1.1417, x: 0, rotation: 1.1 }, { scale: 1.1629, x: 0, rotation: 0, duration: 0.598, ease: "sine.inOut" }, 8.4);
-        tl.set("#reel-motion", { scale: 1.08, x: 0, rotation: 1.1 }, 8.4);
-        tl.to("#reel-motion", { scale: 1.1, x: 0, rotation: 0, duration: 0.598, ease: "sine.inOut" }, 8.4);
-        tl.set("#reel-shot-12", { transformOrigin: "50% 35.3%", y: 205.4 }, 0);
-        tl.fromTo("#reel-shot-12", { scale: 1.3357, x: 2.2387, rotation: 0 }, { scale: 1.4383, x: 0, rotation: 0, duration: 0.598, ease: "sine.inOut" }, 9);
-        tl.set("#reel-motion", { scale: 1, x: 2.2387, rotation: 0 }, 9);
-        tl.to("#reel-motion", { scale: 1.0768, x: 0, rotation: 0, duration: 0.598, ease: "sine.inOut" }, 9);
-        tl.set("#reel-shot-13", { transformOrigin: "50% 39%", y: 134.4 }, 0);
-        tl.fromTo("#reel-shot-13", { scale: 1.2573, x: 0, rotation: 0.9, filter: "hue-rotate(0deg)" }, { scale: 1.3299, x: 0, rotation: -0.4, filter: "hue-rotate(50deg)", duration: 0.299, ease: "sine.inOut" }, 9.6);
-        tl.set("#reel-motion", { scale: 1.04, x: 0, rotation: 0.9 }, 9.6);
-        tl.to("#reel-motion", { scale: 1.1, x: 0, rotation: -0.4, duration: 0.299, ease: "sine.inOut" }, 9.6);
-        tl.set("#reel-shot-14", { transformOrigin: "50% 45.7%", y: 5.8 }, 0);
-        tl.fromTo("#reel-shot-14", { scale: 1.0317, x: 0.9224, rotation: 0 }, { scale: 1.1085, x: 0, rotation: 0, duration: 0.298, ease: "sine.inOut" }, 9.9);
-        tl.set("#reel-motion", { scale: 1, x: 0.9224, rotation: 0 }, 9.9);
-        tl.to("#reel-motion", { scale: 1.0744, x: 0, rotation: 0, duration: 0.298, ease: "sine.inOut" }, 9.9);
-        tl.set("#reel-shot-15", { transformOrigin: "50% 47.1%", y: -21.1 }, 0);
-        tl.fromTo("#reel-shot-15", { scale: 1.13, x: 0, rotation: -1.1 }, { scale: 1.1509, x: 0, rotation: 0, duration: 0.299, ease: "sine.inOut" }, 10.2);
-        tl.set("#reel-motion", { scale: 1.08, x: 0, rotation: -1.1 }, 10.2);
-        tl.to("#reel-motion", { scale: 1.1, x: 0, rotation: 0, duration: 0.299, ease: "sine.inOut" }, 10.2);
-        tl.set("#reel-shot-16", { transformOrigin: "50% 43.5%", y: 48.0 }, 0);
-        tl.fromTo("#reel-shot-16", { scale: 1.1706, x: 0, rotation: 1.1 }, { scale: 1.1923, x: 0, rotation: 0, duration: 0.299, ease: "sine.inOut" }, 10.5);
-        tl.set("#reel-motion", { scale: 1.08, x: 0, rotation: 1.1 }, 10.5);
-        tl.to("#reel-motion", { scale: 1.1, x: 0, rotation: 0, duration: 0.299, ease: "sine.inOut" }, 10.5);
-        tl.set("#reel-shot-17", { transformOrigin: "50% 45.5%", y: 9.6 }, 0);
-        tl.fromTo("#reel-shot-17", { scale: 1.0777, x: 0, rotation: 0.9 }, { scale: 1.1399, x: 0, rotation: -0.4, duration: 0.298, ease: "sine.inOut" }, 10.8);
-        tl.set("#reel-motion", { scale: 1.04, x: 0, rotation: 0.9 }, 10.8);
-        tl.to("#reel-motion", { scale: 1.1, x: 0, rotation: -0.4, duration: 0.298, ease: "sine.inOut" }, 10.8);
-        tl.set("#reel-shot-18", { transformOrigin: "50% 38.2%", y: 149.8 }, 0);
-        tl.fromTo("#reel-shot-18", { scale: 1.2343, x: 0.7331, rotation: 0 }, { scale: 1.3106, x: 0, rotation: 0, duration: 0.299, ease: "sine.inOut" }, 11.1);
-        tl.set("#reel-motion", { scale: 1, x: 0.7331, rotation: 0 }, 11.1);
-        tl.to("#reel-motion", { scale: 1.0618, x: 0, rotation: 0, duration: 0.299, ease: "sine.inOut" }, 11.1);
-        tl.set("#reel-shot-19", { transformOrigin: "50% 34.2%", y: 226.6 }, 0);
-        tl.fromTo("#reel-shot-19", { scale: 1.4614, x: 34, rotation: 0 }, { scale: 1.4821, x: -10, rotation: 0, duration: 0.298, ease: "sine.inOut" }, 11.4);
-        tl.set("#reel-motion", { scale: 1.06, x: 34, rotation: 0 }, 11.4);
-        tl.to("#reel-motion", { scale: 1.075, x: -10, rotation: 0, duration: 0.298, ease: "sine.inOut" }, 11.4);
-        tl.set("#reel-shot-20", { transformOrigin: "50% 47.7%", y: -32.6 }, 0);
-        tl.fromTo("#reel-shot-20", { scale: 1.1218, x: -34, rotation: 0 }, { scale: 1.1377, x: 10, rotation: 0, duration: 0.299, ease: "sine.inOut" }, 11.7);
-        tl.set("#reel-motion", { scale: 1.06, x: -34, rotation: 0 }, 11.7);
-        tl.to("#reel-motion", { scale: 1.075, x: 10, rotation: 0, duration: 0.299, ease: "sine.inOut" }, 11.7);
-        tl.set("#reel-shot-21", { transformOrigin: "50% 38.5%", y: 144.0 }, 0);
-        tl.fromTo("#reel-shot-21", { scale: 1.2247, x: 0.9667, rotation: 0 }, { scale: 1.3222, x: 0, rotation: 0, duration: 0.299, ease: "sine.inOut" }, 12);
-        tl.set("#reel-motion", { scale: 1, x: 0.9667, rotation: 0 }, 12);
-        tl.to("#reel-motion", { scale: 1.0796, x: 0, rotation: 0, duration: 0.299, ease: "sine.inOut" }, 12);
-        tl.set("#reel-shot-22", { transformOrigin: "50% 39%", y: 134.4 }, 0);
-        tl.fromTo("#reel-shot-22", { scale: 1.2573, x: 0, rotation: -0.9, filter: "hue-rotate(0deg)" }, { scale: 1.3299, x: 0, rotation: 0.4, filter: "hue-rotate(50deg)", duration: 0.298, ease: "sine.inOut" }, 12.3);
-        tl.set("#reel-motion", { scale: 1.04, x: 0, rotation: -0.9 }, 12.3);
-        tl.to("#reel-motion", { scale: 1.1, x: 0, rotation: 0.4, duration: 0.298, ease: "sine.inOut" }, 12.3);
-        tl.set("#reel-shot-23", { transformOrigin: "50% 40.6%", y: 103.7 }, 0);
-        tl.fromTo("#reel-shot-23", { scale: 1.2542, x: 0, rotation: -1.1 }, { scale: 1.2775, x: 0, rotation: 0, duration: 0.299, ease: "sine.inOut" }, 12.6);
+        tl.set("#reel-shot-7", { transformOrigin: "50% 37.8%", y: 157.4, scale: 1.24735 }, 0);
+        tl.fromTo("#reel-shot-7", { scale: 1.24735, x: 0 }, { scale: 1.2723, x: 8, duration: 0.598, ease: "none" }, 6);
+        tl.set("#reel-shot-8", { transformOrigin: "50% 44.7%", y: 25.0, scale: 1.05481 }, 0);
+        tl.set("#reel-shot-9", { transformOrigin: "50% 42.3%", y: 71.0, scale: 1.11466 }, 0);
+        tl.set("#reel-shot-10", { transformOrigin: "50% 37.5%", y: 163.2, scale: 1.25733 }, 0);
+        tl.set("#reel-shot-11", { transformOrigin: "50% 44.6%", y: 26.9, scale: 1.05717 }, 0);
+        tl.set("#reel-shot-12", { transformOrigin: "50% 35.3%", y: 205.4, scale: 1.33569 }, 0);
+        tl.set("#reel-shot-13", { transformOrigin: "50% 39%", y: 134.4, scale: 1.20897 }, 0);
+        tl.fromTo("#reel-shot-13", { scale: 1.20897, x: 0, filter: "hue-rotate(0deg)" }, { scale: 1.23315, x: 8, filter: "hue-rotate(40deg)", duration: 0.299, ease: "none" }, 9.6);
+        tl.set("#reel-shot-14", { transformOrigin: "50% 45.7%", y: 5.8, scale: 1.03173 }, 0);
+        tl.set("#reel-shot-15", { transformOrigin: "50% 47.1%", y: -21.1, scale: 1.04631 }, 0);
+        tl.set("#reel-shot-16", { transformOrigin: "50% 43.5%", y: 48.0, scale: 1.08391 }, 0);
+        tl.set("#reel-shot-17", { transformOrigin: "50% 45.5%", y: 9.6, scale: 1.03626 }, 0);
+        tl.fromTo("#reel-shot-17", { scale: 1.03626, x: 0 }, { scale: 1.05699, x: 8, duration: 0.298, ease: "none" }, 10.8);
+        tl.set("#reel-shot-18", { transformOrigin: "50% 38.2%", y: 149.8, scale: 1.23429 }, 0);
+        tl.set("#reel-shot-19", { transformOrigin: "50% 34.2%", y: 226.6, scale: 1.37865 }, 0);
+        tl.set("#reel-shot-20", { transformOrigin: "50% 47.7%", y: -32.6, scale: 1.05832 }, 0);
+        tl.set("#reel-shot-21", { transformOrigin: "50% 38.5%", y: 144.0, scale: 1.22468 }, 0);
+        tl.set("#reel-shot-22", { transformOrigin: "50% 39%", y: 134.4, scale: 1.20897 }, 0);
+        tl.fromTo("#reel-shot-22", { scale: 1.20897, x: 0, filter: "hue-rotate(0deg)" }, { scale: 1.23315, x: 8, filter: "hue-rotate(40deg)", duration: 0.298, ease: "none" }, 12.3);
+        tl.set("#reel-shot-23", { transformOrigin: "50% 40.6%", y: 103.7, scale: 1.16133 }, 0);
         tl.fromTo("#reel-shot-23", { filter: "blur(18px) brightness(1.25)" }, { filter: "blur(0px) brightness(1)", duration: 0.28, ease: "power2.out" }, 12.6);
-        tl.set("#reel-motion", { scale: 1.08, x: 0, rotation: -1.1 }, 12.6);
-        tl.to("#reel-motion", { scale: 1.1, x: 0, rotation: 0, duration: 0.299, ease: "sine.inOut" }, 12.6);
-        tl.set("#reel-shot-24", { transformOrigin: "50% 44.7%", y: 25.0 }, 0);
-        tl.fromTo("#reel-shot-24", { scale: 1.0548, x: 3.0583, rotation: 0 }, { scale: 1.1264, x: 0, rotation: 0, duration: 0.298, ease: "sine.inOut" }, 12.9);
-        tl.set("#reel-motion", { scale: 1, x: 3.0583, rotation: 0 }, 12.9);
-        tl.to("#reel-motion", { scale: 1.0679, x: 0, rotation: 0, duration: 0.298, ease: "sine.inOut" }, 12.9);
-        tl.set("#reel-shot-25", { transformOrigin: "50% 47.1%", y: -21.1 }, 0);
-        tl.fromTo("#reel-shot-25", { scale: 1.13, x: 0, rotation: -1.1 }, { scale: 1.1509, x: 0, rotation: 0, duration: 0.299, ease: "sine.inOut" }, 13.2);
-        tl.set("#reel-motion", { scale: 1.08, x: 0, rotation: -1.1 }, 13.2);
-        tl.to("#reel-motion", { scale: 1.1, x: 0, rotation: 0, duration: 0.299, ease: "sine.inOut" }, 13.2);
-        tl.set("#reel-shot-26", { transformOrigin: "50% 49.6%", y: -69.1 }, 0);
-        tl.fromTo("#reel-shot-26", { scale: 1.1641, x: -34, rotation: 0 }, { scale: 1.1806, x: 10, rotation: 0, duration: 0.299, ease: "sine.inOut" }, 13.5);
-        tl.set("#reel-motion", { scale: 1.06, x: -34, rotation: 0 }, 13.5);
-        tl.to("#reel-motion", { scale: 1.075, x: 10, rotation: 0, duration: 0.299, ease: "sine.inOut" }, 13.5);
-        tl.set("#reel-shot-27", { transformOrigin: "50% 42.3%", y: 71.0 }, 0);
-        tl.fromTo("#reel-shot-27", { scale: 1.1815, x: 34, rotation: 0 }, { scale: 1.1983, x: -10, rotation: 0, duration: 0.165, ease: "sine.inOut" }, 13.8);
-        tl.set("#reel-motion", { scale: 1.06, x: 34, rotation: 0 }, 13.8);
-        tl.to("#reel-motion", { scale: 1.075, x: -10, rotation: 0, duration: 0.165, ease: "sine.inOut" }, 13.8);
-        tl.set("#reel-shot-28", { transformOrigin: "50% 46%", y: 0.0 }, 0);
-        tl.fromTo("#reel-shot-28", { scale: 1.0865, x: 34, rotation: 0 }, { scale: 1.1019, x: -10, rotation: 0, duration: 0.132, ease: "sine.inOut" }, 13.966666666666667);
-        tl.set("#reel-motion", { scale: 1.06, x: 34, rotation: 0 }, 13.966666666666667);
-        tl.to("#reel-motion", { scale: 1.075, x: -10, rotation: 0, duration: 0.132, ease: "sine.inOut" }, 13.966666666666667);
-        tl.set("#reel-shot-29", { transformOrigin: "50% 45.7%", y: 5.8 }, 0);
-        tl.fromTo("#reel-shot-29", { scale: 1.0317, x: -0.4837, rotation: 0 }, { scale: 1.1014, x: 0, rotation: 0, duration: 0.165, ease: "sine.inOut" }, 14.1);
-        tl.set("#reel-motion", { scale: 1, x: -0.4837, rotation: 0 }, 14.1);
-        tl.to("#reel-motion", { scale: 1.0675, x: 0, rotation: 0, duration: 0.165, ease: "sine.inOut" }, 14.1);
-        tl.set("#reel-shot-30", { transformOrigin: "50% 37.5%", y: 163.2 }, 0);
-        tl.fromTo("#reel-shot-30", { scale: 1.3328, x: 34, rotation: 0 }, { scale: 1.3516, x: -10, rotation: 0, duration: 0.132, ease: "sine.inOut" }, 14.266666666666667);
-        tl.set("#reel-motion", { scale: 1.06, x: 34, rotation: 0 }, 14.266666666666667);
-        tl.to("#reel-motion", { scale: 1.075, x: -10, rotation: 0, duration: 0.132, ease: "sine.inOut" }, 14.266666666666667);
-        tl.set("#reel-shot-31", { transformOrigin: "50% 44.6%", y: 26.9 }, 0);
-        tl.fromTo("#reel-shot-31", { scale: 1.1417, x: 0, rotation: 1.1 }, { scale: 1.1629, x: 0, rotation: 0, duration: 0.165, ease: "sine.inOut" }, 14.4);
-        tl.set("#reel-motion", { scale: 1.08, x: 0, rotation: 1.1 }, 14.4);
-        tl.to("#reel-motion", { scale: 1.1, x: 0, rotation: 0, duration: 0.165, ease: "sine.inOut" }, 14.4);
-        tl.set("#reel-shot-32", { transformOrigin: "50% 37.8%", y: 157.4 }, 0);
-        tl.fromTo("#reel-shot-32", { scale: 1.2972, x: 0, rotation: -0.9 }, { scale: 1.3721, x: 0, rotation: 0.4, duration: 0.132, ease: "sine.inOut" }, 14.566666666666666);
-        tl.set("#reel-motion", { scale: 1.04, x: 0, rotation: -0.9 }, 14.566666666666666);
-        tl.to("#reel-motion", { scale: 1.1, x: 0, rotation: 0.4, duration: 0.132, ease: "sine.inOut" }, 14.566666666666666);
-        tl.set("#reel-shot-33", { transformOrigin: "50% 34.2%", y: 226.6 }, 0);
-        tl.fromTo("#reel-shot-33", { scale: 1.4614, x: -34, rotation: 0 }, { scale: 1.4821, x: 10, rotation: 0, duration: 0.165, ease: "sine.inOut" }, 14.7);
-        tl.set("#reel-motion", { scale: 1.06, x: -34, rotation: 0 }, 14.7);
-        tl.to("#reel-motion", { scale: 1.075, x: 10, rotation: 0, duration: 0.165, ease: "sine.inOut" }, 14.7);
-        tl.set("#reel-shot-34", { transformOrigin: "50% 41.5%", y: 86.4 }, 0);
-        tl.fromTo("#reel-shot-34", { scale: 1.1361, x: -0.5346, rotation: 0 }, { scale: 1.2211, x: 0, rotation: 0, duration: 0.132, ease: "sine.inOut" }, 14.866666666666667);
-        tl.set("#reel-motion", { scale: 1, x: -0.5346, rotation: 0 }, 14.866666666666667);
-        tl.to("#reel-motion", { scale: 1.0748, x: 0, rotation: 0, duration: 0.132, ease: "sine.inOut" }, 14.866666666666667);
-        tl.set("#reel-shot-35", { transformOrigin: "50% 35.3%", y: 205.4 }, 0);
-        tl.fromTo("#reel-shot-35", { scale: 1.3357, x: 5.9734, rotation: 0 }, { scale: 1.4392, x: 0, rotation: 0, duration: 0.165, ease: "sine.inOut" }, 15);
-        tl.set("#reel-motion", { scale: 1, x: 5.9734, rotation: 0 }, 15);
-        tl.to("#reel-motion", { scale: 1.0775, x: 0, rotation: 0, duration: 0.165, ease: "sine.inOut" }, 15);
-        tl.set("#reel-shot-36", { transformOrigin: "50% 43.5%", y: 48.0 }, 0);
-        tl.fromTo("#reel-shot-36", { scale: 1.1706, x: 0, rotation: -1.1 }, { scale: 1.1923, x: 0, rotation: 0, duration: 0.132, ease: "sine.inOut" }, 15.166666666666666);
-        tl.set("#reel-motion", { scale: 1.08, x: 0, rotation: -1.1 }, 15.166666666666666);
-        tl.to("#reel-motion", { scale: 1.1, x: 0, rotation: 0, duration: 0.132, ease: "sine.inOut" }, 15.166666666666666);
-        tl.set("#reel-shot-37", { transformOrigin: "50% 45.5%", y: 9.6 }, 0);
-        tl.fromTo("#reel-shot-37", { scale: 1.0777, x: 0, rotation: -0.9 }, { scale: 1.1399, x: 0, rotation: 0.4, duration: 0.165, ease: "sine.inOut" }, 15.3);
-        tl.set("#reel-motion", { scale: 1.04, x: 0, rotation: -0.9 }, 15.3);
-        tl.to("#reel-motion", { scale: 1.1, x: 0, rotation: 0.4, duration: 0.165, ease: "sine.inOut" }, 15.3);
-        tl.set("#reel-shot-38", { transformOrigin: "50% 40.9%", y: 97.9 }, 0);
-        tl.fromTo("#reel-shot-38", { scale: 1.1528, x: 2.2, rotation: 0 }, { scale: 1.2109, x: 0, rotation: 0, duration: 0.732, ease: "sine.inOut" }, 15.466666666666667);
-        tl.set("#reel-motion", { scale: 1, x: 2.2, rotation: 0 }, 15.466666666666667);
-        tl.to("#reel-motion", { scale: 1.0504, x: 0, rotation: 0, duration: 0.732, ease: "sine.inOut" }, 15.466666666666667);
-        tl.to("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)", duration: 0.12, ease: "sine.inOut" }, 4.760);
-        tl.to("#reel-words", { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)", duration: 0.12, ease: "sine.inOut" }, 6.560);
-        tl.to("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)", duration: 0.12, ease: "sine.inOut" }, 7.160);
-        tl.to("#reel-words", { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)", duration: 0.12, ease: "sine.inOut" }, 8.360);
-        tl.to("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)", duration: 0.12, ease: "sine.inOut" }, 9.560);
-        tl.to("#reel-words", { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)", duration: 0.12, ease: "sine.inOut" }, 9.860);
-        tl.to("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)", duration: 0.12, ease: "sine.inOut" }, 10.160);
-        tl.to("#reel-words", { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)", duration: 0.12, ease: "sine.inOut" }, 10.460);
-        tl.to("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)", duration: 0.12, ease: "sine.inOut" }, 10.760);
-        tl.to("#reel-words", { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)", duration: 0.12, ease: "sine.inOut" }, 11.060);
-        tl.to("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)", duration: 0.12, ease: "sine.inOut" }, 11.960);
-        tl.to("#reel-words", { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)", duration: 0.12, ease: "sine.inOut" }, 12.860);
-        tl.to("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)", duration: 0.12, ease: "sine.inOut" }, 13.160);
-        tl.to("#reel-words", { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)", duration: 0.12, ease: "sine.inOut" }, 13.460);
-        tl.to("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)", duration: 0.12, ease: "sine.inOut" }, 13.760);
-        tl.to("#reel-words", { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)", duration: 0.12, ease: "sine.inOut" }, 14.060);
-        tl.to("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)", duration: 0.12, ease: "sine.inOut" }, 14.227);
-        tl.to("#reel-words", { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)", duration: 0.12, ease: "sine.inOut" }, 14.360);
-        tl.to("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)", duration: 0.12, ease: "sine.inOut" }, 14.527);
-        tl.to("#reel-words", { color: "#1c1714", textShadow: "0 1px 12px rgba(244,231,203,0.35)", duration: 0.12, ease: "sine.inOut" }, 14.660);
-        tl.to("#reel-words", { color: "#f4e7cb", textShadow: "0 1px 14px rgba(18,14,12,0.55)", duration: 0.12, ease: "sine.inOut" }, 15.260);
-        tl.fromTo("#reel-p1-text", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.6, ease: "sine.out" }, 5.4);
-        tl.to("#reel-p1-text", { opacity: 0, duration: 0.16, ease: "sine.in" }, 7.640);
-        tl.fromTo("#reel-p1", { scale: 1 }, { scale: 1.06, duration: 2.400, ease: "none" }, 5.4);
-        tl.fromTo("#reel-p2-text", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.24, ease: "sine.out" }, 7.8);
-        tl.to("#reel-p2-text", { opacity: 0, duration: 0.16, ease: "sine.in" }, 9.440);
-        tl.fromTo("#reel-p2", { scale: 1 }, { scale: 1.06, duration: 1.800, ease: "none" }, 7.8);
-        tl.fromTo("#reel-p3-text", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.24, ease: "sine.out" }, 9.6);
-        tl.to("#reel-p3-text", { opacity: 0, duration: 0.16, ease: "sine.in" }, 12.440);
-        tl.fromTo("#reel-p3", { scale: 1 }, { scale: 1.06, duration: 3.000, ease: "none" }, 9.6);
-        tl.fromTo("#reel-p4-text", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.24, ease: "sine.out" }, 12.6);
-        tl.to("#reel-p4-text", { opacity: 0, duration: 0.16, ease: "sine.in" }, 14.240);
-        tl.fromTo("#reel-p4", { scale: 1 }, { scale: 1.06, duration: 1.800, ease: "none" }, 12.6);
-        tl.fromTo("#reel-p5-text", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.24, ease: "sine.out" }, 14.4);
+        tl.set("#reel-shot-24", { transformOrigin: "50% 44.7%", y: 25.0, scale: 1.05481 }, 0);
+        tl.set("#reel-shot-25", { transformOrigin: "50% 47.1%", y: -21.1, scale: 1.04631 }, 0);
+        tl.set("#reel-shot-26", { transformOrigin: "50% 49.6%", y: -69.1, scale: 1.09821 }, 0);
+        tl.set("#reel-shot-27", { transformOrigin: "50% 42.3%", y: 71.0, scale: 1.11466 }, 0);
+        tl.set("#reel-shot-28", { transformOrigin: "50% 46%", y: 0.0, scale: 1.025 }, 0);
+        tl.set("#reel-shot-29", { transformOrigin: "50% 45.7%", y: 5.8, scale: 1.03173 }, 0);
+        tl.set("#reel-shot-30", { transformOrigin: "50% 37.5%", y: 163.2, scale: 1.25733 }, 0);
+        tl.set("#reel-shot-31", { transformOrigin: "50% 44.6%", y: 26.9, scale: 1.05717 }, 0);
+        tl.set("#reel-shot-32", { transformOrigin: "50% 37.8%", y: 157.4, scale: 1.24735 }, 0);
+        tl.fromTo("#reel-shot-32", { scale: 1.24735, x: 0 }, { scale: 1.2723, x: 8, duration: 0.132, ease: "none" }, 14.566666666666666);
+        tl.set("#reel-shot-33", { transformOrigin: "50% 34.2%", y: 226.6, scale: 1.37865 }, 0);
+        tl.set("#reel-shot-34", { transformOrigin: "50% 41.5%", y: 86.4, scale: 1.13614 }, 0);
+        tl.set("#reel-shot-35", { transformOrigin: "50% 35.3%", y: 205.4, scale: 1.33569 }, 0);
+        tl.set("#reel-shot-36", { transformOrigin: "50% 43.5%", y: 48.0, scale: 1.08391 }, 0);
+        tl.set("#reel-shot-37", { transformOrigin: "50% 45.5%", y: 9.6, scale: 1.03626 }, 0);
+        tl.fromTo("#reel-shot-37", { scale: 1.03626, x: 0 }, { scale: 1.05699, x: 8, duration: 0.165, ease: "none" }, 15.3);
+        tl.set("#reel-shot-38", { transformOrigin: "50% 40.9%", y: 97.9, scale: 1.15281 }, 0);
+        tl.set("#reel-p1", { scale: 1, "--k": 0.00016 }, 5.4);
+        tl.set("#reel-words", { color: "#f4e7cb", mixBlendMode: "screen", filter: "blur(1.4px)" }, 5.4);
+        tl.set("#reel-p1", { scale: 1.11667, "--k": 0.0002 }, 6);
+        tl.set("#reel-words", { color: "#f4e7cb", mixBlendMode: "screen", filter: "blur(1px)" }, 6);
+        tl.set("#reel-p1", { scale: 1.23333, "--k": 0.00077 }, 6.6);
+        tl.set("#reel-words", { color: "#1c1714", mixBlendMode: "multiply", filter: "blur(0px)" }, 6.6);
+        tl.set("#reel-p1", { scale: 1.35, "--k": 0.00036 }, 7.2);
+        tl.set("#reel-words", { color: "#f4e7cb", mixBlendMode: "screen", filter: "blur(0px)" }, 7.2);
+        tl.set("#reel-p2", { scale: 1, "--k": 0.00023 }, 7.8);
+        tl.set("#reel-words", { color: "#f4e7cb", mixBlendMode: "screen", filter: "blur(0.6px)" }, 7.8);
+        tl.set("#reel-p2", { scale: 1.175, "--k": 0.00041 }, 8.4);
+        tl.set("#reel-words", { color: "#1c1714", mixBlendMode: "multiply", filter: "blur(0px)" }, 8.4);
+        tl.set("#reel-p2", { scale: 1.35, "--k": 0.00032 }, 9);
+        tl.set("#reel-words", { color: "#1c1714", mixBlendMode: "multiply", filter: "blur(0px)" }, 9);
+        tl.set("#reel-p3", { scale: 1, "--k": 0.00035 }, 9.6);
+        tl.set("#reel-words", { color: "#f4e7cb", mixBlendMode: "screen", filter: "blur(0px)" }, 9.6);
+        tl.set("#reel-p3", { scale: 1.03889, "--k": 0.00036 }, 9.9);
+        tl.set("#reel-words", { color: "#1c1714", mixBlendMode: "multiply", filter: "blur(0px)" }, 9.9);
+        tl.set("#reel-p3", { scale: 1.07778, "--k": 0.00034 }, 10.2);
+        tl.set("#reel-words", { color: "#f4e7cb", mixBlendMode: "screen", filter: "blur(0px)" }, 10.2);
+        tl.set("#reel-p3", { scale: 1.11667, "--k": 0.00049 }, 10.5);
+        tl.set("#reel-words", { color: "#1c1714", mixBlendMode: "multiply", filter: "blur(0px)" }, 10.5);
+        tl.set("#reel-p3", { scale: 1.15556, "--k": 0.00053 }, 10.8);
+        tl.set("#reel-words", { color: "#f4e7cb", mixBlendMode: "screen", filter: "blur(0.8px)" }, 10.8);
+        tl.set("#reel-p3", { scale: 1.19444, "--k": 0.00033 }, 11.1);
+        tl.set("#reel-words", { color: "#1c1714", mixBlendMode: "multiply", filter: "blur(0px)" }, 11.1);
+        tl.set("#reel-p3", { scale: 1.23333, "--k": 0.00018 }, 11.4);
+        tl.set("#reel-words", { color: "#1c1714", mixBlendMode: "multiply", filter: "blur(0px)" }, 11.4);
+        tl.set("#reel-p3", { scale: 1.27222, "--k": 0.00038 }, 11.7);
+        tl.set("#reel-words", { color: "#1c1714", mixBlendMode: "multiply", filter: "blur(1px)" }, 11.7);
+        tl.set("#reel-p3", { scale: 1.31111, "--k": 0.00061 }, 12);
+        tl.set("#reel-words", { color: "#f4e7cb", mixBlendMode: "screen", filter: "blur(0px)" }, 12);
+        tl.set("#reel-p3", { scale: 1.35, "--k": 0.00047 }, 12.3);
+        tl.set("#reel-words", { color: "#f4e7cb", mixBlendMode: "screen", filter: "blur(0px)" }, 12.3);
+        tl.set("#reel-p4", { scale: 1, "--k": 0.00018 }, 12.6);
+        tl.set("#reel-words", { color: "#f4e7cb", mixBlendMode: "screen", filter: "blur(0px)" }, 12.6);
+        tl.set("#reel-p4", { scale: 1.05, "--k": 0.00066 }, 12.9);
+        tl.set("#reel-words", { color: "#1c1714", mixBlendMode: "multiply", filter: "blur(0px)" }, 12.9);
+        tl.set("#reel-p4", { scale: 1.1, "--k": 0.00035 }, 13.2);
+        tl.set("#reel-words", { color: "#f4e7cb", mixBlendMode: "screen", filter: "blur(0px)" }, 13.2);
+        tl.set("#reel-p4", { scale: 1.15, "--k": 0.00028 }, 13.5);
+        tl.set("#reel-words", { color: "#1c1714", mixBlendMode: "multiply", filter: "blur(0px)" }, 13.5);
+        tl.set("#reel-p4", { scale: 1.2, "--k": 0.00032 }, 13.8);
+        tl.set("#reel-words", { color: "#f4e7cb", mixBlendMode: "screen", filter: "blur(0px)" }, 13.8);
+        tl.set("#reel-p4", { scale: 1.25, "--k": 0.00039 }, 13.966666666666667);
+        tl.set("#reel-words", { color: "#f4e7cb", mixBlendMode: "screen", filter: "blur(0px)" }, 13.966666666666667);
+        tl.set("#reel-p4", { scale: 1.3, "--k": 0.00045 }, 14.1);
+        tl.set("#reel-words", { color: "#1c1714", mixBlendMode: "multiply", filter: "blur(0px)" }, 14.1);
+        tl.set("#reel-p4", { scale: 1.35, "--k": 0.00031 }, 14.266666666666667);
+        tl.set("#reel-words", { color: "#f4e7cb", mixBlendMode: "screen", filter: "blur(0.6px)" }, 14.266666666666667);
+        tl.set("#reel-p5", { scale: 1, "--k": 0.00035 }, 14.4);
+        tl.set("#reel-words", { color: "#1c1714", mixBlendMode: "multiply", filter: "blur(0px)" }, 14.4);
+        tl.set("#reel-p5", { scale: 1.06429, "--k": 0.00019 }, 14.566666666666666);
+        tl.set("#reel-words", { color: "#f4e7cb", mixBlendMode: "screen", filter: "blur(1px)" }, 14.566666666666666);
+        tl.set("#reel-p5", { scale: 1.12857, "--k": 0.00017 }, 14.7);
+        tl.set("#reel-words", { color: "#1c1714", mixBlendMode: "multiply", filter: "blur(0px)" }, 14.7);
+        tl.set("#reel-p5", { scale: 1.19286, "--k": 0.00029 }, 14.866666666666667);
+        tl.set("#reel-words", { color: "#1c1714", mixBlendMode: "multiply", filter: "blur(0px)" }, 14.866666666666667);
+        tl.set("#reel-p5", { scale: 1.25714, "--k": 0.0003 }, 15);
+        tl.set("#reel-words", { color: "#1c1714", mixBlendMode: "multiply", filter: "blur(0px)" }, 15);
+        tl.set("#reel-p5", { scale: 1.32143, "--k": 0.00058 }, 15.166666666666666);
+        tl.set("#reel-words", { color: "#1c1714", mixBlendMode: "multiply", filter: "blur(0px)" }, 15.166666666666666);
+        tl.set("#reel-p5", { scale: 1.38571, "--k": 0.00063 }, 15.3);
+        tl.set("#reel-words", { color: "#f4e7cb", mixBlendMode: "screen", filter: "blur(0.8px)" }, 15.3);
+        tl.set("#reel-p5", { scale: 1.45, "--k": 0.00102 }, 15.466666666666667);
+        tl.set("#reel-words", { color: "#f4e7cb", mixBlendMode: "screen", filter: "blur(1.8px)" }, 15.466666666666667);
+        tl.fromTo("#reel-p1-text", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "sine.out" }, 5.4);
+        tl.to("#reel-p1-text", { opacity: 0, duration: 0.12, ease: "sine.in" }, 7.680);
+        tl.fromTo("#reel-p2-text", { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "sine.out" }, 7.8);
+        tl.to("#reel-p2-text", { opacity: 0, duration: 0.12, ease: "sine.in" }, 9.480);
+        tl.fromTo("#reel-p3-text", { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "sine.out" }, 9.6);
+        tl.to("#reel-p3-text", { opacity: 0, duration: 0.12, ease: "sine.in" }, 12.480);
+        tl.fromTo("#reel-p4-text", { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "sine.out" }, 12.6);
+        tl.to("#reel-p4-text", { opacity: 0, duration: 0.12, ease: "sine.in" }, 14.280);
+        tl.fromTo("#reel-p5-text", { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "sine.out" }, 14.4);
         tl.to("#reel-p5-text", { opacity: 0, duration: 0.5, ease: "sine.in" }, 15.500);
-        tl.fromTo("#reel-p5", { scale: 1 }, { scale: 1.12, duration: 1.600, ease: "none" }, 14.4);
         tl.fromTo("#reel-fade", { opacity: 0 }, { opacity: 1, duration: 0.60, ease: "sine.in" }, 15.6);
         window.__timelines["reel"] = tl;
       </script>

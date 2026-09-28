@@ -112,6 +112,7 @@ export function createMix(totalSecs, seed = 1) {
   const N = Math.ceil(totalSecs * SR);
   const bus = (n) => ({ L: new Float32Array(n), R: new Float32Array(n) });
   const dry = bus(N), wet = bus(N); // wet = envío a reverb
+  const dly = bus(N); // envío al delay estéreo (ida y vuelta)
   const r = rng(seed);
   const add = (b, i, l, rr) => {
     if (i >= 0 && i < N) { b.L[i] += l; b.R[i] += rr; }
@@ -249,6 +250,59 @@ export function createMix(totalSecs, seed = 1) {
     }
   };
 
+  // Cuerda pulsada brillante (el arpegio): muchos armónicos que se apagan de arriba hacia abajo,
+  // ataque con un soplo de púa, leve desafinación entre canales. Envía a reverb y a delay.
+  api.pluck = (t0, midi, vel = 0.1, { pan = 0, send = 0.45, delay = 0.35, bright = 1, len = 2.8 } = {}) => {
+    const f = midiHz(midi);
+    const s0 = Math.floor(t0 * SR);
+    const n = Math.floor(len * SR);
+    const [gl, gr] = panG(pan);
+    const parts = [];
+    for (let k = 1; k <= 18; k++) {
+      if (k * f > 12000) break;
+      parts.push([k, Math.pow(k, -1.05) * Math.exp(-(k - 1) * (0.22 / bright)), 1.6 + 0.55 * k * k * 0.12 + f / 1400, r() * 6.28]);
+    }
+    const pick = biquad("bp", Math.min(8000, f * 6), 0.9);
+    for (let i = 0; i < n; i++) {
+      const t = i / SR;
+      const att = Math.min(1, t / 0.0025);
+      let l = 0, rr = 0;
+      for (const [k, a, d, ph] of parts) {
+        const e = Math.exp(-t * d);
+        if (e < 2e-4) continue;
+        l += a * e * Math.sin(2 * Math.PI * f * k * t + ph);
+        rr += a * e * Math.sin(2 * Math.PI * f * 1.0012 * k * t + ph);
+      }
+      const nz = t < 0.012 ? bq(pick, r() * 2 - 1) * Math.exp(-t * 300) * 0.4 : 0;
+      const vl = (l * 0.22 * att + nz) * vel, vr = (rr * 0.22 * att + nz) * vel;
+      add(dry, s0 + i, vl * gl, vr * gr);
+      add(wet, s0 + i, vl * gl * send, vr * gr * send);
+      add(dly, s0 + i, vl * gl * delay, vr * gr * delay);
+    }
+  };
+
+  // Sub-grave que respira: seno + 2º armónico (para que se oiga en el teléfono), sin ataque
+  api.sub = (t0, t1, midi, gain, { att = 1.5, rel = 1.2, swell = 0 } = {}) => {
+    const f = midiHz(midi);
+    const s0 = Math.floor(t0 * SR);
+    const hold = t1 - t0;
+    const n = Math.floor((hold + rel) * SR);
+    let ph = 0;
+    for (let i = 0; i < n; i++) {
+      const t = i / SR;
+      ph += (2 * Math.PI * f) / SR;
+      let e = Math.min(1, t / att) * (1 + swell * Math.min(1, t / hold));
+      if (t > hold) e *= Math.max(0, 1 - (t - hold) / rel);
+      const v = (Math.sin(ph) + 0.28 * Math.sin(2 * ph) + 0.08 * Math.sin(3 * ph)) * gain * e;
+      add(dry, s0 + i, v, v);
+    }
+  };
+
+  // Pulso tipo shaker: ruido agudo muy corto
+  api.tick = (t0, gain = 0.02, { pan = 0, f = 7500 } = {}) => {
+    api.noise(t0, t0 + 0.05, { type: "hp", f, gain, env: (u) => Math.exp(-u * 7), send: 0.15, pan });
+  };
+
   // Paso de pata: golpe corto y blando en la tierra (medios-graves, sin sub)
   api.hop = (t0, gain = 0.05, { pan = 0 } = {}) => {
     api.tone(t0, 0.12, 140, 90, gain, { decay: 28, pan, send: 0.2, att: 0.003 });
@@ -259,7 +313,18 @@ export function createMix(totalSecs, seed = 1) {
   const gates = [];
   api.gate = (t0, t1) => gates.push([t0, t1]);
 
-  api.render = (irSeed = 3) => {
+  api.render = (irSeed = 3, { hp = 45, delayTime = 0.375, feedback = 0.38 } = {}) => {
+    // Delay estéreo de ida y vuelta (L→R→L) con filtro en la realimentación; su salida también va a la reverb
+    const D = Math.floor(delayTime * SR);
+    const bl = new Float32Array(D), br = new Float32Array(D);
+    const fl = biquad("lp", 3200), fr = biquad("lp", 3200);
+    for (let i = 0, j = 0; i < N; i++, j = (j + 1) % D) {
+      const ol = bl[j], or = br[j];
+      bl[j] = dly.L[i] + bq(fr, or) * feedback; // cruza canales
+      br[j] = dly.R[i] + bq(fl, ol) * feedback;
+      dry.L[i] += ol * 0.55; dry.R[i] += or * 0.55;
+      wet.L[i] += ol * 0.3; wet.R[i] += or * 0.3;
+    }
     const irL = makeIR(irSeed), irR = makeIR(irSeed + 101);
     const rvL = convolve(wet.L, irL), rvR = convolve(wet.R, irR);
     const L = new Float32Array(N), R = new Float32Array(N);
@@ -274,8 +339,8 @@ export function createMix(totalSecs, seed = 1) {
         L[i] *= g; R[i] *= g;
       }
     }
-    // Paso-altos a 45 Hz: nada de retumbe sub-grave
-    const hL = biquad("hp", 45, 0.7), hR = biquad("hp", 45, 0.7);
+    // Paso-altos (por defecto 45 Hz): nada de retumbe por debajo de lo musical
+    const hL = biquad("hp", hp, 0.7), hR = biquad("hp", hp, 0.7);
     for (let i = 0; i < N; i++) { L[i] = bq(hL, L[i]); R[i] = bq(hR, R[i]); }
     // Master: compresión lenta + saturación suave (tanh)
     let env = 0;

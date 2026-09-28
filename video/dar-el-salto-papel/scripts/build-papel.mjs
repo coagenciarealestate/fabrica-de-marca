@@ -75,7 +75,11 @@ const doubt = (t0, fx) => { put(t0, "lookback", fx); put(t0 + 5 * STEP, "sit", f
 // 0–3.4 · La madriguera: se asoma, sale, mira su hogar… y se va
 const burrow = scenes[0].map(0.14, 0.55); // centro del agujero
 keys.push({ t: 0, pose: null });
-put(0.7, "peek", 0.145, -18); put(0.7 + STEP, "peek", 0.145, -6); put(0.7 + 2 * STEP, "peek", 0.145, 0);
+// La cabeza sale DESDE el agujero: centrada en él, un poco más pequeña que la boca, y el borde
+// inferior del agujero la tapa (máscara) para que el corte del cuello nunca se vea.
+const HOLE = { x: 255, lip: 1082 }; // centro del agujero y su borde inferior (px de pantalla, medidos)
+const peekAt = (t, sink) => keys.push({ t: q(t), pose: "peek", x: HOLE.x, y: HOLE.lip + 20 + sink, rot: 0, sc: 0.74 });
+peekAt(0.7, 70); peekAt(0.7 + STEP, 36); peekAt(0.7 + 2 * STEP, 6); peekAt(0.7 + 3 * STEP, -16);
 put(1.55, "sit", 0.3); put(1.55 + STEP, "sit", 0.3, 4); put(1.55 + 2 * STEP, "sit", 0.3);
 doubt(2.2, 0.3);
 leave(3.0, 0.3);
@@ -147,6 +151,9 @@ function buildHtml() {
   // Poses
   const poseTags = POSES.map((p) => `          <img id="rb-${p.p}" class="pose" src="assets/papel/r-${p.p}.png" alt="" style="width:${p.w}px;height:${p.h}px;left:${-p.w / 2}px;top:${-p.h}px" />`).join("\n");
   tw.push(`tl.set("#rabbit .pose", { opacity: 0 }, 0);`);
+  // máscara del agujero mientras se asoma; se retira cuando sale del todo
+  tw.push(`tl.set("#boil-r", { clipPath: "inset(0px 0px ${H - HOLE.lip}px 0px)" }, 0);`);
+  tw.push(`tl.set("#boil-r", { clipPath: "inset(0px 0px 0px 0px)" }, 1.55);`);
   // Una sola orden por pose y por cuadro (sin "apagar todo y prender una" en el mismo instante,
   // que al buscar en la línea de tiempo puede resolverse en otro orden y dejar un cuadro vacío)
   keys.forEach((k) => {
@@ -309,70 +316,109 @@ ${tw.map((l) => "        " + l).join("\n")}
 `;
 }
 
-// ─── Sonido: caja de música, papel y clima ──────────────────────────────────
+// ─── Sonido: la arquitectura del video de Opus ──────────────────────────────
+// Un arpegio pulsado y brillante (una nota en cada cambio de mundo y una rejilla que se acelera
+// con los cortes), un sub-grave que crece sin golpes, aire que sube, pulso de shaker que entra a
+// mitad del viaje → silencio seco cuando el conejo entra al sombrero → resolución cálida: el
+// sub vuelve y tres notas lentas bajo la marca. Tonalidad: Si menor → Re mayor.
 function buildAudio() {
-  const m = createMix(TOTAL, 20260929);
+  const m = createMix(TOTAL, 20260930);
   const r = m.r;
   const S = (id) => scenes.find((s) => s.id === id);
-  const paperFlip = (t, g = 0.018) => m.noise(t, t + 0.09, { type: "bp", f: 2600, q: 0.8, gain: g, env: (u) => Math.sin(Math.PI * u) * (1 - u), send: 0.25 });
-  const tap = (t, g = 0.022) => m.hop(t, g);
+  const DROP = q(ENTRY + 0.03), BACK = q(DROP + 0.5); // silencio y regreso
 
-  // Colchón muy suave que cambia con el viaje (sin bajos)
-  m.strings(0, 3.5, [50, 57, 62], 0.035, { att: 1.5, rel: 1, bright: 0.2 });
-  m.strings(3.4, 9.6, [50, 54, 57, 62], 0.04, { att: 0.8, rel: 1, bright: 0.25 });
-  m.strings(9.5, 13.6, [47, 54, 59, 62], 0.04, { att: 0.6, rel: 1, bright: 0.25 });
-  m.strings(13.5, 18.2, [55, 59, 62, 66], 0.045, { att: 1.2, rel: 1.2, bright: 0.3, swell: 0.4 });
+  // Acordes por lugar (notas del arpegio) y raíz del sub
+  const harmony = {
+    e01: { arp: [66, 74, 73, 69], root: 35 }, // Si m(add9): la duda
+    e02: { arp: [62, 66, 69, 76, 73, 81], root: 38 }, // Re maj9: sale al mundo
+    e03: { arp: [62, 69, 66, 76, 81, 73], root: 38 },
+    e04: { arp: [59, 66, 62, 69, 73, 78], root: 35 }, // Si m9: la tormenta
+    e05: { arp: [55, 62, 59, 66, 74, 69], root: 43 }, // Sol maj9
+    e06: { arp: [64, 71, 67, 74, 78, 83], root: 40 }, // Mi m9
+    e07: { arp: [57, 64, 69, 71, 76, 81], root: 33 }, // La sus: casi
+    e08: { arp: [59, 66, 71, 74, 78, 81, 85, 86], root: 35 }, // Si m → tensión hacia el salto
+  };
+  const notesPer = { e01: 4, e02: 6, e03: 6, e04: 6, e05: 7, e06: 8, e07: 8 };
+  const grow = (t) => Math.min(1, Math.max(0, (t - 3.4) / (16.3 - 3.4))); // 0→1 a lo largo del viaje
 
-  // Cada cambio de mundo: una hoja de papel que se voltea
-  scenes.slice(1).forEach((s) => paperFlip(s.start, 0.022));
-
-  // El conejo: un toque suave cuando aterriza, una nota de caja de música por lugar nuevo,
-  // y dos notas que bajan cuando mira atrás (no, aquí no)
-  keys.filter((k) => k.pose === "land").forEach((k) => tap(k.t, 0.02));
-  keys.filter((k) => k.pose === "crouch").forEach((k) => paperFlip(k.t, 0.008));
-  const melody = [81, 83, 85, 86, 88, 90, 93];
-  tour.forEach(([t0, , tDoubt], i) => {
-    m.bell(t0 + 0.34, melody[i], 0.07, { pan: -0.2 + i * 0.07, len: 2.5 });
-    m.bell(tDoubt, melody[i] - 3, 0.045, { len: 1.8 });
-    m.bell(tDoubt + 0.18, melody[i] - 5, 0.04, { len: 1.8 });
+  // 1) Arpegio: primera nota fuerte en el corte, luego la rejilla del lugar (se acelera sola)
+  scenes.filter((sc) => notesPer[sc.id]).forEach((sc) => {
+    const h = harmony[sc.id], n = notesPer[sc.id], len = sc.end - sc.start;
+    const start = sc.id === "e01" ? 0.7 : sc.start;
+    const step = (sc.end - start) / n;
+    for (let i = 0; i < n; i++) {
+      const t = start + i * step;
+      const g = grow(t);
+      const vel = (i === 0 ? 0.24 : 0.16) * (0.75 + 0.5 * g) * (0.9 + r() * 0.2);
+      m.pluck(t + (r() - 0.5) * 0.008, h.arp[i % h.arp.length], vel, { pan: i % 2 ? 0.35 : -0.35, bright: 1.1 + 0.7 * g, delay: 0.3 + 0.2 * g, len: 2.4 });
+    }
+    void len;
   });
-  m.bell(0.75, 76, 0.05, { len: 2.5 }); // se asoma
-  m.bell(2.2, 74, 0.04, { len: 2 }); m.bell(2.38, 72, 0.035, { len: 2 }); // mira su madriguera
+  // El sombrero: el arpegio se vuelve una cascada que se acelera (corcheas → semicorcheas) hasta el salto
+  {
+    const h = harmony.e08;
+    let t = S("e08").start, i = 0;
+    while (t < DROP - 0.05) {
+      const u = (t - S("e08").start) / (DROP - S("e08").start);
+      m.pluck(t, h.arp[i % h.arp.length] + (u > 0.7 ? 12 : 0) * (i % 3 === 0 ? 1 : 0), 0.15 + 0.1 * u, { pan: i % 2 ? 0.4 : -0.4, bright: 1.8, delay: 0.45, len: 1.8 });
+      t += 0.34 - 0.2 * u; i++;
+    }
+  }
 
-  // Clima de cada lugar
-  const e1 = S("e01"), e2 = S("e02"), e3 = S("e03"), e4 = S("e04"), e5 = S("e05"), e6 = S("e06"), e7 = S("e07"), e8 = S("e08"), e9 = S("e09");
-  for (let t = 0.2; t < e1.end - 0.2; t += 0.42) for (let k = 0; k < 3; k++) m.tone(t + k * 0.035, 0.025, 4700, 4600, 0.006, { decay: 90, pan: 0.5, send: 0.4 }); // grillos
-  m.noise(e1.start, e1.end, { f: 500, gain: 0.018, env: (u) => Math.min(1, u * 4), send: 0.3 });
-  [[0.4, 0.3], [0.9, 0.5], [1.6, -0.3]].forEach(([d, p]) => m.tone(e2.start + d, 0.07, 3000 + r() * 500, 3700, 0.012, { decay: 30, pan: p, send: 0.8 })); // pájaros
-  m.noise(e3.start, e3.end + 0.1, { f: 650, fEnd: 380, gain: 0.03, env: (u, t) => Math.sin(Math.PI * u) * (0.7 + 0.3 * Math.sin(t * 7)), send: 0.3 }); // viento
-  m.noise(e3.start + 0.3, e3.end, { f: 380, gain: 0.03, env: (u) => Math.sin(Math.PI * u), send: 0.4 }); // mar
-  m.noise(e4.start, e4.end + 0.1, { type: "hp", f: 3600, gain: 0.007, env: (u) => Math.sin(Math.PI * Math.min(1, u * 1.2)), send: 0.5 }); // lluvia
-  m.noise(e4.start + 0.15, e4.start + 1.5, { f: 220, gain: 0.05, env: (u) => Math.exp(-u * 3) * Math.min(1, u * 20), send: 0.5 }); // trueno lejano, suave
-  m.noise(e5.start, e5.end, { type: "bp", f: 3600, q: 0.6, gain: 0.008, env: (u) => Math.sin(Math.PI * u), send: 0.4 }); // hojas
-  m.noise(e6.start, e6.end, { type: "hp", f: 6500, gain: 0.004, env: (u) => Math.sin(Math.PI * u), send: 0.6 }); // nieve
-  [0.2, 0.55].forEach((d) => m.bell(e6.start + d, 96, 0.018, { len: 1.5 }));
-  m.noise(e7.start, e7.end, { f: 320, gain: 0.025, env: (u) => Math.sin(Math.PI * u), send: 0.6 }); // niebla
+  // 2) Sub-grave que crece por debajo de todo el viaje (sin transitorios)
+  scenes.filter((sc) => harmony[sc.id]).forEach((sc) => {
+    const g0 = sc.id === "e01" ? 0.004 : 0.005 + 0.085 * Math.pow(grow(sc.start), 1.5); // casi nada → pleno
+    const end = sc.id === "e08" ? DROP : sc.end + 0.05;
+    m.sub(sc.id === "e01" ? 0.4 : sc.start - 0.05, end, harmony[sc.id].root, g0, { att: sc.id === "e01" ? 2.5 : 0.35, rel: 0.25, swell: sc.id === "e08" ? 0.5 : 0.15 });
+  });
 
-  // El sombrero: brillo de cristal, la decisión, el salto, la magia
-  [[e8.start + 0.4, 88], [e8.start + 1.3, 93], [e8.start + 2.1, 90]].forEach(([t, n], i) => m.bell(t, n, 0.035, { pan: (i - 1) * 0.4, len: 3 }));
-  m.noise(15.6, TAKEOFF, { type: "bp", f: 300, fEnd: 1400, q: 0.9, gain: 0.035, env: (u) => Math.pow(u, 2), send: 0.4 }); // respira
-  m.noise(TAKEOFF, TAKEOFF + 0.45, { f: 1500, fEnd: 500, gain: 0.05, env: (u) => Math.sin(Math.PI * u), send: 0.5 }); // salto
-  [74, 78, 81, 86].forEach((n, i) => m.piano(TAKEOFF + i * 0.08, n, 0.09, { pan: -0.3 + i * 0.2, len: 2.5 }));
-  m.tone(ENTRY, 0.14, 700, 220, 0.035, { decay: 14, send: 0.3 }); // "pop" de tela
-  [93, 90, 86, 81, 78].forEach((n, i) => m.bell(ENTRY + 0.06 + i * 0.09, n, 0.06 - i * 0.007, { pan: 0.4 - i * 0.2, len: 3 }));
+  // 3) Colchón de cuerdas que se abre
+  m.strings(0.3, 3.5, [47, 54, 62], 0.03, { att: 2, rel: 0.8, bright: 0.2 });
+  m.strings(3.4, 9.6, [50, 57, 62, 66], 0.04, { att: 0.8, rel: 0.6, bright: 0.3, swell: 0.3 });
+  m.strings(9.5, 13.6, [47, 54, 59, 62, 66], 0.05, { att: 0.5, rel: 0.5, bright: 0.4, swell: 0.3 });
+  m.strings(13.5, DROP, [47, 54, 59, 66, 71], 0.06, { att: 0.6, rel: 0.05, bright: 0.55, swell: 0.9 });
 
-  // Adentro: una subida de aire y cuerdas, sin golpe
-  m.noise(e9.start - 0.2, END_AT - 0.05, { f: 300, fEnd: 2400, gain: 0.035, env: (u) => Math.pow(u, 2.2), send: 0.5 });
-  m.strings(e9.start, END_AT, [62, 66, 69, 74], 0.045, { att: 1, rel: 0.3, bright: 0.35, swell: 0.8 });
-  m.gate(END_AT - 0.05, END_AT + 0.1);
+  // 4) Pulso de shaker: entra con el faro, sigue la rejilla y crece
+  scenes.filter((sc) => ["e03", "e04", "e05", "e06", "e07"].includes(sc.id)).forEach((sc) => {
+    const n = notesPer[sc.id] * 2, step = (sc.end - sc.start) / n;
+    for (let i = 0; i < n; i++) { const t = sc.start + i * step; m.tick(t, (i % 2 ? 0.02 : 0.032) * (0.5 + 0.8 * grow(t)), { pan: i % 2 ? 0.3 : -0.3 }); }
+  });
+  for (let t = S("e08").start, i = 0; t < DROP - 0.05; i++) { const u = (t - S("e08").start) / (DROP - S("e08").start); m.tick(t, (i % 2 ? 0.024 : 0.038) * (0.8 + 0.5 * u), { pan: i % 2 ? 0.3 : -0.3 }); t += 0.17 - 0.1 * u; }
 
-  // La Casa del Marketing: acorde de caja de música y piano, cálido
-  [74, 78, 81, 86].forEach((n, k) => m.bell(END_AT + 0.2 + k * 0.12, n, 0.05, { pan: (k - 1.5) * 0.3, len: 3.5 }));
-  [62, 66, 69].forEach((n, k) => m.piano(END_AT + 0.25 + k * 0.05, n, 0.1, { len: 4, send: 0.85 }));
-  m.strings(END_AT + 0.3, TOTAL - 1.2, [50, 57, 62, 66], 0.04, { att: 1.8, rel: 1.2, bright: 0.2 });
+  // 5) Aire que sube hasta el salto (el "momentum")
+  m.noise(8.0, DROP, { type: "hp", f: 5200, gain: 0.035, env: (u) => Math.pow(u, 2.2), send: 0.5 });
+  m.noise(14.2, DROP, { type: "bp", f: 350, fEnd: 3200, q: 0.9, gain: 0.05, env: (u) => Math.pow(u, 2.6), send: 0.4 });
 
-  const { L, R } = m.render();
-  const f0 = Math.floor((TOTAL - 1.5) * 44100);
+  // 6) El mundo de papel, discreto por debajo de la música
+  const paperFlip = (t, g) => m.noise(t, t + 0.09, { type: "bp", f: 2600, q: 0.8, gain: g, env: (u) => Math.sin(Math.PI * u) * (1 - u), send: 0.25 });
+  scenes.slice(1, 8).forEach((sc) => paperFlip(sc.start, 0.014));
+  keys.filter((k) => k.pose === "land" && k.t < DROP).forEach((k) => m.hop(k.t, 0.014));
+  for (let t = 0.2; t < S("e01").end - 0.2; t += 0.42) for (let k = 0; k < 3; k++) m.tone(t + k * 0.035, 0.025, 4700, 4600, 0.004, { decay: 90, pan: 0.5, send: 0.4 }); // grillos
+  m.noise(S("e03").start, S("e03").end, { f: 600, gain: 0.018, env: (u) => Math.sin(Math.PI * u), send: 0.3 }); // viento
+  m.noise(S("e04").start, S("e04").end, { type: "hp", f: 3800, gain: 0.004, env: (u) => Math.sin(Math.PI * u), send: 0.5 }); // lluvia
+  m.noise(S("e04").start + 0.1, S("e04").start + 1.3, { f: 200, gain: 0.03, env: (u) => Math.exp(-u * 3) * Math.min(1, u * 20), send: 0.5 }); // trueno lejano
+  m.noise(S("e05").start, S("e05").end, { type: "bp", f: 3600, q: 0.6, gain: 0.005, env: (u) => Math.sin(Math.PI * u), send: 0.4 }); // hojas
+
+  // 7) El salto: respiración, vuelo, y el "pop" de entrar
+  m.noise(TAKEOFF, TAKEOFF + 0.4, { f: 1600, fEnd: 500, gain: 0.05, env: (u) => Math.sin(Math.PI * u), send: 0.5 });
+  m.tone(ENTRY, 0.1, 800, 300, 0.03, { decay: 18, send: 0.3 });
+
+  // 8) SILENCIO — y luego el regreso cálido (como en Opus): el sub vuelve y tres notas lentas
+  m.gate(DROP, BACK);
+  m.sub(BACK, 20.0, 38, 0.07, { att: 0.6, rel: 1.0 }); // Re: llegó a casa
+  m.bell(BACK + 0.02, 86, 0.05, { len: 3 }); // la magia, sola
+  [[BACK + 0.05, 66], [BACK + 0.55, 76], [BACK + 1.05, 69], [BACK + 1.9, 74], [BACK + 2.4, 78]].forEach(([t, n], i) => m.pluck(t, n, 0.18 - i * 0.015, { pan: i % 2 ? 0.3 : -0.3, bright: 1.0, delay: 0.45, len: 3.2 }));
+  m.strings(BACK + 0.2, END_AT + 0.3, [50, 57, 62, 66, 69], 0.035, { att: 1.5, rel: 0.8, bright: 0.3, swell: 0.4 });
+  m.noise(18.2, END_AT, { type: "hp", f: 4500, gain: 0.01, env: (u) => Math.pow(u, 2), send: 0.6 }); // cae hacia la luz
+
+  // 9) La Casa del Marketing: Re add9, sub cálido, notas que se abren y se quedan
+  m.sub(END_AT - 0.1, TOTAL - 1.6, 38, 0.075, { att: 0.8, rel: 1.4 });
+  [[END_AT, 62], [END_AT + 0.02, 69], [END_AT + 0.5, 76], [END_AT + 1.0, 66], [END_AT + 1.6, 81], [END_AT + 2.3, 73]].forEach(([t, n], i) => m.pluck(t, n, 0.2 - i * 0.02, { pan: (i % 3 - 1) * 0.35, bright: 1.0, delay: 0.5, len: 3.6 }));
+  m.bell(END_AT + 0.6, 90, 0.03, { len: 3 });
+  m.strings(END_AT + 0.1, TOTAL - 1.2, [50, 57, 62, 66, 69, 76], 0.04, { att: 1.6, rel: 1.2, bright: 0.3 });
+
+  const { L, R } = m.render(3, { hp: 30, delayTime: 0.375, feedback: 0.36 });
+  const f0 = Math.floor((TOTAL - 1.6) * 44100);
   for (let i = f0; i < L.length; i++) { const g = 1 - (i - f0) / (L.length - f0); L[i] *= g; R[i] *= g; }
   return wav16(L, R);
 }
@@ -381,9 +427,9 @@ function buildAudio() {
 writeFileSync(join(ROOT, "compositions/story.html"), buildHtml());
 const wav = A("papel-audio.wav");
 writeFileSync(wav, buildAudio());
-let ln = "loudnorm=I=-16:TP=-1.5:LRA=11";
+let ln = "loudnorm=I=-15:TP=-1.5:LRA=11";
 try {
-  const j = JSON.parse(execFileSync("bash", ["-c", `ffmpeg -nostdin -hide_banner -i "${wav}" -af loudnorm=I=-16:TP=-1.5:LRA=11:print_format=json -f null - 2>&1 | sed -n '/^{/,/^}/p'`]).toString());
+  const j = JSON.parse(execFileSync("bash", ["-c", `ffmpeg -nostdin -hide_banner -i "${wav}" -af loudnorm=I=-15:TP=-1.5:LRA=11:print_format=json -f null - 2>&1 | sed -n '/^{/,/^}/p'`]).toString());
   ln += `:measured_I=${j.input_i}:measured_TP=${j.input_tp}:measured_LRA=${j.input_lra}:measured_thresh=${j.input_thresh}:offset=${j.target_offset}:linear=true`;
 } catch {}
 execFileSync("ffmpeg", ["-nostdin", "-loglevel", "error", "-y", "-i", wav, "-af", ln, "-ar", "44100", "-c:a", "aac", "-b:a", "224k", A("papel-audio.m4a")]);

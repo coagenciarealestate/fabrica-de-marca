@@ -27,7 +27,7 @@ dorada, la marca.
 
 | Tiempo | Mundo | Conejo | Texto |
 |---|---|---|---|
-| 0–3.4 | Madriguera · noche | Se asoma, sale, mira su hogar, se va | *Cuando ya no te gusta* |
+| 0–3.4 | Madriguera · noche | Asoma la cabeza desde el agujero, sale, mira su hogar, se va | *Cuando ya no te gusta* |
 | 3.4–5.8 | Cabaña · amanecer | Aterriza, mira, duda, sigue | → *donde estás.* |
 | 5.8–7.8 | Faro · viento | igual, más rápido | *donde estás.* |
 | 7.8–9.5 | Edificio · tormenta | | *Solo tienes que:* |
@@ -38,10 +38,17 @@ dorada, la marca.
 | 18.0–20.0 | Adentro del sombrero | — | — |
 | 20.0–24.5 | C&O · *La Casa del Marketing* | — | — |
 
-**Sonido:** caja de música (una nota por lugar nuevo, dos notas que bajan cuando dice "no"),
-papel que se voltea en cada cambio de mundo, pasos suaves, el clima de cada lugar (grillos,
-pájaros, viento y mar, lluvia con trueno lejano, hojas, nieve, niebla), campanas al entrar al
-sombrero y un acorde cálido en el cierre. Paso-altos a 45 Hz: sin bajos. −16 LUFS.
+**Sonido (arquitectura del video de Opus):**
+- Arpegio pulsado y brillante en Si menor → Re mayor: una nota fuerte en cada cambio de mundo y
+  una rejilla de notas que se acelera sola porque los lugares duran cada vez menos. En el
+  sombrero se vuelve una cascada (corcheas → semicorcheas).
+- Sub-grave que crece sin golpes de casi nada (−) a pleno a lo largo del viaje; cuerdas que se
+  abren; pulso de shaker desde el faro; aire que sube hasta el salto. Delay estéreo de ida y
+  vuelta y reverb de sala: el acabado premium.
+- **Silencio seco** cuando el conejo entra al sombrero (16.8–17.3 s), una campana sola, y el
+  **regreso cálido**: el sub vuelve en Re y notas lentas mientras bajamos a la luz.
+- Cierre: Re add9 que se abre bajo *La Casa del Marketing*. El mundo de papel (hojas que se
+  voltean, pasos, grillos, viento, lluvia, hojas) queda discreto por debajo. −15 LUFS.
 
 ## Archivos
 

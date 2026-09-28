@@ -1,0 +1,82 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[
+    {"id":"line1","type":"string","label":"Titular — línea 1","default":"La casa"},
+    {"id":"line2","type":"string","label":"Titular — línea 2 (itálica)","default":"que mereces"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 96px;
+        }
+        #hero-house {
+          display: block;
+          width: 760px;
+          height: 600px;
+          object-fit: contain;
+        }
+        #hero-headline {
+          font-family: var(--co-font-display);
+          font-weight: 400;
+          font-size: 104px;
+          line-height: 1.08;
+          color: var(--co-marfil);
+          text-align: center;
+        }
+        #hero-line-1,
+        #hero-line-2 {
+          display: block;
+        }
+        #hero-line-2 {
+          font-style: italic;
+          color: var(--co-champan);
+        }
+      </style>
+
+      <div id="root" data-composition-id="hero" data-width="1080" data-height="1920">
+        <img id="hero-house" src="assets/brand/hero-house-chrome.png" alt="Casa cromada C&amp;O" />
+        <h1 id="hero-headline">
+          <span id="hero-line-1" data-var-text="line1">La casa</span>
+          <span id="hero-line-2" data-var-text="line2">que mereces</span>
+        </h1>
+      </div>
+
+      <script>
+        const tl = gsap.timeline({ paused: true });
+        tl.fromTo(
+          "#hero-house",
+          { opacity: 0, y: 80, scale: 0.92 },
+          { opacity: 1, y: 0, scale: 1, duration: 1.4, ease: "power3.out" },
+          0.2,
+        );
+        tl.to("#hero-house", { y: -16, duration: 2.2, ease: "sine.inOut" }, 1.6);
+        tl.fromTo(
+          "#hero-line-1",
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
+          1.0,
+        );
+        tl.fromTo(
+          "#hero-line-2",
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
+          1.3,
+        );
+        tl.to(["#hero-house", "#hero-headline"], { opacity: 0, duration: 0.5, ease: "power2.in" }, 3.8);
+        window.__timelines["hero"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

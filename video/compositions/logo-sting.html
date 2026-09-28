@@ -1,0 +1,75 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[
+    {"id":"tagline","type":"string","label":"Tagline","default":"La Casa del Real Estate"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+        #sting-logo {
+          display: block;
+          width: 640px;
+          height: 341px;
+        }
+        #sting-rule {
+          display: block;
+          width: 520px;
+          height: 2px;
+          margin: 72px 0 56px;
+          background: var(--co-laton);
+        }
+        #sting-tagline {
+          display: block;
+          font-family: var(--co-font-ui);
+          font-weight: 500;
+          font-size: 34px;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: var(--co-pergamino);
+        }
+      </style>
+
+      <div id="root" data-composition-id="logo-sting" data-width="1080" data-height="1920">
+        <img id="sting-logo" src="assets/brand/logo-co-light.png" alt="C&amp;O" />
+        <span id="sting-rule"></span>
+        <span id="sting-tagline" data-var-text="tagline">La Casa del Real Estate</span>
+      </div>
+
+      <script>
+        const tl = gsap.timeline({ paused: true });
+        tl.fromTo(
+          "#sting-logo",
+          { opacity: 0, scale: 0.86 },
+          { opacity: 1, scale: 1, duration: 1.1, ease: "power3.out" },
+          0.2,
+        );
+        tl.fromTo(
+          "#sting-rule",
+          { scaleX: 0 },
+          { scaleX: 1, duration: 0.9, ease: "power2.inOut" },
+          0.9,
+        );
+        tl.fromTo(
+          "#sting-tagline",
+          { opacity: 0, y: 24 },
+          { opacity: 1, y: 0, duration: 0.9, ease: "power3.out" },
+          1.3,
+        );
+        window.__timelines["logo-sting"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

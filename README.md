@@ -13,6 +13,19 @@ App de producción para generar todas las piezas de marca de C&O — La Casa del
 
 El isotipo "C&O" ya es el archivo real (no una aproximación tipográfica) — se recuperó directamente del deck original.
 
+## Video animado — HyperFrames
+
+La carpeta [`video/`](video/) es un proyecto [HyperFrames](https://github.com/heygen-com/hyperframes): cada video se escribe como HTML + animaciones GSAP y se renderiza a MP4 de forma determinista, usando los tokens, fuentes y assets reales de la marca.
+
+```bash
+cd video
+npm run dev      # estudio de preview en el navegador
+npm run check    # lint + validación de layout, movimiento y contraste
+npm run render -- --output renders/co-intro.mp4
+```
+
+Requisitos: Node.js 22+ y FFmpeg (en Claude Code web se instala solo con el hook de `.claude/`). Incluye una intro vertical de ejemplo (casa cromada + titular → logo sting) con textos editables como variables. Para crear un video nuevo con Claude, pide p. ej. *"Usando /hyperframes, crea un reel de 15 s para …"*.
+
 ## Próximas fases
 
 1. Templates de Redes Sociales (post 1080x1080, quote card, banner, historia)

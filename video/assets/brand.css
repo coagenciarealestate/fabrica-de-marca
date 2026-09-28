@@ -1,0 +1,56 @@
+/* Sistema de marca C&O para video — espejo de design/tokens/brand.json.
+   Se enlaza desde index.html; las sub-composiciones heredan fuentes y tokens. */
+@font-face {
+  font-family: "Inria Serif";
+  src: url("fonts/inria-serif-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Inria Serif";
+  src: url("fonts/inria-serif-latin-400-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Inria Serif";
+  src: url("fonts/inria-serif-latin-700-normal.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Jost";
+  src: url("fonts/jost-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Jost";
+  src: url("fonts/jost-latin-500-normal.woff2") format("woff2");
+  font-weight: 500;
+}
+@font-face {
+  font-family: "Jost";
+  src: url("fonts/jost-latin-600-normal.woff2") format("woff2");
+  font-weight: 600;
+}
+
+:root {
+  /* Neutrales */
+  --co-carbon: #1c1714;
+  --co-negro-tinta: #121212;
+  --co-pergamino: #e3dac5;
+  --co-marfil: #f4e7cb;
+  /* Metálicos */
+  --co-laton: #aa8b64;
+  --co-champan: #cdbea3;
+  --co-bronce: #685c4b;
+  --co-oro-oliva: #9f9d5f;
+  /* Signatura */
+  --co-oliva: #4b511e;
+  --co-musgo: #2c311f;
+  --co-salvia: #a6a893;
+  --co-sanguina: #8b361c;
+
+  --co-font-display: "Inria Serif", Georgia, serif;
+  --co-font-ui: "Jost", system-ui, sans-serif;
+}

@@ -17,7 +17,11 @@
           overflow: hidden;
           background: linear-gradient(180deg, #0d0b0a 0%, var(--co-carbon) 55%, #241c16 100%);
         }
-        /* Horizonte degradado abajo, como el cierre de la referencia */
+        #end-shade {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(180deg, rgba(13, 11, 10, 0.55) 0%, rgba(13, 11, 10, 0.25) 45%, rgba(13, 11, 10, 0.7) 100%);
+        }
         /* Volvemos al amanecer del inicio: el círculo se cierra */
         #end-dawn {
           position: absolute;
@@ -26,19 +30,6 @@
           height: 100%;
           object-fit: cover;
           opacity: 0.55;
-        }
-        #end-shade {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(180deg, rgba(13, 11, 10, 0.55) 0%, rgba(13, 11, 10, 0.25) 45%, rgba(13, 11, 10, 0.7) 100%);
-        }
-        #end-glow {
-          position: absolute;
-          left: -10%;
-          width: 120%;
-          top: 1180px;
-          height: 740px;
-          background: radial-gradient(75% 60% at 50% 100%, rgba(244, 231, 203, 0.7) 0%, rgba(205, 150, 90, 0.55) 22%, rgba(139, 54, 28, 0.35) 48%, rgba(28, 23, 20, 0) 85%);
         }
         #end-lockup {
           position: absolute;
@@ -68,7 +59,6 @@
       <div id="root" data-composition-id="endcard" data-width="1080" data-height="1920">
         <img id="end-dawn" data-layout-allow-overflow src="assets/reel/100.jpg" alt="Amanecer sobre la ciudad" />
         <div id="end-shade"></div>
-        <div id="end-glow" data-layout-allow-overflow></div>
         <div id="end-lockup">
           <img id="end-logo" src="assets/brand/logo-co-light.png" alt="C&amp;O" />
           <span id="end-tagline" data-var-text="tagline">La Casa del Real Estate</span>
@@ -78,7 +68,6 @@
       <script>
         const tl = gsap.timeline({ paused: true });
         tl.fromTo("#end-dawn", { scale: 1.08 }, { scale: 1, duration: 4.5, ease: "sine.out" }, 0);
-        tl.fromTo("#end-glow", { opacity: 0, y: 160 }, { opacity: 1, y: 0, duration: 2.2, ease: "power2.out" }, 0);
         tl.fromTo("#end-logo", { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 1.4, ease: "power2.out" }, 0.1);
         tl.fromTo("#end-tagline", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 1, ease: "power2.out" }, 0.9);
         tl.to("#end-lockup", { opacity: 0, duration: 0.8, ease: "power1.in" }, 3.7);

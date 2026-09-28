@@ -21,32 +21,37 @@ const snap = (t) => Math.round(t * FPS) / FPS;
 export const REEL_END = 15.4; // corte a silencio
 export const LOGO_AT = 16.0;
 export const TOTAL = 20.5;
+const H = 1920;
+const HORIZON = 0.46 * H; // donde se encuentran todos los bordes (y donde se posa el texto)
 
 // ─── Imágenes (Higgsfield, 9:16) — ver scripts/fetch-reel-images.sh ─────────
-// ink: tono del texto sobre el borde si aún no hay imagen local para medirlo.
+// edge: altura (% del cuadro) del borde natural de cada foto, medida en las imágenes
+//       (detector de salto de luminancia + revisión a ojo). Se usa para alinear todas
+//       las tomas a un mismo horizonte, como alinea un editor un match cut.
+// ink:  tono del texto sobre el borde si aún no hay imagen local para medirlo.
 const IMG = {
-  100: { alt: "Amanecer sobre la línea de techos de la ciudad", ink: "light" },
-  101: { alt: "Filo de un muro de cal contra el cielo de la mañana", ink: "dark" },
-  102: { alt: "Cumbrera de tejas de barro con musgo", ink: "dark" },
-  103: { alt: "Muro de ladrillo al atardecer", ink: "light" },
-  104: { alt: "Baranda de balcón en madera, pintura descascarada", ink: "dark" },
-  105: { alt: "Muro de adobe con paja contra el cielo andino", ink: "light" },
-  106: { alt: "Filo de concreto de una casa moderna en la hora azul", ink: "light" },
-  107: { alt: "Línea de luz bajo una puerta", ink: "light" },
-  108: { alt: "Borde de una taza de café con vapor", ink: "light" },
-  109: { alt: "Corteza de pan recién horneado", ink: "dark" },
-  110: { alt: "Masa de arepa con huellas de dedos pequeños", ink: "light" },
-  111: { alt: "Pliegue de una sábana de lino con luz de ventana", ink: "dark" },
-  112: { alt: "Línea de agua de una tina con espuma", ink: "dark" },
-  113: { alt: "Dibujo en crayola de una casa y una familia", ink: "dark" },
-  114: { alt: "Borde de una mesa de comedor con migas", ink: "light" },
-  115: { alt: "Borde de una hoja de monstera a contraluz", ink: "dark" },
-  116: { alt: "Manta tejida mostaza", ink: "dark" },
-  117: { alt: "Borde de un plato pintado a mano de Carmen de Viboral", ink: "light" },
-  118: { alt: "Páginas de un libro a la luz de una lámpara", ink: "light" },
-  119: { alt: "Bordado en un bastidor de madera", ink: "light" },
-  120: { alt: "Plano de una casa a lápiz sobre papel mantequilla", ink: "dark" },
-  121: { alt: "Maracuyá partido sobre una tabla", ink: "dark" },
+  100: { edge: 50.8, alt: "Amanecer sobre la línea de techos de la ciudad", ink: "light" },
+  101: { edge: 46.5, alt: "Filo de un muro de cal contra el cielo de la mañana", ink: "dark" },
+  102: { edge: 46.5, alt: "Cumbrera de tejas de barro con musgo", ink: "dark" },
+  103: { edge: 42.6, alt: "Muro de ladrillo al atardecer", ink: "light" },
+  104: { edge: 43.0, alt: "Baranda de balcón en madera, pintura descascarada", ink: "dark" },
+  105: { edge: 40.2, alt: "Muro de adobe con paja contra el cielo andino", ink: "light" },
+  106: { edge: 48.4, alt: "Filo de concreto de una casa moderna en la hora azul", ink: "light" },
+  107: { edge: 52.7, alt: "Línea de luz bajo una puerta", ink: "light" },
+  108: { edge: 49.0, alt: "Borde de una taza de café con vapor", ink: "light" },
+  109: { edge: 36.7, alt: "Corteza de pan recién horneado", ink: "dark" },
+  110: { edge: 42.6, alt: "Masa de arepa con huellas de dedos pequeños", ink: "light" },
+  111: { edge: 46.9, alt: "Pliegue de una sábana de lino con luz de ventana", ink: "dark" },
+  112: { edge: 47.0, alt: "Línea de agua de una tina con espuma", ink: "dark" },
+  113: { edge: 41.8, alt: "Dibujo en crayola de una casa y una familia", ink: "dark" },
+  114: { edge: 35.5, alt: "Borde de una mesa de comedor con migas", ink: "light" },
+  115: { edge: 48.0, alt: "Borde de una hoja de monstera a contraluz", ink: "dark" },
+  116: { edge: 45.7, alt: "Manta tejida mostaza", ink: "dark" },
+  117: { edge: 43.0, alt: "Borde de un plato pintado a mano de Carmen de Viboral", ink: "light" },
+  118: { edge: 40.2, alt: "Páginas de un libro a la luz de una lámpara", ink: "light" },
+  119: { edge: 41.0, alt: "Bordado en un bastidor de madera", ink: "light" },
+  120: { edge: 40.0, alt: "Plano de una casa a lápiz sobre papel mantequilla", ink: "dark" },
+  121: { edge: 42.0, alt: "Maracuyá partido sobre una tabla", ink: "dark" },
 };
 
 // Mide la luminancia justo encima del borde para decidir el tono del texto
@@ -54,7 +59,8 @@ function inkFor(id) {
   const f = join(ROOT, "assets/reel", `${id}.jpg`);
   if (!existsSync(f)) return IMG[id].ink;
   try {
-    const out = execFileSync("ffmpeg", ["-loglevel", "error", "-i", f, "-vf", "crop=iw*0.6:ih*0.1:iw*0.2:ih*0.37,scale=1:1,format=gray", "-f", "rawvideo", "-"]);
+    const top = Math.max(0, IMG[id].edge / 100 - 0.07).toFixed(3);
+    const out = execFileSync("ffmpeg", ["-nostdin", "-loglevel", "error", "-i", f, "-vf", `crop=iw*0.6:ih*0.06:iw*0.2:ih*${top},scale=1:1,format=gray`, "-f", "rawvideo", "-"]);
     return out[0] > 150 ? "dark" : "light";
   } catch {
     return IMG[id].ink;
@@ -101,13 +107,18 @@ function buildHtml() {
     .map((p) => `        <div id="reel-${p.id}" class="clip phrase" data-start="${p.start}" data-duration="${+(p.end - p.start).toFixed(4)}" data-track-index="4"><span id="reel-${p.id}-text" class="phrase-text${p.italic ? " italic" : ""}" style="font-size:${p.size}px">${p.text}</span></div>`)
     .join("\n");
 
+  // Alineación: cada foto escala desde su propio borde (transform-origin en el borde), que
+  // se desplaza a HORIZON. Así el horizonte queda quieto aunque la toma respire.
   // Cada toma respira distinto: un empuje lento con deriva leve (nada idéntico, nada rígido)
   const shotTweens = shots
     .map((s) => {
+      const y0 = (IMG[s.id].edge / 100) * H;
+      const cover = Math.max(1, HORIZON / y0, (H - HORIZON) / (H - y0)) * 1.025;
+      const dy = (HORIZON - y0).toFixed(1);
       const d = Math.max(0.3, s.end - s.t + 0.2).toFixed(2);
-      const x = ((r() - 0.5) * 14).toFixed(1), y = ((r() - 0.5) * 10).toFixed(1);
-      const from = s.i === 0 ? 1.1 : (1.035 + r() * 0.03).toFixed(3);
-      return `        tl.fromTo("#reel-shot-${s.i}", { scale: ${from}, x: ${x}, y: ${y} }, { scale: 1, x: 0, y: 0, duration: ${s.i === 0 ? 1.2 : d}, ease: "sine.out" }, ${s.t});`;
+      const x = ((r() - 0.5) * 12).toFixed(1);
+      const from = (cover * (s.i === 0 ? 1.08 : 1.03 + r() * 0.03)).toFixed(3);
+      return `        tl.set("#reel-shot-${s.i}", { transformOrigin: "50% ${IMG[s.id].edge}%", y: ${dy} }, 0);\n        tl.fromTo("#reel-shot-${s.i}", { scale: ${from}, x: ${x} }, { scale: ${cover.toFixed(3)}, x: 0, duration: ${s.i === 0 ? 1.2 : d}, ease: "sine.out" }, ${s.t});`;
     })
     .join("\n");
 
@@ -154,7 +165,6 @@ function buildHtml() {
           width: 100%;
           height: 100%;
           object-fit: cover;
-          transform-origin: 50% 50%;
         }
         /* Frases: serif pequeña posada sobre el borde de cada imagen */
         #reel-words {
@@ -166,7 +176,7 @@ function buildHtml() {
           display: flex;
           align-items: flex-end;
           justify-content: center;
-          padding-bottom: 986px;
+          padding-bottom: ${Math.round(H - HORIZON + 14)}px;
         }
         #reel-words .phrase-text {
           display: block;

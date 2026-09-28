@@ -29,6 +29,11 @@ nadie, pero se siente que alguien vive ahí.
 - Lo hecho a mano (crayola, bordado, plano a lápiz, cerámica) se fotografía como objeto físico.
 - Nada literal ni "estilizado": materia, luz, huella.
 
+**Alineación del match cut:** cada foto trae su borde a una altura distinta (del 36 % al 53 %).
+Como hace un editor, alineamos las tomas: `edge` en `scripts/build-reel.mjs` guarda la altura
+medida de cada borde; la foto se escala desde ese borde (`transform-origin`) y se desplaza a un
+horizonte común (46 %). Así el horizonte no se mueve aunque cada toma respire.
+
 **En la composición:**
 - Tomas a pantalla completa, sin máscara. Cada una respira distinto (empuje lento con deriva leve).
 - La tinta del texto se **mide** en cada imagen (luminancia sobre el borde) y cambia en el corte.
@@ -66,7 +71,7 @@ Master a −16 LUFS, pico −1.5 dBTP, compresión lenta. Todo sintetizado y det
 ## 5. Comandos
 
 ```bash
-npm run fetch-images   # descarga las 22 imágenes y re-mide la tinta del texto
+npm run fetch-images   # (ya están en el repo) vuelve a descargar las 22 imágenes y re-mide la tinta
 npm run build          # regenera reel.html + audio desde el guion
 npm run check
 npm run render -- --output renders/lo-que-te-rodea.mp4

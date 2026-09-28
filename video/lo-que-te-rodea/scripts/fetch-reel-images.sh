@@ -8,8 +8,8 @@ mkdir -p assets/reel
 B=https://d8j0ntlcm91z4.cloudfront.net/user_37xL8uQkAiExL4l53S1OQTuJqcT
 while read -r n f; do
   [ -f "assets/reel/$n.jpg" ] && continue
-  curl -sSfL -o "assets/reel/$n.png" "$B/$f"
-  ffmpeg -loglevel error -y -i "assets/reel/$n.png" -q:v 3 "assets/reel/$n.jpg"
+  curl -sSfL </dev/null -o "assets/reel/$n.png" "$B/$f"
+  ffmpeg -nostdin -loglevel error -y -i "assets/reel/$n.png" -q:v 3 "assets/reel/$n.jpg"
   rm "assets/reel/$n.png"
   echo "ok $n"
 done <<'LIST'

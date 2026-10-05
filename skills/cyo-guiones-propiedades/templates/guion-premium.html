@@ -1,0 +1,265 @@
+<!-- PLANTILLA PREMIUM C&O · Copia este archivo a propiedades/<slug>/guion.html y reemplaza el contenido de cada sección. Ejemplo completo: propiedades/domus-san-patricio-5a/guion.html. Requiere logo-co.png junto al archivo (design/deck-co/logo-co.png). -->
+<title>Guion DOMUS San Patricio 5A</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inria+Serif:ital,wght@0,400;0,700;1,400&family=Jost:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: documento editorial de una columna (pergamino), secciones separadas por filetes de latón; tablas de guion como hojas de set */
+:root{
+  --paper:#E3DAC5; --paper-2:#EDE4CF; --ink:#1C1714; --ink-soft:#5A4E42;
+  --brass:#AA8B64; --brass-deep:#6E5636; --rule:rgba(110,86,54,.32); --sanguina:#8B361C;
+  --hud:#1C1714; --hud-fg:#F4E7CB;
+  --display:"Inria Serif",Georgia,serif; --ui:"Jost",system-ui,sans-serif; --mono:"DM Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#1C1714; --paper-2:#251F1A; --ink:#F4E7CB; --ink-soft:#CDBEA3;
+  --brass:#C2A47B; --brass-deep:#CDBEA3; --rule:rgba(205,190,163,.22); --sanguina:#C5653F;
+  --hud:#F4E7CB; --hud-fg:#1C1714; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#1C1714; --paper-2:#251F1A; --ink:#F4E7CB; --ink-soft:#CDBEA3;
+  --brass:#C2A47B; --brass-deep:#CDBEA3; --rule:rgba(205,190,163,.22); --sanguina:#C5653F;
+  --hud:#F4E7CB; --hud-fg:#1C1714; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--ui);font-size:16px;line-height:1.6;padding-inline:20px;padding-block:0 80px}
+.doc{max-width:960px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);font-weight:400;text-wrap:balance;margin:0}
+p{margin:0}
+.label{font-family:var(--ui);font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--brass-deep);font-weight:500}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.warn{color:var(--sanguina);font-weight:600}
+
+/* Portada */
+.cover{display:grid;gap:28px;padding-block:56px 48px;border-bottom:1px solid var(--rule)}
+.cover-top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.logo{height:44px;width:auto}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .logo{filter:invert(1) sepia(.25)}}
+:root[data-theme="dark"] .logo{filter:invert(1) sepia(.25)}
+.cover h1{font-size:clamp(40px,7vw,76px);line-height:1.02;letter-spacing:-.01em}
+.cover h1 em{font-style:italic;color:var(--brass-deep)}
+.facts{display:flex;flex-wrap:wrap;gap:10px 28px;font-size:14.5px;color:var(--ink-soft)}
+.facts b{color:var(--ink);font-weight:600}
+.angle{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;padding-top:8px}
+.angle p{font-family:var(--display);font-size:20px;line-height:1.4}
+
+/* Secciones */
+section{padding-block:52px 8px}
+.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:22px;flex-wrap:wrap}
+.sec-head h2{font-size:clamp(26px,3.6vw,34px)}
+.sec-head .label{min-width:2.5em}
+.lead{max-width:62ch;color:var(--ink-soft);margin-bottom:22px}
+
+/* Titular */
+.headline{border-top:1px solid var(--brass);border-bottom:1px solid var(--brass);padding-block:36px;margin-bottom:22px}
+.headline q{display:block;font-family:var(--display);font-size:clamp(28px,4.6vw,46px);line-height:1.15;quotes:"“" "”"}
+.headline .meta{display:flex;gap:10px 28px;flex-wrap:wrap;margin-top:18px;font-size:14px;color:var(--ink-soft)}
+.variants{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.variant{padding:20px 0;border-top:1px solid var(--rule);display:grid;gap:8px}
+.variant p.q{font-family:var(--display);font-size:20px;line-height:1.35}
+.variant .meta{font-size:13.5px;color:var(--ink-soft)}
+
+/* Tablas de guion */
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;min-width:820px;font-size:14px}
+th{font-family:var(--ui);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;color:var(--brass-deep);text-align:left;padding:10px 12px;border-bottom:1px solid var(--brass)}
+td{padding:16px 12px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--ink-soft)}
+td.t{font-family:var(--mono);font-size:12.5px;white-space:nowrap;color:var(--ink)}
+td.b{font-weight:600;color:var(--ink);white-space:nowrap}
+td.v{font-family:var(--display);font-size:18px;line-height:1.4;color:var(--ink);min-width:260px}
+td.os{font-weight:600;color:var(--ink)}
+.chip{display:inline-block;font-family:var(--ui);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--hud);color:var(--hud-fg);white-space:nowrap;margin:0 4px 4px 0}
+.specs{display:flex;flex-wrap:wrap;gap:8px 24px;margin-bottom:18px;font-size:14px;color:var(--ink-soft)}
+
+/* Grillas simples */
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px}
+.kv{display:grid;grid-template-columns:minmax(120px,190px) 1fr;gap:12px 20px;font-size:15px}
+.kv dt{color:var(--brass-deep);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;padding-top:3px}
+.kv dd{margin:0}
+.copy{padding-top:16px;border-top:1px solid var(--rule);display:grid;gap:10px}
+.copy p{white-space:pre-line;font-size:15px}
+.score{font-family:var(--mono);font-weight:500;color:var(--ink);text-align:center}
+.score small{color:var(--sanguina);font-size:11px;display:block}
+ol.check{margin:0;padding-left:1.2em;display:grid;gap:10px;max-width:70ch}
+footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--ink-soft)}
+
+@media (max-width:520px){ .kv{grid-template-columns:1fr} body{padding-inline:16px} }
+@media print{
+  :root{--paper:#fff;--paper-2:#fff}
+  body{padding:0;font-size:12px}
+  section{break-inside:auto;padding-block:28px 0}
+  .scroll{overflow:visible} table{min-width:0;font-size:11px} td.v{font-size:14px}
+  tr,.variant,.copy{break-inside:avoid}
+  .cover{padding-block:0 32px}
+}
+</style>
+
+<div class="doc">
+
+<header class="cover">
+  <div class="cover-top">
+    <img class="logo" src="logo-co.png" alt="C&amp;O — La Casa del Real Estate">
+    <span class="label">Guion de video · Octubre 2026</span>
+  </div>
+  <div>
+    <p class="label" style="margin-bottom:14px">DOMUS San Patricio · Usaquén</p>
+    <h1>117 m² privados.<br><em>Más de 600 para vivir.</em></h1>
+  </div>
+  <div class="facts">
+    <span><b class="mono">$1.505.000.000</b></span>
+    <span><b>117 m²</b> · Tipo 5A</span>
+    <span><b>3</b> habitaciones + estudio<span class="warn">*</span></span>
+    <span><b>3</b> baños</span>
+    <span><b>2</b> parqueaderos</span>
+    <span><b>32</b> apartamentos · Hoyos Luque</span>
+  </div>
+  <div class="angle">
+    <div><p class="label" style="margin-bottom:8px">Avatar</p><p>La familia que trabaja desde casa y ya no cabe.</p></div>
+    <div><p class="label" style="margin-bottom:8px">Ángulo de producto</p><p>Estudio, dos parqueaderos y 500 m² de zonas sociales, sin salir de Usaquén.</p></div>
+  </div>
+</header>
+
+<section>
+  <div class="sec-head"><span class="label">Titular</span><h2>El primer segundo</h2></div>
+  <div class="headline">
+    <span class="label">A · Recomendado</span>
+    <q>Este apartamento mide 117 metros. Pero quien vive aquí tiene más de 600.</q>
+    <div class="meta"><span><b>Visual</b> · Agente en el rooftop, Bogotá detrás (flash-forward)</span><span><b>Sonido</b> · Viento + golpe grave</span><span><b>Texto</b> · 117 m² → 600+</span></div>
+  </div>
+  <p class="lead">Hook stacking: se graban los tres titulares sobre el mismo cuerpo, se pautan 48–72 h y se escala el que más DMs calificados genere por cada 1.000 vistas.</p>
+  <div class="variants">
+    <div class="variant"><span class="label">B · Pauta, filtra al avatar</span><p class="q">“Si tu comedor es tu oficina y tu segundo carro duerme afuera, mira esto.”</p><p class="meta">Agente cerrando la puerta del estudio · sonido de puerta</p></div>
+    <div class="variant"><span class="label">C · Responde la objeción</span><p class="q">“Todos dicen que por 1.500 millones mejor te vas a Chía. Mira esto antes.”</p><p class="meta">Agente caminando hacia la terraza · llaves</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="label">Guion principal</span><h2>Agente a cámara</h2></div>
+  <div class="specs"><span class="mono">~53 s</span><span class="mono">130 palabras</span><span>Escalera de revelaciones: terraza → estudio → suite → parqueaderos → rooftop</span></div>
+  <div class="scroll"><table>
+    <thead><tr><th>Tiempo</th><th>Bloque</th><th>Voz del agente</th><th>Imagen / plano</th><th>En pantalla</th><th>Sonido</th></tr></thead>
+    <tbody>
+      <tr><td class="t">0–3 s</td><td class="b">Titular</td><td class="v">Este apartamento mide 117 metros. Pero quien vive aquí tiene más de 600.</td><td>Rooftop, golden hour. Agente a lente, push-in lento</td><td class="os">117 m² → 600+</td><td>Viento + golpe grave</td></tr>
+      <tr><td class="t">3–6 s</td><td class="b">Loop</td><td class="v">Ya te explico la cuenta. Primero, entra.</td><td>Corte seco a la puerta del 5A; el agente abre y entra</td><td>—</td><td>Puerta + llaves</td></tr>
+      <tr><td class="t">6–12 s</td><td class="b">Revelación 1</td><td class="v">Sala y comedor abiertos a una terraza donde sí cabe la mesa del domingo. Cocina abierta.</td><td>Dolly sala → terraza <span class="warn">⚠</span>. Contraplano de la cocina</td><td class="os">Terraza</td><td>Entra música, baja</td></tr>
+      <tr><td class="t">12–18 s</td><td class="b">Revelación 2</td><td class="v">Ahora, lo que cambia tu semana: estudio con puerta. Tu comedor vuelve a ser comedor.</td><td>El agente entra al estudio <span class="warn">⚠</span> y cierra la puerta frente a cámara</td><td class="os">Estudio con puerta</td><td>La puerta corta la música 1 s</td></tr>
+      <tr><td class="t">18–25 s</td><td class="b">Revelación 3</td><td class="v">Tres habitaciones. La principal con vestier y baño propio. Tres baños: nadie hace fila a las siete.</td><td>Suite → vestier → baño, 3 cortes rápidos</td><td class="os">3 hab · 3 baños</td><td>—</td></tr>
+      <tr><td class="t">25–28 s</td><td class="b">Golpe</td><td class="v">Dos parqueaderos. Los dos carros, adentro.</td><td>Sótano: agente entre las dos plazas, abre los brazos</td><td class="os">2</td><td>Beep de alarma de carro</td></tr>
+      <tr><td class="t">28–39 s</td><td class="b">Remate</td><td class="v">La cuenta: 500 metros de zonas sociales para solo 32 apartamentos. Rooftop con BBQ, gimnasio, coworking y cine privado. 117 tuyos. Más de 600 para vivir.</td><td>Montaje: gimnasio, coworking, teatrino (luces que se apagan), BBQ. Cierra en el rooftop, mismo plano del titular</td><td class="os">117 m² privados + 500 m² comunes · 32 aptos</td><td>Música sube</td></tr>
+      <tr><td class="t">39–44 s</td><td class="b">Ubicación + precio</td><td class="v">San Patricio, Usaquén. Calle 106 con carrera 17. Mil quinientos cinco millones.</td><td>Agente a lente; inserto de la calle</td><td class="os">$1.505M · Usaquén</td><td>—</td></tr>
+      <tr><td class="t">44–53 s</td><td class="b">Share + CTA</td><td class="v">Si pensaste en alguien mientras lo veías, mándaselo. Y si quieres el plano y una visita, escríbeme DOMUS.</td><td>Agente a lente, sonríe, sale de cuadro</td><td class="os">Escribe DOMUS</td><td>Música cierra</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="label">Versión alternativa</span><h2>Desbloqueo</h2></div>
+  <p class="lead">Formato gamificado: el espectador desbloquea el apartamento espacio por espacio contra un cronómetro de 60 segundos. El HUD va en latón y marfil, ocupa máximo el 15 % del cuadro y la barra cuenta espacios, no metros por espacio.</p>
+  <div class="specs"><span class="mono">~60 s</span><span class="mono">116 palabras</span><span>Cronómetro 60 s · Barra ESPACIOS 0/5</span></div>
+  <div class="scroll"><table>
+    <thead><tr><th>Tiempo</th><th>Nivel</th><th>Voz del agente</th><th>Imagen</th><th>HUD / efecto</th><th>Sonido</th></tr></thead>
+    <tbody>
+      <tr><td class="t">0–4 s</td><td class="b">Reto</td><td class="v">Tienes un minuto para desbloquear un apartamento de mil quinientos millones. ¿Listo?</td><td>Agente frente a la puerta, llave en mano, a lente</td><td><span class="chip">Candado</span><span class="chip">60 s</span><span class="chip">0/5</span></td><td>Tic de reloj</td></tr>
+      <tr><td class="t">4–11 s</td><td class="b">Nivel 1</td><td class="v">Nivel uno: sala, comedor y terraza. Aquí cabe la mesa del domingo.</td><td>Puerta se abre → sala → terraza <span class="warn">⚠</span></td><td><span class="chip">Desbloqueado 1/5</span></td><td>Clic metálico + campana</td></tr>
+      <tr><td class="t">11–17 s</td><td class="b">Nivel 2</td><td class="v">Nivel dos: cocina abierta y lavandería aparte. La ropa no se ve desde la sala.</td><td>Cocina; puerta de lavandería que se cierra</td><td><span class="chip">2/5</span></td><td>Clic + campana</td></tr>
+      <tr><td class="t">17–24 s</td><td class="b">Nivel 3</td><td class="v">Nivel tres, el raro: estudio con puerta. Reuniones sin niños de fondo.</td><td>El agente cierra la puerta del estudio <span class="warn">⚠</span></td><td><span class="chip">Objeto raro 3/5</span></td><td>Logro largo, distinto</td></tr>
+      <tr><td class="t">24–31 s</td><td class="b">Nivel 4</td><td class="v">Nivel cuatro: suite con vestier y baño. Más dos habitaciones y dos baños.</td><td>Suite → vestier → habitaciones</td><td><span class="chip">4/5</span></td><td>Clic + campana</td></tr>
+      <tr><td class="t">31–35 s</td><td class="b">Power-up</td><td class="v">Power-up: dos parqueaderos.</td><td>Sótano, dos plazas</td><td><span class="chip">Power-up ×2</span><span class="chip">5/5</span></td><td>Power-up</td></tr>
+      <tr><td class="t">35–39 s</td><td class="b">100 %</td><td class="v">117 metros. Apartamento completo.</td><td>Plano general de la sala con luz</td><td><span class="chip">117 m² · 100 %</span></td><td>Acorde de victoria</td></tr>
+      <tr><td class="t">39–50 s</td><td class="b">Nivel secreto</td><td class="v">Pero hay un nivel secreto. Rooftop con BBQ y teppanyaki, gimnasio, coworking y cine privado. Quinientos metros más, para solo treinta y dos vecinos.</td><td>Ascensor sube y se abre en el rooftop. Montaje de amenidades</td><td><span class="chip">Nivel secreto</span><span class="chip">+500 m²</span></td><td>Cambia la música, sube</td></tr>
+      <tr><td class="t">50–60 s</td><td class="b">Premio</td><td class="v">Premio final: San Patricio, Usaquén, mil quinientos cinco millones. Mándaselo a tu jugador dos, y para reclamar el plano, comenta DOMUS.</td><td>Agente a lente en el rooftop</td><td><span class="chip">$1.505M</span><span class="chip">Jugador 2</span><span class="chip">Comenta DOMUS</span></td><td>Cronómetro en 0: “Tiempo”</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="label">Conversión</span><h2>Del video a la visita</h2></div>
+  <dl class="kv">
+    <dt>Palabra clave</dt><dd><b>DOMUS</b>, en comentario o DM</dd>
+    <dt>Respuesta</dt><dd>“Hola, te comparto el plano del 5A de DOMUS San Patricio. ¿Lo estás buscando para vivir o para invertir? Así te muestro lo que más te sirve.”</dd>
+    <dt>Siguiente paso</dt><dd>Visita de 20 minutos, o videollamada si la persona está fuera de Bogotá</dd>
+    <dt>Share de compra</dt><dd>La pareja: “mándaselo a quien pensaste” / “tu jugador dos”</dd>
+    <dt>Métrica norte</dt><dd>DMs calificados por cada 1.000 vistas, medidos por titular (A, B, C)</dd>
+  </dl>
+</section>
+
+<section>
+  <div class="sec-head"><span class="label">Revisión</span><h2>Visto desde el feed</h2></div>
+  <div class="scroll"><table>
+    <thead><tr><th>Criterio</th><th style="text-align:center">TikTok</th><th style="text-align:center">Instagram</th><th style="text-align:center">Facebook</th><th>Cambio aplicado</th></tr></thead>
+    <tbody>
+      <tr><td class="b">Freno</td><td class="score">5</td><td class="score">5</td><td class="score">4</td><td>El titular pasó de la puerta al rooftop: lo mejor va en el segundo 1</td></tr>
+      <tr><td class="b">Loop</td><td class="score">4</td><td class="score">4</td><td class="score">4</td><td>“Ya te explico la cuenta” deja el 600 abierto hasta el remate</td></tr>
+      <tr><td class="b">Ritmo</td><td class="score">4</td><td class="score">4</td><td class="score">4</td><td>El remate bajó de 14 s a 11 s, con 4 cortes de amenidades</td></tr>
+      <tr><td class="b">Deseo</td><td class="score">4</td><td class="score">5</td><td class="score">4</td><td>“Espacio de home office” pasó a “tu comedor vuelve a ser comedor”</td></tr>
+      <tr><td class="b">Claridad</td><td class="score">4</td><td class="score">4</td><td class="score">4<small>antes 3</small></td><td>Precio en voz y en pantalla; el copy de Facebook abre con precio, área y ubicación</td></tr>
+      <tr><td class="b">Share de compra</td><td class="score">4</td><td class="score">4</td><td class="score">4</td><td>“Mándaselo a quien pensaste”. En Desbloqueo, “jugador dos” sube a 5</td></tr>
+      <tr><td class="b">Acción</td><td class="score">4</td><td class="score">4</td><td class="score">4</td><td>Un solo CTA con palabra clave; se pide plano y visita, no la compra</td></tr>
+      <tr><td class="b">Confianza</td><td class="score">4<small>antes 3</small></td><td class="score">4</td><td class="score">4</td><td>“Más de 600” se aclara en voz y en pantalla: 117 m² privados + 500 m² comunes</td></tr>
+    </tbody>
+  </table></div>
+  <div class="grid2" style="margin-top:28px">
+    <div><p class="label">TikTok</p><p>Responde al chisme de cuánto cuesta vivir así. El contraste 117 → 600 y el precio dicho en voz alta generan comentarios.</p></div>
+    <div><p class="label">Instagram</p><p>El rooftop y el HUD de Desbloqueo invitan a guardar el video y a mandárselo a la pareja.</p></div>
+    <div><p class="label">Facebook</p><p>El público mayor, incluidos padres que ayudan a comprar, necesita datos claros. El copy hace ese trabajo sin alargar el video.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="label">Copy</span><h2>Por plataforma</h2></div>
+  <div class="grid2">
+    <div class="copy"><span class="label">TikTok</span><p>117 m² privados. 500 m² de zonas para solo 32 apartamentos. San Patricio, Usaquén · $1.505M. Escribe DOMUS y te mando el plano.
+#apartamentosbogota #usaquen #realestatebogota #bogota</p></div>
+    <div class="copy"><span class="label">Instagram</span><p>El apartamento mide 117 m². Tu vida, más de 600.
+3 habitaciones · estudio · 3 baños · 2 parqueaderos. Rooftop, gimnasio, coworking y cine privado en un edificio de 32 apartamentos.
+San Patricio, Usaquén · $1.505.000.000
+Comenta DOMUS y te enviamos el plano.</p></div>
+    <div class="copy"><span class="label">Facebook</span><p>$1.505 millones · 117 m² · 3 habitaciones + estudio · 3 baños · 2 parqueaderos
+San Patricio, Usaquén (Carrera 17 con Calle 106). Edificio nuevo de 32 apartamentos con rooftop, gimnasio, coworking, cine privado y planta eléctrica total.
+Comenta DOMUS o escríbenos y te enviamos el plano para agendar una visita.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="label">Rodaje</span><h2>Lista de tomas</h2></div>
+  <div class="scroll"><table>
+    <thead><tr><th>Toma</th><th>Para</th><th>Nota</th></tr></thead>
+    <tbody>
+      <tr><td class="b">Rooftop, golden hour, agente a lente</td><td>Titular, remate, precio, CTA</td><td>Grabar aquí los tres titulares</td></tr>
+      <tr><td class="b">Puerta del 5A que se abre</td><td>Loop · Reto</td><td>Sonido directo de llaves y puerta</td></tr>
+      <tr><td class="b">Dolly sala → terraza</td><td>Revelación 1 · Nivel 1</td><td><span class="warn">⚠</span> Confirmar terraza</td></tr>
+      <tr><td class="b">Cocina abierta + lavandería</td><td>Nivel 2</td><td>Detalle de acabados</td></tr>
+      <tr><td class="b">Agente cierra la puerta del estudio</td><td>Revelación 2 · Nivel 3</td><td><span class="warn">⚠</span> Confirmar estudio</td></tr>
+      <tr><td class="b">Suite → vestier → baño</td><td>Revelación 3 · Nivel 4</td><td>Tres planos cortos</td></tr>
+      <tr><td class="b">Sótano: dos plazas</td><td>Golpe · Power-up</td><td>—</td></tr>
+      <tr><td class="b">Gimnasio, coworking, teatrino, BBQ</td><td>Remate · Nivel secreto</td><td>Un plano por amenidad, 2 s cada uno</td></tr>
+      <tr><td class="b">Ascensor que se abre en el rooftop</td><td>Nivel secreto</td><td>—</td></tr>
+      <tr><td class="b">Calle y entorno</td><td>Ubicación</td><td>—</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="label">Ficha</span><h2>Datos y verificación</h2></div>
+  <div class="grid2">
+    <dl class="kv">
+      <dt>Proyecto</dt><dd>DOMUS San Patricio · Hoyos Luque</dd>
+      <dt>Dirección</dt><dd>Cra. 17 # 106-73/85, San Patricio, Usaquén</dd>
+      <dt>Precio</dt><dd class="mono">$1.505.000.000</dd>
+      <dt>Referencia</dt><dd class="mono">Desde $1.459.593.000</dd>
+      <dt>Precio / m²</dt><dd class="mono">~$12,9M</dd>
+      <dt>Amenidades</dt><dd>Rooftop con BBQ, teppanyaki y lounge · gimnasio · coworking · teatrino · salón comunal · juegos infantiles · planta eléctrica total · vigilancia 24/7</dd>
+    </dl>
+    <div>
+      <p class="label" style="margin-bottom:12px"><span class="warn">⚠</span> Por verificar antes de grabar</p>
+      <ol class="check">
+        <li><b>Estado:</b> ¿entregado o en obra? Si está en obra, se graba en el apartamento modelo y con renders, y “entra” pasa a “mira”.</li>
+        <li><b>Terraza y estudio en el 5A</b><span class="warn">*</span>: la fuente citada es la página del Tipo 6A.</li>
+        <li><b>Piso y razón del precio</b> por encima de la constructora: si es piso o vista, se vuelve argumento.</li>
+        <li><b>Venta directa o cesión de derechos:</b> cambia el texto legal del copy.</li>
+        <li><b>Parque República de Francia:</b> confirmar cercanía antes de mencionarlo.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<footer><span>C&amp;O — La Casa del Real Estate</span><span>Sistema de guiones de propiedades · v1</span></footer>
+</div>

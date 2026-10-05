@@ -13,6 +13,13 @@ App de producción para generar todas las piezas de marca de C&O — La Casa del
 
 El isotipo "C&O" ya es el archivo real (no una aproximación tipográfica) — se recuperó directamente del deck original.
 
+## Sistema de guiones de propiedades
+
+Skill: [`skills/cyo-guiones-propiedades/`](skills/cyo-guiones-propiedades/SKILL.md). Carga la ficha de un inmueble y entrega un guion con agente a cámara, una versión gamificada (Desbloqueo), la revisión de espectador, el copy y la lista de tomas, en PDF premium y en documento editable.
+
+- Piloto: [`propiedades/domus-san-patricio-5a/`](propiedades/domus-san-patricio-5a/) (guion, HTML premium y PDF)
+- Historial: `propiedades/_referentes.md` y `propiedades/_resultados.csv`, que alimentan la mejora de la skill
+
 ## Próximas fases
 
 1. Templates de Redes Sociales (post 1080x1080, quote card, banner, historia)

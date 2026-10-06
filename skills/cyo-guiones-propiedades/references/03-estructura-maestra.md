@@ -53,10 +53,10 @@ Cada inmueble lleva **dos guiones**, con el mismo recorrido y distinto manejo de
 3. **Las zonas comunes llevan su uso:** "coworking *para trabajar cómodamente*", "teatrino *para maratonear la serie que quieras*".
 4. **Frase de deseo del sector** en la apertura: "el sector donde todos quieren vivir en Bogotá".
 5. **Escasez y privilegio reales:** "la única unidad que nos queda disponible", "el último de la colección", "entrega inmediata", "las demás unidades ya tienen dueño", "visita privada", "un privilegio que solo disfrutan los residentes". Solo si es cierto.
-9. **Frases de sector aprobadas:** "el sector donde viven las personas más exclusivas de Bogotá" (Guion 1, segmento alto), "el sector donde todos quieren vivir en Bogotá".
 6. **CTA de visita:** "pídenos más información y agendemos una visita". En el de suspenso, el cierre deja un loop abierto ("aún quedan espacios por mostrarte").
 7. **Loops cortos (3–8 palabras)**, dichos mirando a cámara, siempre justo antes de un espacio mejor que el anterior. Si lo que sigue no es mejor, no se pone loop.
 8. **Voz cercana:** tutea, "acompáñame", "tendrás", "te recibe". Frases que suenan habladas, no escritas.
+9. **Frases de sector aprobadas:** "el sector donde viven las personas más exclusivas de Bogotá" (Guion 1, segmento alto), "el sector donde todos quieren vivir en Bogotá".
 
 ## Formato de salida
 Tabla de 3 columnas: **Tiempo | Lo que dice el agente | Lo que se ve**. Los loops van en **negrita**. Texto en pantalla en negrita dentro de "Lo que se ve".

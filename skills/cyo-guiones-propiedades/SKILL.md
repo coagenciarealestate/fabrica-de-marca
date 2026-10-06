@@ -44,7 +44,7 @@ Del mismo archivo. Un solo avatar por guion. Escríbelo en una frase y define: d
 ### Paso 5 — Escribir los guiones
 - Mismo recorrido en los dos guiones; cambia el manejo del precio y los loops.
 - Si el usuario entrega su propio libreto, se respeta su texto: solo se corrigen ortografía y ritmo y se agregan loops.
-- Conteo: 150 palabras = 60 s. Precio primero: 50–60 s. Suspenso: 65–80 s.
+- Conteo: 150 palabras = 60 s. Precio primero: ~100 palabras (40 s). Suspenso: ~120 palabras (50 s). Si se pasa, se recorta antes de entregar.
 - Ninguna frase en pantalla de más de 12 palabras.
 - Todo dato **por verificar** se marca en la columna de producción con ⚠.
 

@@ -10,7 +10,7 @@ Cada inmueble lleva **dos guiones**, con el mismo recorrido y distinto manejo de
 | Objetivo | Segmentar: quien no tiene el presupuesto se va en 3 s | Retener: el precio se revela al final |
 | Primera frase | Precio + sector | Metraje + zonas comunes + sector |
 | Loops | 0–1 | 5–6 |
-| Duración | 50–60 s | 65–80 s |
+| Duración | 35–45 s (~100 palabras) | 45–55 s (~120 palabras) |
 | Mejor para | Pauta, Facebook | TikTok e Instagram orgánico |
 
 ---
@@ -47,6 +47,8 @@ Cada inmueble lleva **dos guiones**, con el mismo recorrido y distinto manejo de
 ---
 
 ## Reglas del estilo C&O
+
+0. **Cortos.** Precio primero: ~100 palabras (40 s). Suspenso: ~120 palabras (50 s). Frases nominales para enumerar espacios ("Family room, dos habitaciones y una principal con walking closet, baño y balcón privado") y zonas comunes sin explicar cada uso cuando el tiempo no da.
 
 1. **Recorrido en orden real.** Se describe como se camina: "al entrar", "al continuar", "en esta misma habitación".
 2. **Cada espacio con su dato concreto:** "ventana de piso a techo insonorizada", "walking closet amplio", "balcón privado". Un adjetivo como máximo por espacio.

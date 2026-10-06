@@ -15,7 +15,7 @@ Documento editable: https://claude.ai/code/artifact/30888c77-18a1-4e09-bffa-9ca0
 | Parqueaderos y depósito | 2 + 1 |
 | Zonas comunes | Coworking, teatrino, sala de juntas, gimnasio dotado, terraza para adultos y terraza para niños y jóvenes |
 
-## Guion 1 · Precio primero (~60 s) · exclusividad, alta demanda y privilegio
+## Guion 1 · Precio primero (~64 s) · exclusividad, alta demanda y privilegio
 | Tiempo | Lo que dice el agente | Lo que se ve |
 |---|---|---|
 | 0–5 s | Por 1.520 millones, este es el último apartamento de la colección DOMUS San Patricio, en el sector donde viven las personas más exclusivas de Bogotá. | Agente a cámara frente a la puerta. Texto: **$1.520M · Último de la colección DOMUS** |
@@ -25,7 +25,7 @@ Documento editable: https://claude.ai/code/artifact/30888c77-18a1-4e09-bffa-9ca0
 | 23–32 s | En la principal entras por un walking closet amplio hasta tu baño privado, y tienes tu propio balcón. El otro baño es social. | Walking closet → baño → balcón |
 | 32–36 s | Además, dos parqueaderos y depósito. | Sótano. Texto: **2 parqueaderos + depósito** |
 | 36–48 s | Y un privilegio que solo disfrutan los residentes de DOMUS: coworking, teatrino para maratonear tu serie, sala de juntas, gimnasio dotado y dos terrazas, una para adultos y otra para niños y jóvenes. | 2 s por zona común |
-| 48–56 s | Última unidad, entrega inmediata: quien la vea primero se la lleva. 1.520 millones. Escríbenos y agenda tu visita privada. | Agente a cámara en una terraza. Texto: **Última unidad · Agenda tu visita privada** |
+| 48–64 s | Última unidad, entrega inmediata: quien la vea primero se la lleva. 1.520 millones. **Y aún hay espacios que no te he mostrado.** Comenta DOMUS y te envío el recorrido completo para tu visita privada. | Agente a cámara en una terraza. Texto: **Comenta DOMUS** |
 
 ## Guion 2 · Suspenso (~75 s)
 | Tiempo | Lo que dice el agente | Lo que se ve |
@@ -42,4 +42,4 @@ Documento editable: https://claude.ai/code/artifact/30888c77-18a1-4e09-bffa-9ca0
 | 47–50 s | **Ahora sí, lo que hace que no tenga comparación: sus más de 500 metros de zonas comunes.** | Ascensor que se abre |
 | 50–62 s | Un coworking para trabajar cómodamente, un teatrino para maratonear la serie que quieras, una sala de juntas para tus reuniones, un gimnasio completamente dotado y dos terrazas: una para adultos y otra para niños y jóvenes. | 2 s por zona común |
 | 62–68 s | **¿Y el precio?** Esta es la única unidad que nos queda disponible, y puedes comprarla por 1.520 millones. | Agente en la terraza. Texto: **$1.520M · Última unidad** |
-| 68–75 s | **Aún quedan espacios por mostrarte.** Si quieres verlos todos, pídenos más información y agendemos una visita. | Camina hacia una puerta cerrada |
+| 68–75 s | **Aún quedan espacios por mostrarte.** Si quieres verlos todos, comenta DOMUS y te enviamos el recorrido completo para agendar tu visita. | Camina hacia una puerta cerrada. Texto: **Comenta DOMUS** |

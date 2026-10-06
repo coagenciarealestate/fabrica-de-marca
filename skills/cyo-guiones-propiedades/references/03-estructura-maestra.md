@@ -24,7 +24,7 @@ Cada inmueble lleva **dos guiones**, con el mismo recorrido y distinto manejo de
 | **Recorrido** (8–34 s) | Espacio por espacio, en el orden en que se camina: "Al entrar te recibe… Sigues y llegas a… En la principal…" | Un plano por espacio |
 | **Extras** (3–4 s) | "Además, `{parqueaderos}` y `{depósito}`." | Corte rápido al sótano |
 | **Zonas comunes** (10–12 s) | Lista con el uso de cada una: "coworking para trabajar, teatrino para maratonear tu serie…" | 2 s por zona |
-| **Cierre** (5–7 s) | "`{precio}`, `{escasez}`. Escríbenos y agendamos tu visita." | Agente a cámara |
+| **Cierre con loop** (8–12 s) | "`{precio}`, `{escasez}`. **Y aún hay espacios que no te he mostrado.** Comenta `{PALABRA}` y te envío el recorrido completo." | Agente frente a una puerta cerrada. Texto: Comenta `{PALABRA}` |
 
 ## Guion 2 · Suspenso
 
@@ -42,7 +42,7 @@ Cada inmueble lleva **dos guiones**, con el mismo recorrido y distinto manejo de
 | **Loop** | "Ahora sí, lo que hace que no tenga comparación: `{zonas comunes / diferencial}`." | Ascensor que se abre |
 | **Zonas comunes** | Lista con el uso de cada una | 2 s por zona |
 | **Precio** | "¿Y el precio? `{escasez}`, y puedes comprarlo por `{precio}`." | Agente a cámara |
-| **Cierre con loop** | "Aún quedan espacios por mostrarte. Si quieres verlos todos, comenta  y te enviamos el recorrido completo." | Camina hacia una puerta cerrada |
+| **Cierre con loop** | "Aún quedan espacios por mostrarte. Si quieres verlos todos, comenta `{PALABRA}` y te enviamos el recorrido completo." | Camina hacia una puerta cerrada |
 
 ---
 
@@ -53,7 +53,7 @@ Cada inmueble lleva **dos guiones**, con el mismo recorrido y distinto manejo de
 3. **Las zonas comunes llevan su uso:** "coworking *para trabajar cómodamente*", "teatrino *para maratonear la serie que quieras*".
 4. **Frase de deseo del sector** en la apertura: "el sector donde todos quieren vivir en Bogotá".
 5. **Escasez y privilegio reales:** "la única unidad que nos queda disponible", "el último de la colección", "entrega inmediata", "las demás unidades ya tienen dueño", "visita privada", "un privilegio que solo disfrutan los residentes". Solo si es cierto.
-6. **CTA con loop abierto + comentario (los dos guiones):** el cierre deja algo sin mostrar y pide la palabra clave en comentarios. Ej.: "**Y aún hay espacios que no te he mostrado.** Comenta  y te envío el recorrido completo para tu visita privada." Así los comentarios piden información y activan la respuesta automática.
+6. **CTA con loop abierto + comentario (los dos guiones):** el cierre deja algo sin mostrar y pide la palabra clave en comentarios. Ej.: "**Y aún hay espacios que no te he mostrado.** Comenta `{PALABRA}` y te envío el recorrido completo para tu visita privada." Así los comentarios piden información y activan la respuesta automática.
 7. **Loops cortos (3–8 palabras)**, dichos mirando a cámara, siempre justo antes de un espacio mejor que el anterior. Si lo que sigue no es mejor, no se pone loop.
 8. **Voz cercana:** tutea, "acompáñame", "tendrás", "te recibe". Frases que suenan habladas, no escritas.
 9. **Frases de sector aprobadas:** "el sector donde viven las personas más exclusivas de Bogotá" (Guion 1, segmento alto), "el sector donde todos quieren vivir en Bogotá".

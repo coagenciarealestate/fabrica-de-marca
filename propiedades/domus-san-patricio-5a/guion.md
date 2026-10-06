@@ -35,6 +35,6 @@ Documento editable: https://claude.ai/code/artifact/30888c77-18a1-4e09-bffa-9ca0
 | 14–16 s | **Pero esto es apenas la entrada.** | Mira a cámara y sigue caminando |
 | 16–22 s | Family room, dos habitaciones, **y la principal guarda una sorpresa:** walking closet, baño privado y balcón. | Family room → se detiene en la puerta → walking closet → balcón |
 | 22–25 s | **Y eso no es todo:** dos parqueaderos y depósito. | Corte seco al sótano |
-| 25–34 s | Más 500 metros de zonas comunes: coworking, teatrino, sala de juntas, gimnasio y dos terrazas, una para adultos y otra para niños. | Un plano de 1,5 s por zona común |
+| 25–34 s | Y más de 500 metros de zonas comunes: coworking, teatrino, sala de juntas, gimnasio y dos terrazas, una para adultos y otra para niños. | Un plano de 1,5 s por zona común |
 | 34–39 s | **¿Y el precio?** Es la última unidad: 1.520 millones. | Agente en la terraza. Texto: **$1.520M · Última unidad** |
 | 39–50 s | **Aún quedan espacios por mostrarte.** Comenta DOMUS y te enviamos el recorrido completo. | Camina hacia una puerta cerrada. Texto: **Comenta DOMUS** |

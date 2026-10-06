@@ -1,6 +1,6 @@
 ---
 name: cyo-guiones-propiedades
-description: Sistema de guiones de video para vender propiedades de C&O — La Casa del Real Estate (norte de Bogotá, $600M+). Úsala siempre que el usuario cargue datos de un inmueble (ficha, link, texto libre, fotos) y pida un guion, reel, video, libreto o script para venderlo, o mencione "guion de propiedad", "video del apartamento", "reel de la casa", "versión gamificada", "desbloquear espacios". Entrega un guion con agente a cámara + versión gamificada, revisado desde el espectador de TikTok, Instagram y Facebook, en un documento premium. Para contenido de marca/autoridad (no de un inmueble específico) usa cyo-scriptwriting.
+description: Sistema de guiones de video para vender propiedades de C&O — La Casa del Real Estate (norte de Bogotá, $600M+). Úsala siempre que el usuario cargue datos de un inmueble (ficha, link, texto libre, fotos) y pida un guion, reel, video, libreto o script para venderlo, o mencione "guion de propiedad", "video del apartamento", "reel de la casa", "libreto", "loops", "precio primero". Entrega dos guiones de recorrido narrado con agente a cámara (uno que abre con el precio para segmentar y otro de suspenso con loops), revisados desde el espectador de TikTok, Instagram y Facebook, en un documento editable. Para contenido de marca/autoridad (no de un inmueble específico) usa cyo-scriptwriting.
 ---
 
 # C&O · Guiones de Propiedades
@@ -36,20 +36,21 @@ Lee `references/02-demanda-y-avatares.md`.
 ### Paso 3 — Elegir UN avatar
 Del mismo archivo. Un solo avatar por guion. Escríbelo en una frase y define: dolor, deseo, objeción, a quién le reenvía el video.
 
-### Paso 4 — Elegir formato y escribir 3 titulares
-- Formato principal: **Agente a cámara** (es el que mejor convierte para C&O). Lee `references/03-estructura-maestra.md`.
-- Versión alternativa obligatoria: **Desbloqueo** (gamificada). Lee `references/04-formatos.md`.
-- Escribe 3 titulares con `references/05-titulares.md`, cada uno con su canal visual, verbal y sonoro. Recomienda uno y deja los otros dos para grabar como variantes (*hook stacking*: mismo cuerpo, 3 inicios).
+### Paso 4 — Leer el estilo aprobado
+- Lee `references/03-estructura-maestra.md` y `examples/domus-san-patricio.md` **antes de escribir**. Ese es el estilo de C&O: recorrido narrado, simple, en orden real, sin frases ingeniosas.
+- Siempre se entregan **dos guiones**: **Guion 1 · Precio primero** (segmenta) y **Guion 2 · Suspenso** (loops, precio al final).
+- Otros formatos (`references/04-formatos.md`, incluido Desbloqueo) solo si el usuario los pide.
 
 ### Paso 5 — Escribir los guiones
-- Mismo esqueleto, datos de la ficha en cada espacio.
-- Conteo: 150 palabras = 60 s. Agente a cámara: 45–60 s. Desbloqueo: 50–65 s.
+- Mismo recorrido en los dos guiones; cambia el manejo del precio y los loops.
+- Si el usuario entrega su propio libreto, se respeta su texto: solo se corrigen ortografía y ritmo y se agregan loops.
+- Conteo: 150 palabras = 60 s. Precio primero: 50–60 s. Suspenso: 65–80 s.
 - Ninguna frase en pantalla de más de 12 palabras.
 - Todo dato **por verificar** se marca en la columna de producción con ⚠.
 
 ### Paso 6 — Diseñar la conversión
 Lee `references/06-performance.md`.
-- CTA de palabra clave (comentario o DM), nunca "sígueme" ni "dale like".
+- CTA de visita: "escríbenos y agendamos tu visita" / "pídenos más información y agendemos una visita". Palabra clave opcional, si el usuario la usa.
 - El precio va en el video (filtra y califica), salvo instrucción contraria del usuario.
 - Define el **share de compra**: a quién se lo manda el avatar para decidir (pareja, socio, familia).
 
@@ -57,9 +58,7 @@ Lee `references/06-performance.md`.
 Lee `references/07-revision-espectador.md`. Simula el scroll en TikTok, Instagram y Facebook, califica la rúbrica y **reescribe** todo lo que quede por debajo de 4/5. En el entregable se incluye la tabla de revisión con los cambios que hiciste.
 
 ### Paso 8 — Entregar
-Lee `references/08-entregable.md`. Ofrece dos formatos:
-- **Premium (PDF/HTML con la marca):** usa `templates/guion-premium.html`.
-- **Editable (doc para comentar con el equipo):** misma estructura, sin diseño, en el sistema de documentos disponible.
+Lee `references/08-entregable.md`. Formato por defecto: **documento editable** (Claude Docs u otro sistema de documentos) con las secciones Datos de la unidad · Guion 1 · Guion 2 · Revisión y tomas. Word o PDF solo si se piden.
 
 Guarda la ficha y el guion en `propiedades/<slug>/` para que el historial alimente los siguientes guiones.
 
@@ -67,18 +66,18 @@ Guarda la ficha y el guion en `propiedades/<slug>/` para que el historial alimen
 
 ## Reglas inquebrantables
 
-1. **El primer segundo muestra lo mejor del inmueble.** Nunca la fachada, nunca el lobby, nunca un saludo.
-2. **El titular dice algo concreto y verificable.** Un número, un contraste o una situación del avatar. Nada de "espectacular", "increíble" o "de lujo".
-3. **Escalera de revelaciones.** El recorrido va de bueno a mejor, nunca en el orden del plano. Una revelación cada 4–6 s.
-4. **Cada espacio se traduce en un momento de vida del avatar.** "Estudio con puerta" → "tu comedor vuelve a ser comedor".
-5. **El remate cierra el loop del titular.** Si el titular abrió una pregunta, el clímax la responde.
-6. **El precio se dice después del valor, nunca antes del segundo 30** (excepto cuando el formato usa el precio como apuesta, como en Desbloqueo).
-7. **Un solo CTA, con palabra clave.** Debe sonar como el resto del video.
+1. **La primera frase lleva el dato más fuerte.** Precio + sector (Guion 1) o metraje + zonas comunes + sector (Guion 2). Sin saludo.
+2. **Datos concretos, no adjetivos.** "Ventana de piso a techo insonorizada" > "espacio espectacular". Nada de contrastes inventados ni juegos de palabras.
+3. **Recorrido en el orden real** en que se camina el inmueble; lo mejor (zonas comunes o el diferencial) se guarda para el final.
+4. **Cada zona común con su uso:** "teatrino para maratonear la serie que quieras".
+5. **Los loops prometen algo mejor** y van justo antes de ese espacio. En el Guion 2, el titular abre el loop del precio ("ni por este precio") y el final lo cierra.
+6. **Escasez solo si es real:** "la única unidad que nos queda disponible".
+7. **Un solo CTA: la visita.** Debe sonar como el resto del video.
 8. **Cero promesas sin respaldo.** Nada de "valorización garantizada", nada de distancias inventadas. ⚠ en lo que haya que verificar.
 9. **Diseñado para el share de compra.** Antes de entregar responde: "¿A quién se lo manda el avatar para tomar la decisión?"
 10. **Revisión de espectador antes de entregar.** Sin la tabla de revisión, el guion no está terminado.
 
 ## Tono C&O en propiedades
-Asesor que conoce el inmueble por dentro y habla con criterio, no un vendedor leyendo una ficha. Frases cortas. Datos concretos. Seguridad tranquila: el lujo no se grita. Tutea al espectador.
+Agente que te lleva de la mano por el inmueble: "acompáñame", "al entrar te recibe", "tendrás". Frases habladas, simples y concretas. Tutea al espectador. El lujo no se grita: se describe.
 
 **Nunca:** "oportunidad única", "no te lo puedes perder", "espectacular", "el mejor de Bogotá", "dale like", "sígueme para más", "link en la bio" como único CTA.

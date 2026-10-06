@@ -8,7 +8,14 @@ El titular funciona como el de una noticia: lo más importante en pocas palabras
 | **Verbal** | ¿Qué frase genera una pregunta que hay que resolver? | Ver fórmulas abajo |
 | **Sonoro** | ¿Qué sonido rompe el silencio del feed? | Viento, puerta, llaves, clic metálico, golpe grave |
 
-## Fórmulas verbales (con espacios de contexto)
+## Fórmulas aprobadas (usar primero)
+
+| Guion | Plantilla | Ejemplo |
+|---|---|---|
+| Precio primero | "Por `{precio}`, este es el apartamento que te puedes llevar en `{sector}`, `{frase de deseo}`." | "Por 1.520 millones, este es el apartamento que te puedes llevar en San Patricio, el sector donde todos quieren vivir en Bogotá." |
+| Suspenso | "Este apartamento en venta tiene `{m²}`, `{dato fuerte 2}`, y está en `{frase de deseo}`: `{sector}`. Acompáñame a descubrir por qué no hay otro así en este sector, ni por este precio." | Libreto DOMUS (`examples/domus-san-patricio.md`) |
+
+## Otras fórmulas verbales (solo como variantes)
 
 | # | Fórmula | Plantilla | Mejor para |
 |---|---|---|---|

@@ -1,6 +1,6 @@
 # 08 · Entregable
 
-Siempre minimalista, legible y premium. Hay dos versiones con el mismo contenido y el mismo orden.
+Siempre minimalista, legible y premium. **Por defecto: documento editable** (B), con las secciones Datos de la unidad · Guion 1 · Guion 2 · Revisión y tomas. La versión premium (A) solo si se pide.
 
 ## A · Premium (PDF / página con la marca)
 - Plantilla: `templates/guion-premium.html` (tokens de `design/tokens/brand.json`: Inria Serif para titulares, Jost para texto, Pergamino y Carbón de fondo, Latón como acento).
@@ -12,15 +12,12 @@ Siempre minimalista, legible y premium. Hay dos versiones con el mismo contenido
 - Para: agente, editor y equipo, que pueden comentar línea por línea antes de grabar.
 
 ## Estructura (las dos versiones)
-1. **Portada:** inmueble, precio, avatar en una frase y ángulo de producto.
-2. **Titular recomendado** en grande + 2 variantes para el hook stacking.
-3. **Guion principal · Agente a cámara** (tabla: Tiempo | Bloque | Voz | Imagen | Texto en pantalla | Sonido).
-4. **Versión alternativa · Desbloqueo** (misma tabla + columna HUD).
-5. **Conversión:** palabra clave, respuesta automática sugerida, share de compra.
-6. **Revisión de espectador:** rúbrica con notas y cambios.
-7. **Copy por plataforma:** TikTok, Instagram y Facebook.
-8. **Lista de tomas** para el día de grabación.
-9. **Ficha técnica + datos por verificar ⚠.**
+1. **Datos de la unidad:** una línea de resumen + tabla de datos (precio, área, ubicación, espacios, zonas comunes).
+2. **Guion 1 · Precio primero:** tabla Tiempo | Lo que dice el agente | Lo que se ve.
+3. **Guion 2 · Suspenso:** misma tabla; loops en **negrita**.
+4. **Revisión y tomas:** comparación de los dos guiones (qué frena, qué retiene, a quién filtra, para qué plataforma, cambios hechos) + lista de tomas para grabar ambos en una jornada.
+
+Copy por plataforma, conversión y ficha completa solo si se piden.
 
 ## Reglas de diseño
 - Una idea por página o por sección. Mucho aire.

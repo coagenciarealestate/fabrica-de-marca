@@ -15,9 +15,9 @@ El isotipo "C&O" ya es el archivo real (no una aproximación tipográfica) — s
 
 ## Sistema de guiones de propiedades
 
-Skill: [`skills/cyo-guiones-propiedades/`](skills/cyo-guiones-propiedades/SKILL.md). Carga la ficha de un inmueble y entrega un guion con agente a cámara, una versión gamificada (Desbloqueo), la revisión de espectador, el copy y la lista de tomas, en PDF premium y en documento editable.
+Skill: [`skills/cyo-guiones-propiedades/`](skills/cyo-guiones-propiedades/SKILL.md). Carga los datos de un inmueble y entrega dos guiones de recorrido narrado con agente a cámara: uno que abre con el precio para segmentar y otro de suspenso con loops, en un documento editable.
 
-- Piloto: [`propiedades/domus-san-patricio-5a/`](propiedades/domus-san-patricio-5a/) (guion, HTML premium y PDF)
+- Piloto: [`propiedades/domus-san-patricio-5a/guion.md`](propiedades/domus-san-patricio-5a/guion.md) (v2 aprobada en estilo; la v1 descartada está en `v1-descartada/`)
 - Historial: `propiedades/_referentes.md` y `propiedades/_resultados.csv`, que alimentan la mejora de la skill
 
 ## Próximas fases

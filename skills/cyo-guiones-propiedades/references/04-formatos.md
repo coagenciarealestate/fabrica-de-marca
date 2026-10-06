@@ -1,11 +1,12 @@
 # 04 · Formatos
 
+> **Opcionales.** Por defecto se usan los dos guiones de `03-estructura-maestra.md` (Precio primero + Suspenso). Estos formatos solo se escriben si el usuario los pide. Desbloqueo se probó en DOMUS (v1) y no fue aprobado.
+
 Todos usan el esqueleto de `03-estructura-maestra.md`: titular, loop, escalera de revelaciones, remate, precio y CTA. Lo que cambia es el **mecanismo de retención**.
 
 | Formato | Mecanismo | Cuándo usarlo |
 |---|---|---|
-| **Agente a cámara** (principal) | Confianza + escalera de revelaciones | Siempre. Es la base |
-| **Desbloqueo** (gamificado) | Progreso visible + recompensa al final | Versión alternativa obligatoria. Disrupción en la categoría |
+| **Desbloqueo** (gamificado) | Progreso visible + recompensa al final | Solo si se pide. Disrupción en la categoría |
 | **¿Adivinas el precio?** | Apuesta del espectador + respuesta al final | Cuando el precio sorprende (por arriba o por abajo) |
 | **Lo que $X compra en `{zona}`** | Comparación (chisme de precio) | Para alcance; compara contra la alternativa obvia |
 | **Un día viviendo aquí** (POV) | Proyección del avatar | Cuando el inmueble brilla en rutinas (luz, terraza, amenidades) |

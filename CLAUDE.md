@@ -7,6 +7,11 @@
 - `video/lo-que-te-rodea/` — reel match cut + match sound (proyecto HyperFrames propio). Su guion vive en `scripts/build-reel.mjs` (genera `compositions/reel.html`; el sonido sale de `scripts/sound.mjs`); no edites `reel.html` a mano. Imágenes v3 en `assets/reel-v3/` (prompts en `PROMPTS-v3.md`): `npm run fetch-images` (requiere acceso a d8j0ntlcm91z4.cloudfront.net).
 - `video/dar-el-salto/` — reel del conejo (proyecto HyperFrames propio). Guion en `scripts/build-salto.mjs` (genera `compositions/story.html` y el audio); no edites `story.html` a mano.
 - `video/dar-el-salto-papel/` — versión en papel y stop motion (la aprobada en concepto). Guion en `scripts/build-papel.mjs`; poses del conejo recortadas con `scripts/cut-sprites.py`.
+- `editor/` — **sistema de edición de video** (HyperFrames Student Kit de `nateherkai/hyperframes-student-kit`, commit `0d30152`, MIT; sin los videos de ejemplo ni la marca AIS). Para editar grabaciones: cortar silencios y errores, reels y Shorts con subtítulos, showreels al ritmo de la música. Trabaja **desde `editor/`**: sus skills (`edit-video`, `short-form-edit`, `cut-silences`, `cut-mistakes`, `motion-showreel`, `video-storytelling`, `style-library`…) viven en `editor/.claude/skills/` y su guía en `editor/CLAUDE.md`.
+  - Nuevo proyecto: `cd editor && npm run new-video -- <slug>` → `editor/video-projects/<slug>/` (ignorado por git: el material personal no se sube).
+  - Pruebas: `npm test`, `npm run check`, `npm run test:media`.
+  - Parche local: `cut-silences` y `cut-mistakes` usan `-filter_complex_script` con FFmpeg 6 (el de Ubuntu); el original exige FFmpeg 7.
+  - Claves opcionales en `editor/.env` (ElevenLabs para transcribir, Kie.ai para generar). Sin claves funciona todo lo local.
 - Marca: C&O es **La Casa del Marketing** (ya no "del Real Estate").
 - `.claude/hooks/session-start.sh` instala FFmpeg en sesiones web (requisito de render).
 - Skills de HyperFrames vendorizadas desde `heygen-com/hyperframes`; actualiza con `npx hyperframes skills update` y copia a `.claude/skills/`.

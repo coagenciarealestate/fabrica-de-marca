@@ -34,4 +34,10 @@
 - **Imágenes**:
   - Se prefiere materia real y lo hecho a mano, no lo literal ni el "banco de imágenes".
   - Genera con Nano Banana Pro ilimitado en la web de Higgsfield (el MCP no usa el ilimitado): entrega prompts completos + imágenes de referencia.
+- **Edición de grabaciones (`editor/`)** — cómo se hizo bien:
+  - Videos de WhatsApp traen **huecos en el audio** (p. ej. 0.22 s tras el primer paquete). Extrae el audio para analizar con `-af aresample=async=1:first_pts=0`; si no, todos los cortes caen antes y se comen finales de frase.
+  - Transcripción local: Hugging Face está bloqueado; usa `sherpa-onnx` (PyPI) + modelo `sherpa-onnx-whisper-turbo` de los releases de GitHub de k2-fsa. No da tiempos por palabra: transcribe por tramos entre pausas.
+  - **Verifica cada tramo conservado transcribiéndolo por separado** y la versión cortada completa; mide la alineación del corte contra el original (correlación) antes de mostrarlo.
+  - Muestra los cortes (tabla + preview) y espera aprobación antes de diseñar.
+  - `npx hyperframes remove-background` funciona aquí (u2net) para separar a la persona del fondo.
 - **Texto en pantalla**: redáctalo bien (puntuación y gramática) aunque llegue escrito rápido.

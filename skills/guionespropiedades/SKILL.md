@@ -1,5 +1,5 @@
 ---
-name: cyo-guiones-propiedades
+name: guionespropiedades
 description: Sistema de guiones de video para vender propiedades de C&O — La Casa del Real Estate (norte de Bogotá, $600M+). Úsala siempre que el usuario cargue datos de un inmueble (ficha, link, texto libre, fotos) y pida un guion, reel, video, libreto o script para venderlo, o mencione "guion de propiedad", "video del apartamento", "reel de la casa", "libreto", "loops", "precio primero". Entrega dos guiones de recorrido narrado con agente a cámara (uno que abre con el precio para segmentar y otro de suspenso con loops), revisados desde el espectador de TikTok, Instagram y Facebook, en un documento editable. Para contenido de marca/autoridad (no de un inmueble específico) usa cyo-scriptwriting.
 ---
 

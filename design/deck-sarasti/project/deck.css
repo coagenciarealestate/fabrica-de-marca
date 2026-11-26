@@ -29,7 +29,7 @@ section.taupe { background: #8C7357; }
 .serif-label { position: absolute; font-family: var(--serif); font-weight: 400; text-transform: uppercase; letter-spacing: 0.2em; line-height: 1.2; color: var(--label); margin: 0; text-align: center; }
 
 /* Small bold sans caps (THE GRAND LIFE IS HERE / INTERIOR) */
-.grand { position: absolute; font-family: var(--sans); font-weight: 600; font-size: 30px; line-height: 1.35; letter-spacing: 0.05em; text-transform: uppercase; color: var(--cocoa); margin: 0; }
+.grand { position: absolute; font-family: var(--sans); font-weight: 600; font-size: 30px; line-height: 1.35; letter-spacing: 0.05em; text-transform: uppercase; color: #3B2F24; margin: 0; }
 
 /* Thin bordered info box (cover) */
 .box { position: absolute; box-sizing: border-box; border: 1px solid rgba(251, 244, 232, 0.6); padding: 28px 34px; }

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Sarasti Process Mockup</title>
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #13273F; }
+  body { position: relative; }
+  .texture { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; }
+  svg { position: absolute; left: 0; top: 0; }
+</style>
+</head>
+<body>
+  <img class="texture" src="texture-navy.jpg" alt="">
+  <svg width="1920" height="1080" viewBox="0 0 1920 1080">
+    <defs>
+      <radialGradient id="glow" cx="960" cy="1110" r="680" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#2A4566" stop-opacity="0.55"/>
+        <stop offset="0.85" stop-color="#1D3654" stop-opacity="0.35"/>
+        <stop offset="1" stop-color="#13273F" stop-opacity="0"/>
+      </radialGradient>
+      <path id="star" d="M0 -17 L5 -5.6 L17.4 -5.2 L7.7 2.6 L11 14.7 L0 7.6 L-11 14.7 L-7.7 2.6 L-17.4 -5.2 L-5 -5.6 Z"/>
+    </defs>
+
+    <!-- soft disc behind the arcs -->
+    <circle cx="960" cy="1110" r="670" fill="url(#glow)"/>
+
+    <!-- concentric arcs -->
+    <g fill="none" stroke="#FFFFFF">
+      <circle cx="960" cy="1110" r="664" stroke-opacity="0.16" stroke-width="1.4"/>
+      <circle cx="960" cy="1110" r="626" stroke-opacity="0.14" stroke-width="1.2"/>
+      <circle cx="960" cy="1110" r="604" stroke-opacity="0.12" stroke-width="1.2"/>
+      <circle cx="960" cy="1110" r="588" stroke-opacity="0.12" stroke-width="1.1"/>
+      <circle cx="960" cy="1110" r="572" stroke-opacity="0.11" stroke-width="1.1"/>
+      <circle cx="960" cy="1110" r="540" stroke-opacity="0.10" stroke-width="1"/>
+      <circle cx="960" cy="1110" r="518" stroke-opacity="0.09" stroke-width="1"/>
+      <circle cx="960" cy="1110" r="500" stroke-opacity="0.08" stroke-width="1"/>
+    </g>
+
+    <!-- branching line tree -->
+    <g fill="none" stroke="#FFFFFF" stroke-opacity="0.78" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M960 120 V334 Q960 374 920 374 H617 Q577 374 577 414 V532 Q577 572 537 572 H223 Q183 572 183 612 V720 Q183 760 143 760 H0"/>
+      <path d="M960 120 V334 Q960 374 1000 374 H1303 Q1343 374 1343 414 V532 Q1343 572 1383 572 H1697 Q1737 572 1737 612 V720 Q1737 760 1777 760 H1920"/>
+    </g>
+
+    <!-- gold outline stars -->
+    <g fill="none" stroke="#C9A45C" stroke-width="2" stroke-linejoin="round">
+      <use href="#star" transform="translate(873 322)"/>
+      <use href="#star" transform="translate(1066 322)"/>
+      <use href="#star" transform="translate(358 462)"/>
+      <use href="#star" transform="translate(1410 462)"/>
+    </g>
+  </svg>
+</body>
+</html>

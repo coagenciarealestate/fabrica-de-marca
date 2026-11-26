@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Sarasti Website Mockup</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Pinyon+Script&family=Montserrat:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --navy: #13273F;
+    --navy-deep: #0B1828;
+    --cream: #EDE3D1;
+    --line: rgba(237, 227, 209, 0.16);
+  }
+  * { margin: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--navy-deep); }
+  body { position: relative; font-family: 'Montserrat', Arial, sans-serif; color: var(--cream); }
+
+  /* Blurred scene behind the browser */
+  .scene { position: absolute; inset: -60px; width: 2040px; height: 1200px; object-fit: cover; filter: blur(16px) saturate(0.9) brightness(0.6); }
+  .tint { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(19,39,63,0.55) 0%, rgba(19,39,63,0.35) 45%, rgba(11,24,40,0.85) 100%); }
+
+  /* Browser frame */
+  .frame { position: absolute; left: 300px; top: 228px; width: 1320px; height: 920px; border-radius: 30px; padding: 22px; background: rgba(19, 39, 63, 0.45); border: 1px solid rgba(237, 227, 209, 0.22); box-shadow: 0 40px 120px rgba(5, 12, 22, 0.6), inset 0 1px 0 rgba(255,255,255,0.08); backdrop-filter: blur(18px); }
+  .screen { position: relative; width: 100%; height: 100%; border-radius: 14px; overflow: hidden; background: var(--navy); }
+
+  .topbar { position: relative; height: 92px; display: flex; align-items: center; justify-content: space-between; padding: 0 36px; background: var(--navy); }
+  .menu { display: flex; align-items: center; gap: 12px; font-size: 15px; letter-spacing: 0.08em; color: rgba(237,227,209,0.85); }
+  .menu-ico { display: flex; flex-direction: column; gap: 4px; }
+  .menu-ico span { display: block; width: 18px; height: 1.5px; background: var(--cream); }
+  .brand { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 22px; }
+  .brand img { height: 60px; }
+  .stars { font-size: 13px; letter-spacing: 0.4em; color: rgba(237,227,209,0.6); }
+  .book { display: flex; align-items: center; gap: 10px; padding: 12px 24px; border-radius: 999px; border: 1px solid rgba(237,227,209,0.35); background: rgba(237,227,209,0.1); font-size: 15px; letter-spacing: 0.06em; }
+
+  .nav { height: 60px; display: flex; align-items: center; justify-content: center; gap: 54px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--navy); font-size: 14px; font-weight: 600; letter-spacing: 0.16em; color: rgba(237,227,209,0.92); }
+
+  .hero { position: absolute; left: 0; top: 152px; width: 100%; height: calc(100% - 152px); }
+  .hero img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; }
+  .hero-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(19,39,63,0.35) 0%, rgba(19,39,63,0.05) 35%, rgba(19,39,63,0.15) 60%, rgba(11,24,40,0.85) 100%); }
+  .tagline { position: absolute; left: 0; right: 0; top: 250px; text-align: center; font-family: 'Pinyon Script', cursive; font-size: 92px; color: #FBF6EC; text-shadow: 0 4px 30px rgba(5,12,22,0.55); }
+  .sub { position: absolute; left: 0; right: 0; top: 380px; text-align: center; font-size: 16px; font-weight: 500; letter-spacing: 0.42em; text-transform: uppercase; color: rgba(251,246,236,0.9); }
+
+  /* Booking bar */
+  .booking { position: absolute; left: 400px; top: 922px; width: 1120px; height: 118px; border-radius: 999px; display: flex; align-items: center; padding: 0 26px 0 54px; background: rgba(19, 39, 63, 0.88); border: 1px solid rgba(237,227,209,0.22); box-shadow: 0 24px 60px rgba(5,12,22,0.55); backdrop-filter: blur(14px); }
+  .field { display: flex; align-items: center; gap: 18px; padding-right: 40px; margin-right: 40px; border-right: 1px solid var(--line); }
+  .field:nth-child(3) { border-right: none; margin-right: 0; }
+  .field svg { width: 24px; height: 24px; stroke: var(--cream); opacity: 0.8; }
+  .f-label { font-family: 'Bodoni Moda', Georgia, serif; font-size: 25px; color: var(--cream); }
+  .f-value { font-size: 12px; letter-spacing: 0.14em; color: rgba(237,227,209,0.55); margin-top: 4px; text-transform: uppercase; }
+  .cta { margin-left: auto; padding: 22px 44px; border-radius: 999px; background: var(--cream); color: var(--navy); font-family: 'Bodoni Moda', Georgia, serif; font-size: 24px; }
+
+  /* Display title */
+  .title { position: absolute; left: 0; right: 0; top: 52px; text-align: center; font-family: 'Bodoni Moda', Georgia, serif; font-weight: 400; font-size: 168px; line-height: 1; color: #FBF6EC; letter-spacing: -0.01em; text-shadow: 0 10px 50px rgba(5,12,22,0.45); white-space: nowrap; }
+  .title .cap { font-style: italic; font-size: 252px; line-height: 0.8; margin-right: -6px; }
+</style>
+</head>
+<body>
+  <img class="scene" src="hero.jpg" alt="">
+  <div class="tint"></div>
+
+  <div class="frame">
+    <div class="screen">
+      <div class="hero">
+        <img src="hero.jpg" alt="Lounge de hotel abierto a una terraza con piscina a la hora azul">
+        <div class="hero-shade"></div>
+        <p class="tagline">Hospitalidad que se siente</p>
+      </div>
+      <div class="topbar">
+        <div class="menu"><div class="menu-ico"><span></span><span></span><span></span></div>Menú</div>
+        <div class="brand"><span class="stars">★★★★★</span><img src="sarasti-white.png" alt="Sarasti Hospitality Group"><span class="stars">★★★★★</span></div>
+        <div class="book">Reservar
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#EDE3D1" stroke-width="1.6"><rect x="4" y="7" width="16" height="13" rx="2"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>
+        </div>
+      </div>
+      <div class="nav" style="position:relative">
+        <span>HABITACIONES</span><span>AMENIDADES</span><span>EXPERIENCIAS</span><span>RESTAURANTE</span><span>OFERTAS</span><span>CONTACTO</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="booking">
+    <div class="field">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
+      <div><p class="f-label">Llegada</p><p class="f-value">12 Dic 2026</p></div>
+    </div>
+    <div class="field">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
+      <div><p class="f-label">Salida</p><p class="f-value">15 Dic 2026</p></div>
+    </div>
+    <div class="field">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="16.5" cy="9" r="2.6"/><path d="M15.5 14.2c2.3.1 4.2 1.6 4.8 4.3"/></svg>
+      <div><p class="f-label">Huéspedes</p><p class="f-value">2 adultos</p></div>
+    </div>
+    <div class="cta">Ver disponibilidad</div>
+  </div>
+
+  <h1 class="title"><span class="cap">H</span>otel <span class="cap">W</span>ebsite</h1>
+</body>
+</html>

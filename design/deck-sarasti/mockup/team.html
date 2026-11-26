@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Sarasti Team Mockup</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500&family=Montserrat:wght@300;400&display=swap">
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #13273F; }
+  body { position: relative; font-family: 'Montserrat', Arial, sans-serif; color: #EDE3D1; }
+  .texture { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; }
+  .guide { position: absolute; top: 0; width: 1px; height: 950px; background: rgba(237, 227, 209, 0.22); }
+  .half { position: absolute; left: 355px; top: -570px; width: 1210px; height: 1210px; border-radius: 50%; background: radial-gradient(circle at 50% 40%, #0F2034 0%, #0B1828 70%); box-shadow: 0 30px 80px rgba(4, 10, 18, 0.35); overflow: hidden; }
+  .ring { position: absolute; border-radius: 50%; border: 1px solid rgba(237, 227, 209, 0.07); }
+  .year { position: absolute; left: 520px; top: 146px; width: 280px; text-align: right; font-weight: 300; font-size: 40px; letter-spacing: 0.75em; margin-right: -0.75em; color: rgba(237, 227, 209, 0.82); }
+  .stars { position: absolute; left: 1150px; top: 145px; display: flex; gap: 22px; }
+  .stars svg { width: 38px; height: 38px; }
+  .logo-ring { position: absolute; left: 835px; top: 50px; width: 250px; height: 250px; border-radius: 50%; border: 2px solid rgba(237, 227, 209, 0.9); display: flex; align-items: center; justify-content: center; }
+  .logo-ring img { width: 196px; }
+  .heading { position: absolute; left: 0; right: 0; top: 618px; text-align: center; font-family: 'Bodoni Moda', Georgia, serif; font-weight: 500; font-size: 54px; letter-spacing: 0.08em; color: #FBF6EC; }
+</style>
+</head>
+<body>
+  <img class="texture" src="texture-navy.jpg" alt="">
+  <div class="guide" style="left:355px"></div>
+  <div class="guide" style="left:1565px"></div>
+  <div class="half">
+    <div class="ring" style="left:205px; top:205px; width:800px; height:800px"></div>
+    <div class="ring" style="left:255px; top:255px; width:700px; height:700px"></div>
+    <div class="ring" style="left:310px; top:310px; width:590px; height:590px"></div>
+    <div class="ring" style="left:120px; top:120px; width:970px; height:970px"></div>
+  </div>
+  <p class="year">2002</p>
+  <div class="logo-ring"><img src="sarasti-white.png" alt="Sarasti Hospitality Group"></div>
+  <div class="stars">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#EDE3D1" stroke-width="1.2" stroke-linejoin="round"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#EDE3D1" stroke-width="1.2" stroke-linejoin="round"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#EDE3D1" stroke-width="1.2" stroke-linejoin="round"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#EDE3D1" stroke-width="1.2" stroke-linejoin="round"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg>
+  </div>
+  <p class="heading">EQUIPO</p>
+</body>
+</html>

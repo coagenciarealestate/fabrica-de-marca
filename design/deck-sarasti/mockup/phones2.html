@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Sarasti Phones Mockup</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #13273F; }
+  body { position: relative; font-family: 'Inter', Arial, sans-serif; }
+  .texture { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; }
+
+  /* Empty panel on the right */
+  .panel { position: absolute; left: 830px; top: -30px; width: 1000px; height: 1070px; border-radius: 0 0 34px 34px; background: rgba(9, 20, 34, 0.35); border: 1.5px solid rgba(237, 227, 209, 0.16); box-shadow: 0 30px 80px rgba(4, 10, 18, 0.35); }
+
+  /* Phone hardware */
+  .phone { position: absolute; border-radius: 62px; background: linear-gradient(145deg, #2A2E36, #0E1015 60%, #23262D); padding: 12px; box-shadow: 0 40px 90px rgba(4, 10, 18, 0.65), inset 0 0 0 2px rgba(255,255,255,0.08); }
+  .phone::before { content: ''; position: absolute; right: -4px; top: 190px; width: 4px; height: 90px; border-radius: 0 3px 3px 0; background: #1B1E24; }
+  .phone::after { content: ''; position: absolute; left: -4px; top: 160px; width: 4px; height: 60px; border-radius: 3px 0 0 3px; background: #1B1E24; box-shadow: 0 80px 0 #1B1E24; }
+  .screen { position: relative; width: 100%; height: 100%; border-radius: 50px; overflow: hidden; }
+  .island { position: absolute; left: 50%; top: 12px; width: 112px; height: 32px; margin-left: -56px; border-radius: 20px; background: #05070A; z-index: 10; }
+  .status { position: absolute; left: 0; right: 0; top: 0; height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 6px 34px 0; font-size: 15px; font-weight: 600; z-index: 9; }
+  .status .icons { display: flex; gap: 6px; align-items: center; }
+
+  /* Phone 1: landing */
+  .landing { position: absolute; left: 0; top: 50px; width: 100%; }
+
+  /* Phone 2: Instagram (light) */
+  .ig { background: #FFFFFF; color: #0A0A0A; }
+  .ig-top { position: absolute; left: 0; right: 0; top: 50px; height: 44px; display: flex; align-items: center; padding: 0 16px; gap: 14px; }
+  .ig-top .s { font-size: 11px; font-weight: 600; color: #737373; letter-spacing: 0.02em; }
+  .ig-top .t { font-size: 15px; font-weight: 700; color: #0A0A0A; }
+  .ig-head { position: absolute; left: 0; right: 0; top: 96px; height: 50px; display: flex; align-items: center; padding: 0 12px; gap: 10px; }
+  .avatar { width: 36px; height: 36px; border-radius: 50%; padding: 2px; background: linear-gradient(135deg, #C9A45C, #13273F); }
+  .avatar div { width: 100%; height: 100%; border-radius: 50%; background: #13273F; border: 2px solid #fff; display: flex; align-items: center; justify-content: center; }
+  .avatar img { width: 22px; }
+  .ig-name { font-size: 13px; font-weight: 600; color: #0A0A0A; }
+  .ig-loc { font-size: 11px; color: #3F3F3F; }
+  .dots { margin-left: auto; font-size: 16px; color: #0A0A0A; letter-spacing: 1px; }
+  .post { position: absolute; left: 0; top: 148px; width: 100%; height: 384px; object-fit: cover; }
+  .actions { position: absolute; left: 12px; right: 12px; top: 542px; display: flex; gap: 16px; align-items: center; }
+  .actions svg { width: 24px; height: 24px; }
+  .actions .save { margin-left: auto; }
+  .likes { position: absolute; left: 12px; top: 576px; font-size: 13px; font-weight: 600; color: #0A0A0A; }
+  .caption { position: absolute; left: 12px; right: 12px; top: 596px; font-size: 12.5px; line-height: 1.4; color: #0A0A0A; }
+  .caption b { font-weight: 600; }
+  .tabbar { position: absolute; left: 0; right: 0; bottom: 0; height: 62px; display: flex; justify-content: space-around; align-items: flex-start; padding-top: 12px; border-top: 1px solid #EFEFEF; background: #FFFFFF; }
+  .tabbar svg { width: 24px; height: 24px; }
+</style>
+</head>
+<body>
+  <img class="texture" src="texture-navy.jpg" alt="">
+  <div class="panel"></div>
+
+  <!-- Phone 1: our Sarasti landing -->
+  <div class="phone" style="left:96px; top:70px; width:372px; height:770px">
+    <div class="screen" style="background:#0E1622">
+      <div class="island"></div>
+      <div class="status" style="color:#FBF6EC"><span>9:41</span><span class="icons">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="#FBF6EC"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2.5" width="3" height="9.5" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+        <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="0.5" y="0.5" width="22" height="11" rx="3" stroke="#FBF6EC" stroke-opacity="0.6"/><rect x="2" y="2" width="17" height="8" rx="2" fill="#FBF6EC"/><rect x="24" y="4" width="1.6" height="4" rx="0.8" fill="#FBF6EC" fill-opacity="0.6"/></svg></span></div>
+      <img class="landing" src="landing-top.png" alt="Landing de Sarasti">
+    </div>
+  </div>
+
+  <!-- Phone 2: Instagram post (light app) -->
+  <div class="phone" style="left:440px; top:230px; width:352px; height:740px">
+    <div class="screen ig">
+      <div class="island"></div>
+      <div class="status" style="color:#0A0A0A"><span>9:41</span><span class="icons">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="#0A0A0A"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2.5" width="3" height="9.5" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+        <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="0.5" y="0.5" width="22" height="11" rx="3" stroke="#0A0A0A" stroke-opacity="0.5"/><rect x="2" y="2" width="17" height="8" rx="2" fill="#0A0A0A"/><rect x="24" y="4" width="1.6" height="4" rx="0.8" fill="#0A0A0A" fill-opacity="0.5"/></svg></span></div>
+      <div class="ig-top">
+        <svg width="12" height="20" viewBox="0 0 12 20" fill="none" stroke="#0A0A0A" stroke-width="2" stroke-linecap="round"><path d="M10 2 L2 10 L10 18"/></svg>
+        <div><p class="s">SARASTIHOTELS</p><p class="t">Publicaciones</p></div>
+      </div>
+      <div class="ig-head">
+        <div class="avatar"><div><img src="sarasti-white.png" alt=""></div></div>
+        <div><p class="ig-name">sarastihotels</p><p class="ig-loc">Sarasti Hospitality Group</p></div>
+        <span class="dots">•••</span>
+      </div>
+      <img class="post" src="post.png" alt="Post: Así se vive una estadía en un Hotel Sarasti">
+      <div class="actions">
+        <svg viewBox="0 0 24 24" fill="#FF3040" stroke="#FF3040" stroke-width="1.6"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 7.9 3.6 4.5 7 4.5c2 0 3.5 1.1 5 3 1.5-1.9 3-3 5-3 3.4 0 5.6 3.4 4.3 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="1.7" stroke-linejoin="round"><path d="M20.5 11.5a8.5 8.5 0 1 1-3.6-6.9A8.5 8.5 0 0 1 20.5 11.5z"/><path d="M20.5 20.5l-2.4-3.6"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="1.7" stroke-linejoin="round"><path d="M21.5 3 L2.5 10.5 L10 13.5 L13 21 Z"/><path d="M10 13.5 L21.5 3"/></svg>
+        <svg class="save" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="1.7" stroke-linejoin="round"><path d="M6 3.5h12v17l-6-4.5-6 4.5z"/></svg>
+      </div>
+      <p class="likes">1.248 Me gusta</p>
+      <p class="caption"><b>sarastihotels</b> Una noche en el bar, una mañana sin prisa. Reserva directo.</p>
+      <div class="tabbar">
+        <svg viewBox="0 0 24 24" fill="#0A0A0A"><path d="M3 10.5 L12 3 L21 10.5 V21 H15 V14.5 H9 V21 H3 Z"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="1.8"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 L21 21" stroke-linecap="round"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M12 8v8M8 12h8" stroke-linecap="round"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M10 8.5 L15.5 12 L10 15.5 Z" fill="#0A0A0A"/></svg>
+        <div class="avatar" style="width:26px; height:26px; padding:1.5px"><div style="border-width:1.5px"><img src="sarasti-white.png" alt="" style="width:15px"></div></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

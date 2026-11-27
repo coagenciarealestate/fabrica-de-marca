@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Sarasti Booking Flow Mockup</title>
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #13273F; }
+  body { position: relative; }
+  .texture { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; }
+  svg.lines { position: absolute; left: 0; top: 0; }
+
+  /* Browser window */
+  .win { position: absolute; width: 600px; height: 375px; border-radius: 12px; overflow: hidden; background: #0E1E31; border: 1px solid rgba(237,227,209,0.18); box-shadow: 0 30px 70px rgba(4,10,18,0.55); }
+  .nav { height: 26px; display: flex; align-items: center; justify-content: center; gap: 18px; background: #0A1726; border-bottom: 1px solid rgba(237,227,209,0.08); }
+  .nav .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(237,227,209,0.25); position: absolute; left: 12px; }
+  .nav .dot:nth-child(2) { left: 22px; } .nav .dot:nth-child(3) { left: 32px; }
+  .sk { height: 6px; border-radius: 3px; background: rgba(237,227,209,0.2); }
+  .sk.l { background: rgba(237,227,209,0.34); }
+  .steps { position: relative; height: 46px; display: flex; align-items: center; justify-content: center; gap: 0; }
+  .step { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid rgba(237,227,209,0.45); background: #0E1E31; position: relative; z-index: 1; }
+  .step.on { background: #C9A45C; border-color: #C9A45C; }
+  .step.done { background: rgba(237,227,209,0.55); border-color: transparent; }
+  .seg { width: 92px; height: 1px; background: rgba(237,227,209,0.3); }
+  .body { position: absolute; left: 0; right: 0; top: 72px; bottom: 0; padding: 0 22px 18px; display: flex; gap: 16px; }
+  .main { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+  .side { width: 170px; border-radius: 8px; background: #15294A; border: 1px solid rgba(237,227,209,0.1); padding: 14px 12px; display: flex; flex-direction: column; gap: 9px; }
+  .ph { border-radius: 6px; background: #2B4566; border: 1px solid rgba(237,227,209,0.12); }
+  .cardrow { display: flex; gap: 10px; }
+  .rcard { flex: 1; border-radius: 8px; background: #15294A; border: 1px solid rgba(237,227,209,0.1); padding: 7px; display: flex; gap: 8px; }
+  .rcard .ph { width: 74px; height: 64px; flex: none; }
+  .rcard .txt { flex: 1; display: flex; flex-direction: column; gap: 6px; padding-top: 4px; }
+  .field { height: 24px; border-radius: 6px; border: 1px solid rgba(237,227,209,0.2); background: rgba(10,23,38,0.6); }
+  .label { width: 70px; height: 5px; border-radius: 3px; background: rgba(237,227,209,0.28); margin: 4px 0 -4px; }
+  .btn { height: 24px; border-radius: 999px; background: #C9A45C; margin-top: auto; }
+  .btn.ghost { background: transparent; border: 1px solid rgba(237,227,209,0.35); }
+  .row2 { display: flex; gap: 10px; } .row2 > * { flex: 1; }
+  .panelhead { height: 18px; border-radius: 4px; background: rgba(237,227,209,0.08); }
+  .kv { display: flex; justify-content: space-between; }
+  .rule { height: 1px; background: rgba(237,227,209,0.15); }
+  .chip { height: 34px; border-radius: 6px; border: 1px solid rgba(237,227,209,0.2); display: flex; align-items: center; gap: 8px; padding: 0 10px; }
+  .chip.on { border-color: #C9A45C; }
+  .radio { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid rgba(237,227,209,0.5); }
+  .chip.on .radio { border-color: #C9A45C; background: #C9A45C; }
+</style>
+</head>
+<body>
+  <img class="texture" src="texture-navy.jpg" alt="">
+
+  <svg class="lines" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" stroke="#FFFFFF" stroke-opacity="0.55" stroke-width="1.6" stroke-linecap="round">
+    <path d="M0 300 H110"/>
+    <path d="M710 300 H936 Q960 300 960 324 V500"/>
+    <path d="M1260 690 H1486 Q1510 690 1510 666 V486"/>
+    <path d="M1810 300 H1920"/>
+    <path d="M410 486 V560"/>
+    <path d="M960 876 V950"/>
+    <path d="M1510 300 V110" stroke-opacity="0"/>
+  </svg>
+
+  <!-- Step 1: choose a room -->
+  <div class="win" style="left:110px; top:111px">
+    <div class="nav"><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="sk" style="width:40px"></span><span class="sk" style="width:40px"></span><span class="sk" style="width:40px"></span><span class="sk" style="width:40px"></span></div>
+    <div class="steps"><span class="step on"></span><span class="seg"></span><span class="step"></span><span class="seg"></span><span class="step"></span><span class="seg"></span><span class="step"></span></div>
+    <div class="body">
+      <div class="main">
+        <div class="sk l" style="width:140px; margin:2px auto 4px"></div>
+        <div class="cardrow">
+          <div class="rcard"><div class="ph"></div><div class="txt"><div class="sk l" style="width:70%"></div><div class="sk" style="width:90%"></div><div class="sk" style="width:55%"></div></div></div>
+          <div class="rcard"><div class="ph"></div><div class="txt"><div class="sk l" style="width:70%"></div><div class="sk" style="width:90%"></div><div class="sk" style="width:55%"></div></div></div>
+        </div>
+        <div class="cardrow">
+          <div class="rcard"><div class="ph"></div><div class="txt"><div class="sk l" style="width:70%"></div><div class="sk" style="width:90%"></div><div class="sk" style="width:55%"></div></div></div>
+          <div class="rcard"><div class="ph"></div><div class="txt"><div class="sk l" style="width:70%"></div><div class="sk" style="width:90%"></div><div class="sk" style="width:55%"></div></div></div>
+        </div>
+        <div class="cardrow">
+          <div class="rcard"><div class="ph" style="height:40px"></div><div class="txt"><div class="sk l" style="width:70%"></div><div class="sk" style="width:55%"></div></div></div>
+          <div class="rcard"><div class="ph" style="height:40px"></div><div class="txt"><div class="sk l" style="width:70%"></div><div class="sk" style="width:55%"></div></div></div>
+        </div>
+      </div>
+      <div class="side">
+        <div class="panelhead"></div>
+        <div class="kv"><span class="sk" style="width:50px"></span><span class="sk" style="width:30px"></span></div>
+        <div class="kv"><span class="sk" style="width:60px"></span><span class="sk" style="width:24px"></span></div>
+        <div class="rule"></div>
+        <div class="kv"><span class="sk" style="width:44px"></span><span class="sk" style="width:36px"></span></div>
+        <div class="kv"><span class="sk" style="width:70px"></span><span class="sk" style="width:20px"></span></div>
+        <div class="kv"><span class="sk" style="width:52px"></span><span class="sk" style="width:30px"></span></div>
+        <div class="rule"></div>
+        <div class="kv"><span class="sk l" style="width:40px"></span><span class="sk l" style="width:44px"></span></div>
+        <div class="btn"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2: guest information -->
+  <div class="win" style="left:660px; top:501px">
+    <div class="nav"><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="sk" style="width:40px"></span><span class="sk" style="width:40px"></span><span class="sk" style="width:40px"></span><span class="sk" style="width:40px"></span></div>
+    <div class="steps"><span class="step done"></span><span class="seg"></span><span class="step on"></span><span class="seg"></span><span class="step"></span><span class="seg"></span><span class="step"></span></div>
+    <div class="body">
+      <div class="main" style="gap:12px">
+        <div class="sk l" style="width:140px; margin:2px auto 0"></div>
+        <div class="label"></div><div class="field"></div>
+        <div class="row2"><div><div class="label"></div><div class="field" style="margin-top:12px"></div></div><div><div class="label"></div><div class="field" style="margin-top:12px"></div></div></div>
+        <div class="label"></div><div class="field"></div>
+        <div class="label"></div><div class="field" style="height:46px"></div>
+      </div>
+      <div class="side">
+        <div class="ph" style="height:60px"></div>
+        <div class="sk l" style="width:80%"></div>
+        <div class="kv"><span class="sk" style="width:50px"></span><span class="sk" style="width:34px"></span></div>
+        <div class="kv"><span class="sk" style="width:62px"></span><span class="sk" style="width:26px"></span></div>
+        <div class="rule"></div>
+        <div class="kv"><span class="sk l" style="width:40px"></span><span class="sk l" style="width:44px"></span></div>
+        <div class="btn"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3: payment -->
+  <div class="win" style="left:1210px; top:111px">
+    <div class="nav"><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="sk" style="width:40px"></span><span class="sk" style="width:40px"></span><span class="sk" style="width:40px"></span><span class="sk" style="width:40px"></span></div>
+    <div class="steps"><span class="step done"></span><span class="seg"></span><span class="step done"></span><span class="seg"></span><span class="step on"></span><span class="seg"></span><span class="step"></span></div>
+    <div class="body">
+      <div class="main" style="gap:10px">
+        <div class="sk l" style="width:120px; margin:2px auto 0"></div>
+        <div class="chip on"><span class="radio"></span><span class="sk l" style="width:110px"></span><span class="ph" style="width:34px; height:18px; margin-left:auto"></span></div>
+        <div class="chip"><span class="radio"></span><span class="sk" style="width:90px"></span><span class="ph" style="width:34px; height:18px; margin-left:auto"></span></div>
+        <div class="label"></div><div class="field"></div>
+        <div class="row2"><div class="field"></div><div class="field"></div></div>
+        <div class="label"></div><div class="field"></div>
+      </div>
+      <div class="side">
+        <div class="panelhead"></div>
+        <div class="kv"><span class="sk" style="width:50px"></span><span class="sk" style="width:30px"></span></div>
+        <div class="kv"><span class="sk" style="width:64px"></span><span class="sk" style="width:24px"></span></div>
+        <div class="kv"><span class="sk" style="width:44px"></span><span class="sk" style="width:36px"></span></div>
+        <div class="rule"></div>
+        <div class="kv"><span class="sk" style="width:58px"></span><span class="sk" style="width:28px"></span></div>
+        <div class="rule"></div>
+        <div class="kv"><span class="sk l" style="width:40px"></span><span class="sk l" style="width:48px"></span></div>
+        <div class="btn"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
